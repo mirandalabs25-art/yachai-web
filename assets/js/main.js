@@ -290,6 +290,105 @@
     });
   }
 
+  /* ======================================================================
+     4. "¿Qué negocio tienes?" — reordena los dolores según el rubro
+     Sin IA: es una tabla. Si se resuelve con un IF, no se usa un LLM.
+     También lee ?rubro=hotel de la dirección, para los QR impresos.
+     ====================================================================== */
+
+  var PRIMERO = {
+    tienda:      ['01', '05', '04', '02'],
+    restaurante: ['01', '04', '05', '02'],
+    hotel:       ['01', '04', '03', '02'],
+    consultorio: ['01', '02', '03', '04'],
+    oficina:     ['03', '06', '02', '01'],
+    agencia:     ['05', '03', '06', '07'],
+    otro:        []
+  };
+  var botonesRubro = document.querySelectorAll('.rubro');
+
+  function elegirRubro(rubro, desplazar) {
+    if (!PRIMERO.hasOwnProperty(rubro) || !carPista) return;
+    var prioridad = PRIMERO[rubro];
+    var lista = Array.prototype.slice.call(carPista.querySelectorAll('.tarjeta'));
+    function puesto(tj) {
+      var i = prioridad.indexOf(tj.dataset.dolor);
+      return i >= 0 ? i : 10 + parseInt(tj.dataset.dolor, 10);
+    }
+    lista.sort(function (a, b) { return puesto(a) - puesto(b); });
+    lista.forEach(function (tj) {
+      carPista.appendChild(tj);
+      tj.classList.toggle('tarjeta--tuya', prioridad.indexOf(tj.dataset.dolor) >= 0);
+    });
+    tarjetas = carPista.querySelectorAll('.tarjeta');
+    Array.prototype.forEach.call(botonesRubro, function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.rubro === rubro));
+    });
+    try { history.replaceState(null, '', '?rubro=' + rubro + location.hash); } catch (e) {}
+    if (desplazar && carrusel) {
+      window.scrollTo({ top: carrusel.offsetTop + 2, behavior: sinMovimiento ? 'auto' : 'smooth' });
+    }
+    alHacerScroll();
+  }
+
+  Array.prototype.forEach.call(botonesRubro, function (b) {
+    b.addEventListener('click', function () { elegirRubro(b.dataset.rubro, true); });
+  });
+  try {
+    var rubroInicial = new URLSearchParams(location.search).get('rubro');
+    if (rubroInicial) elegirRubro(rubroInicial, false);
+  } catch (e) {}
+
+  /* ======================================================================
+     5. Agenda — arma el mensaje de WhatsApp con el día y la franja
+     No muestra horarios disponibles: no están definidos y no se inventan.
+     ====================================================================== */
+
+  var agendaDias = document.querySelector('.agenda__dias');
+  var agendaMensaje = document.querySelector('.agenda__mensaje');
+  var agendaBoton = document.querySelector('.agenda__boton');
+  var eleccion = { dia: '', franja: '' };
+
+  function redactar() {
+    var texto = 'Hola Rodrigo, quiero agendar una llamada';
+    if (eleccion.dia) texto += ' el ' + eleccion.dia;
+    if (eleccion.franja) texto += ' ' + eleccion.franja;
+    texto += '.';
+    if (agendaMensaje) agendaMensaje.textContent = texto;
+    if (agendaBoton) agendaBoton.href = 'https://wa.me/51969322677?text=' + encodeURIComponent(texto);
+  }
+
+  function grupoExclusivo(contenedor, alElegir) {
+    contenedor.addEventListener('click', function (e) {
+      var b = e.target.closest('.opcion');
+      if (!b) return;
+      Array.prototype.forEach.call(contenedor.querySelectorAll('.opcion'), function (x) {
+        x.setAttribute('aria-pressed', String(x === b));
+      });
+      alElegir(b);
+      redactar();
+    });
+  }
+
+  if (agendaDias) {
+    var corto = new Intl.DateTimeFormat('es-PE', { weekday: 'short', day: 'numeric' });
+    var largo = new Intl.DateTimeFormat('es-PE', { weekday: 'long', day: 'numeric', month: 'long' });
+    for (var d = 1; d <= 6; d++) {
+      var fecha = new Date();
+      fecha.setDate(fecha.getDate() + d);
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'opcion';
+      b.setAttribute('aria-pressed', 'false');
+      b.textContent = corto.format(fecha).replace('.', '');
+      b.dataset.dia = largo.format(fecha).replace(',', '');
+      agendaDias.appendChild(b);
+    }
+    grupoExclusivo(agendaDias, function (b) { eleccion.dia = b.dataset.dia; });
+  }
+  var agendaFranjas = document.querySelector('.agenda__franjas');
+  if (agendaFranjas) grupoExclusivo(agendaFranjas, function (b) { eleccion.franja = b.dataset.franja; });
+
   /* --- marquesinas: duplicar para que el bucle no corte ------------------ */
   ['.anuncio__pista', '.letrero__pista'].forEach(function (sel) {
     var el = document.querySelector(sel);

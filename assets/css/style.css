@@ -433,3 +433,102 @@ a{color:inherit;text-decoration:none}
 .banda :focus-visible{outline-color:var(--negro)}
 .saltar{position:absolute;left:-9999px;background:var(--qori);color:var(--negro);padding:12px 18px;z-index:200;font-family:var(--mono);font-size:11px;text-transform:uppercase}
 .saltar:focus{left:var(--gutter);top:10px}
+
+/* ==========================================================================
+   AGREGADOS DEL 2026-09-22: selector de rubro · cómo trabajo · seguro por
+   diseño · agenda. Mismo sistema: filetes de 1 px, mono en caja alta,
+   el qori solo como acento.
+   ========================================================================== */
+
+/* --- selector de rubro (dentro del hero) --------------------------------- */
+/* Sin JS no hace nada, así que no se muestra. */
+.rubros{display:none;margin-top:clamp(18px,3vh,28px)}
+.js .rubros{display:block}
+.rubros .dato{margin-bottom:10px}
+.rubros__lista{display:flex;flex-wrap:wrap;gap:8px}
+@media (max-width:640px){
+  .rubros__lista{
+    flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+    margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter);
+  }
+  .rubros__lista::-webkit-scrollbar{display:none}
+}
+.rubro,.opcion{
+  flex:0 0 auto;min-height:40px;padding:0 15px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--hueso);background:rgba(0,0,0,.6);
+  border:1px solid var(--filete-fuerte);border-radius:0;
+  cursor:pointer;transition:background .2s,color .2s,border-color .2s;
+}
+.rubro:hover,.opcion:hover{border-color:var(--qori);color:var(--qori)}
+.rubro[aria-pressed="true"],.opcion[aria-pressed="true"]{background:var(--qori);border-color:var(--qori);color:var(--negro)}
+
+/* Las tarjetas que le sirven al rubro elegido */
+.tarjeta--tuya{border-color:var(--qori)}
+.tarjeta--tuya .tarjeta__num::after{content:' · Para tu negocio'}
+
+/* --- cómo trabajo -------------------------------------------------------- */
+/* La línea qori une los cuatro pasos y se dibuja con el scroll (--avance,
+   que anima movimiento.js; sin JS queda entera). */
+.pasos{
+  list-style:none;margin:0;padding:0;position:relative;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,3vw,40px);
+}
+.pasos::before{
+  content:'';position:absolute;left:0;right:0;top:14px;height:1px;
+  background:var(--qori);transform-origin:left;transform:scaleX(var(--avance,1));
+}
+.paso{position:relative}
+.paso__num{
+  position:relative;display:inline-block;
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;line-height:1;
+  color:var(--negro);background:var(--qori);padding:8px 10px;
+}
+.paso__titulo{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:-.01em;margin:18px 0 8px}
+.paso__texto{font-size:.92rem;line-height:1.65;color:var(--gris);margin:0}
+@media (max-width:820px){
+  .pasos{grid-template-columns:1fr;padding-left:22px;gap:30px}
+  .pasos::before{top:0;bottom:0;right:auto;left:0;width:1px;height:auto;
+    transform-origin:top;transform:scaleY(var(--avance,1))}
+  .paso::before{content:'';position:absolute;left:-26px;top:10px;width:9px;height:9px;background:var(--qori)}
+}
+
+/* --- seguro por diseño --------------------------------------------------- */
+.seguro{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(24px,4vw,56px);align-items:start}
+@media (max-width:900px){.seguro{grid-template-columns:1fr}}
+.garantias{list-style:none;margin:0;padding:0;border-top:1px solid var(--filete)}
+.garantia{
+  padding:clamp(16px,2.4vw,22px) 0;border-bottom:1px solid var(--filete);
+  display:grid;grid-template-columns:auto 1fr;column-gap:16px;
+}
+.garantia::before{content:'';grid-row:1 / 3;width:9px;height:9px;margin-top:.4em;border:1px solid var(--qori)}
+.garantia__titulo{font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:-.005em;margin:0 0 6px}
+.garantia__texto{grid-column:2;font-size:.92rem;line-height:1.65;color:var(--gris);margin:0}
+
+.registro{margin:0;border:1px solid var(--filete-fuerte);background:var(--carbon);font-family:var(--mono);font-size:12px;line-height:1.6}
+.registro__cabeza{
+  display:flex;justify-content:space-between;gap:12px;padding:10px 14px;
+  border-bottom:1px solid var(--filete);color:var(--gris);
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+}
+.registro__cabeza span:first-child{color:var(--qori)}
+.registro__linea{display:grid;grid-template-columns:8.5ch 1fr;column-gap:6px;margin:0;padding:11px 14px;border-bottom:1px solid var(--filete);color:var(--hueso)}
+.registro__linea:last-child{border-bottom:0}
+.registro__quien{color:var(--gris);font-weight:500}
+.registro__linea--no{color:#ff7a66}
+.registro__linea--si .registro__quien{color:var(--qori)}
+
+/* --- agenda -------------------------------------------------------------- */
+.agenda{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--filete)}
+.agenda__paso{padding:clamp(20px,3vw,30px);border-right:1px solid var(--filete)}
+.agenda__paso:last-child{border-right:0}
+@media (max-width:900px){
+  .agenda{grid-template-columns:1fr}
+  .agenda__paso{border-right:0;border-bottom:1px solid var(--filete)}
+  .agenda__paso:last-child{border-bottom:0}
+}
+.agenda__paso .dato{margin-bottom:14px}
+.agenda__opciones{display:flex;flex-wrap:wrap;gap:8px}
+.agenda__mensaje{font-size:.95rem;line-height:1.6;color:var(--hueso);margin:0 0 18px;min-height:3.2em}
+.agenda__boton{display:block;text-align:center}
+@media (min-width:901px){.registro{position:sticky;top:130px}}

@@ -157,6 +157,34 @@
     });
   }
 
+  /* ======================================================================
+     7. Cómo trabajo: la línea qori se dibuja al bajar y une los pasos
+     ====================================================================== */
+
+  if ($('.pasos')) {
+    gsap.fromTo('.pasos', { '--avance': 0 }, {
+      '--avance': 1,
+      ease: 'none',
+      scrollTrigger: { trigger: '.pasos', start: 'top 80%', end: 'bottom 55%', scrub: true }
+    });
+  }
+
+  /* ======================================================================
+     8. Seguro por diseño: el registro aparece línea por línea, como si
+     estuviera pasando — el intento, la propuesta, el rechazo, la respuesta.
+     ====================================================================== */
+
+  if ($('.registro')) {
+    gsap.from('.registro__linea', {
+      autoAlpha: 0,
+      x: -10,
+      duration: 0.45,
+      stagger: 0.7,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: '.registro', start: 'top 75%', once: true }
+    });
+  }
+
   // Las tipografías y las imágenes cambian los altos: recalcular al final.
   window.addEventListener('load', function () { ScrollTrigger.refresh(); });
   if (document.fonts && document.fonts.ready) {
