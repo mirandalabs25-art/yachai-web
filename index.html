@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Yachai — Automatización e IA aplicada · Cusco</title>
+<meta name="description" content="Rodrigo Vicente Miranda Vargas. Bots, agentes, CRMs y webs para negocios de Cusco. Seis rubros distintos y los que vengan.">
+<meta name="theme-color" content="#000000">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Yachai — Automatización e IA aplicada">
+<meta property="og:description" content="Todo pasa por ti. Eso tiene arreglo.">
+<meta property="og:locale" content="es_PE">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/style.css?v=2">
+</head>
+<body>
+
+<a class="saltar" href="#servicios">Saltar al contenido</a>
+<div class="progreso" aria-hidden="true"></div>
+
+<!-- CABECERA ============================================================= -->
+<header class="cabecera">
+<div class="anuncio" aria-hidden="true">
+  <div class="anuncio__pista">
+    <span>Cusco · Perú</span><span>—</span>
+    <span>Bots y agentes</span><span>—</span>
+    <span>CRMs y bases de datos</span><span>—</span>
+    <span>Webs e infraestructura</span><span>—</span>
+    <span>Software a medida</span><span>—</span>
+  </div>
+</div>
+
+<nav class="nav">
+  <a class="marca" href="#inicio" aria-label="Yachai, inicio">
+    <!-- Chakana: la cruz andina. Doce vértices, y el hueco del centro.
+         Dice Cusco sin escribirlo, y dice "sistema" sin dibujar un robot. -->
+    <svg class="marca__signo" viewBox="0 0 60 60" aria-hidden="true">
+      <path d="M24 0 H36 V12 H48 V24 H60 V36 H48 V48 H36 V60 H24 V48 H12 V36 H0 V24 H12 V12 H24 Z"/>
+      <circle cx="30" cy="30" r="6"/>
+    </svg>
+    <span class="marca__texto">Yachai</span>
+  </a>
+
+  <ul class="nav__links" role="list">
+    <li><a href="#servicios">Qué resuelvo</a></li>
+    <li><a href="#quien">Quién soy</a></li>
+    <li><a href="#casos">Casos</a></li>
+    <li><a href="#laboratorio">Laboratorio</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+
+  <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20automatizar%20algo%20de%20mi%20negocio" target="_blank" rel="noopener">Hablemos</a>
+</nav>
+</header>
+
+<!-- HERO ================================================================= -->
+<section class="hero" id="inicio">
+  <canvas class="hero__lienzo" id="lienzo" aria-hidden="true"></canvas>
+  <div class="hero__velo" aria-hidden="true"></div>
+  <div class="hero__sombra" aria-hidden="true"></div>
+
+  <div class="hero__texto">
+    <h1 class="display hero__titulo">
+      <span><i>Todo pasa</i></span>
+      <span><i>por <em>ti</em>.</i></span>
+    </h1>
+    <p class="parrafo hero__bajada">
+      Soy <b>Rodrigo Miranda</b>. Construyo los sistemas que hacen que tu
+      negocio siga funcionando cuando tú no estás encima: bots que atienden,
+      agentes que trabajan solos, bases de datos que recuerdan y webs que te
+      encuentran.
+    </p>
+  </div>
+
+  <div class="hero__pie">
+    <p class="dato">Cusco · Perú</p>
+    <span class="dato hero__scroll">Baja</span>
+  </div>
+</section>
+
+<!-- CARRUSEL: los dolores ================================================ -->
+<section class="carrusel" id="servicios" aria-label="Qué resuelvo">
+  <div class="carrusel__fijo">
+    <div class="carrusel__fondo" aria-hidden="true"></div>
+    <div class="carrusel__pista">
+
+      <article class="tarjeta">
+        <div class="tarjeta__diagrama"><img src="assets/img/diag-01-mensajes.svg" alt="Conversación que se contesta sola" loading="lazy" width="400" height="300"></div>
+        <span class="tarjeta__num">01</span>
+        <h2 class="tarjeta__dolor">«Me paso el día contestando mensajes.»</h2>
+        <div class="tarjeta__flecha" aria-hidden="true"></div>
+        <p class="tarjeta__entrega">Un WhatsApp que atiende, cotiza y agenda solo, las 24 horas. Tú entras cuando hay que cerrar.</p>
+        <p class="tarjeta__caso"><b>Caso:</b> un estudio de tatuajes con dos sedes que agendaba por mensaje directo, a mano.</p>
+        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20un%20bot%20de%20WhatsApp%20que%20atienda%20mi%20negocio" target="_blank" rel="noopener">Probar el bot</a>
+      </article>
+
+      <article class="tarjeta">
+        <div class="tarjeta__diagrama"><img src="assets/img/diag-02-base.svg" alt="Del cuaderno a una base de datos" loading="lazy" width="400" height="300"></div>
+        <span class="tarjeta__num">02</span>
+        <h2 class="tarjeta__dolor">«Tengo todo en un cuaderno y en la cabeza.»</h2>
+        <div class="tarjeta__flecha" aria-hidden="true"></div>
+        <p class="tarjeta__entrega">Una base con tus clientes, su historial y lo que te compraron. Tuya, no de una app que te la alquila.</p>
+        <p class="tarjeta__caso"><b>Caso:</b> doce años de trabajos y precios anotados en papel. Cada cliente que vuelve, empieza de cero.</p>
+        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20pasar%20mis%20clientes%20del%20cuaderno%20a%20una%20base%20de%20datos" target="_blank" rel="noopener">Ver la demo</a>
+      </article>
+
+      <article class="tarjeta">
+        <div class="tarjeta__diagrama"><img src="assets/img/diag-03-repite.svg" alt="Una tarea que se repite sola cada día" loading="lazy" width="400" height="300"></div>
+        <span class="tarjeta__num">03</span>
+        <h2 class="tarjeta__dolor">«Hago lo mismo todos los días.»</h2>
+        <div class="tarjeta__flecha" aria-hidden="true"></div>
+        <p class="tarjeta__entrega">Un asistente que hace esa tarea solo, todos los días, y te avisa únicamente cuando algo necesita tu decisión.</p>
+        <p class="tarjeta__caso"><b>Caso:</b> un estudio jurídico. Los plazos corren desde el segundo día hábil y se revisan a mano, uno por uno.</p>
+        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20tengo%20una%20tarea%20que%20hago%20todos%20los%20d%C3%ADas%20y%20quiero%20automatizarla" target="_blank" rel="noopener">Probar la automatización</a>
+      </article>
+
+      <article class="tarjeta">
+        <div class="tarjeta__diagrama"><img src="assets/img/diag-04-web.svg" alt="Tu web apareciendo en las búsquedas" loading="lazy" width="400" height="300"></div>
+        <span class="tarjeta__num">04</span>
+        <h2 class="tarjeta__dolor">«No existo en internet.»</h2>
+        <div class="tarjeta__flecha" aria-hidden="true"></div>
+        <p class="tarjeta__entrega">Tu web, tu dominio y tu servidor. Que te encuentren cuando te buscan, y que la página sea tuya de verdad.</p>
+        <p class="tarjeta__caso"><b>Caso:</b> una tienda con años de trayectoria que no aparecía en Google. Hoy tiene web propia en producción.</p>
+        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20una%20web%20propia%20para%20mi%20negocio" target="_blank" rel="noopener">Quiero mi web</a>
+      </article>
+
+      <article class="tarjeta">
+        <div class="tarjeta__diagrama"><img src="assets/img/diag-05-publicar.svg" alt="Publicaciones que salen con tu aprobación" loading="lazy" width="400" height="300"></div>
+        <span class="tarjeta__num">05</span>
+        <h2 class="tarjeta__dolor">«Publico poco, o publico sin orden.»</h2>
+        <div class="tarjeta__flecha" aria-hidden="true"></div>
+        <p class="tarjeta__entrega">Catálogo y publicaciones que salen solas, con tu aprobación por WhatsApp antes de que se publique nada.</p>
+        <p class="tarjeta__caso"><b>Caso:</b> 491 productos con foto, rotando sin que nadie tenga que sentarse a subirlos.</p>
+        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20que%20mis%20publicaciones%20salgan%20solas%20con%20mi%20aprobaci%C3%B3n" target="_blank" rel="noopener">Ver la demo</a>
+      </article>
+
+      <article class="tarjeta">
+        <div class="tarjeta__diagrama"><img src="assets/img/diag-06-audio.svg" alt="Audio convertido en texto ordenado" loading="lazy" width="400" height="300"></div>
+        <span class="tarjeta__num">06</span>
+        <h2 class="tarjeta__dolor">«Tengo horas de audio y papeles sin procesar.»</h2>
+        <div class="tarjeta__flecha" aria-hidden="true"></div>
+        <p class="tarjeta__entrega">Todo transcrito, ordenado y buscable. Sin subir tus grabaciones a ningún servicio ajeno: se procesa en tu propia máquina.</p>
+        <p class="tarjeta__caso"><b>Caso:</b> reuniones y clases que se convierten en notas conectadas entre sí, no en carpetas muertas.</p>
+        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20probar%20la%20transcripci%C3%B3n%20de%20audios" target="_blank" rel="noopener">Probar el transcriptor</a>
+      </article>
+
+      <article class="tarjeta">
+        <div class="tarjeta__diagrama"><img src="assets/img/diag-07-medida.svg" alt="Piezas de software armadas a medida" loading="lazy" width="400" height="300"></div>
+        <span class="tarjeta__num">07</span>
+        <h2 class="tarjeta__dolor">«Necesito algo que no existe.»</h2>
+        <div class="tarjeta__flecha" aria-hidden="true"></div>
+        <p class="tarjeta__entrega">Software y aplicaciones a medida, cuando ninguna herramienta del mercado hace lo que tu negocio necesita.</p>
+        <p class="tarjeta__caso"><b>Detrás:</b> n8n, Go High Level, Claude Code, Python, VPS propio. La herramienta se elige después del problema.</p>
+        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20necesito%20algo%20a%20medida%20y%20quiero%20conversarlo" target="_blank" rel="noopener">Agendar una llamada</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<main class="contenido">
+
+<!-- BANDA ================================================================ -->
+<section class="banda">
+  <p class="banda__texto revelar">Seis rubros distintos. Y los que vengan.</p>
+  <p class="revelar" data-retraso="80" style="margin:0">
+    <a class="boton boton--negro" href="#casos">Ver los casos</a>
+  </p>
+</section>
+
+<!-- CIFRAS =============================================================== -->
+<section class="seccion">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">01 —</span>
+    <div>
+      <h2 class="titulo">Lo que hay detrás</h2>
+      <p class="parrafo" style="margin-top:16px">
+        No vendo cursos ni teoría. Lo que ofrezco es lo que ya tengo corriendo.
+      </p>
+    </div>
+  </div>
+
+  <div class="cifras">
+    <div class="revelar">
+      <div class="cifra__valor" data-cifra="6" data-sufijo="+">6+</div>
+      <p class="cifra__texto">Rubros atendidos</p>
+    </div>
+    <div class="revelar" data-retraso="80">
+      <div class="cifra__valor" data-cifra="2" data-sufijo=" años">2 años</div>
+      <p class="cifra__texto">Automatizando con n8n</p>
+    </div>
+    <div class="revelar" data-retraso="160">
+      <div class="cifra__valor" data-cifra="491">491</div>
+      <p class="cifra__texto">Productos catalogados</p>
+    </div>
+    <div class="revelar" data-retraso="240">
+      <div class="cifra__valor" data-cifra="1" data-sufijo="%">1%</div>
+      <p class="cifra__texto">Carga del servidor propio</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUIÉN SOY ============================================================ -->
+<section class="seccion" id="quien">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">02 —</span>
+    <div>
+      <h2 class="titulo">Quién está detrás</h2>
+    </div>
+  </div>
+
+  <div class="quien">
+    <div class="quien__foto revelar">
+      <img src="assets/img/rodrigo.jpg" alt="Rodrigo Vicente Miranda Vargas" loading="lazy" width="800" height="948">
+      <span class="quien__firma">Rodrigo Miranda · Cusco</span>
+    </div>
+    <div class="quien__texto revelar" data-retraso="100">
+      <p class="parrafo"><b>Rodrigo Vicente Miranda Vargas.</b> Llevo dos años
+      automatizando negocios y no vengo del software: vengo de resolverle
+      problemas concretos a gente que conozco.</p>
+      <p class="parrafo">Mi primer cliente fue la tienda de mi mamá. Después un
+      estudio de tatuajes, un estudio jurídico, una agencia de marketing. Cada
+      uno con un problema distinto y la misma raíz: <b>todo dependía de una
+      sola persona.</b></p>
+      <p class="parrafo">Trabajo desde Cusco, con servidor propio, y lo que
+      construyo queda a tu nombre. Si algo no lo sé hacer todavía, te lo digo
+      antes de empezar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CASOS ================================================================ -->
+<section class="seccion" id="casos">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">03 —</span>
+    <div>
+      <h2 class="titulo">Casos</h2>
+      <p class="parrafo" style="margin-top:16px">
+        Un tatuador, una tienda de gorras y un estudio jurídico no se parecen
+        en nada. <b>El sistema que necesitan, sí.</b>
+      </p>
+    </div>
+  </div>
+
+  <div class="casos">
+    <article class="caso revelar">
+      <div class="caso__foto"><img src="assets/img/caso-famystore.jpg" alt="Portada de la web de la tienda de gorras" loading="lazy" width="1000" height="625"></div>
+      <div class="caso__cuerpo">
+        <span class="caso__estado caso__estado--vivo">● En producción</span>
+        <h3 class="caso__nombre">Tienda de gorras</h3>
+        <p class="caso__rubro">Retail · Cusco</p>
+        <p class="caso__texto">Web propia con dominio y HTTPS sobre servidor propio, catálogo de 491 productos y contacto directo a WhatsApp. Antes no aparecía en ninguna búsqueda.</p>
+      </div>
+    </article>
+
+    <article class="caso revelar" data-retraso="80">
+      <div class="caso__foto"><img src="assets/img/caso-trueink.jpg" alt="Portada de la web del estudio de tatuajes" loading="lazy" width="1000" height="625"></div>
+      <div class="caso__cuerpo">
+        <span class="caso__estado">◐ En construcción</span>
+        <h3 class="caso__nombre">Estudio de tatuajes</h3>
+        <p class="caso__rubro">Servicios · dos sedes</p>
+        <p class="caso__texto">Web y agendamiento automático. Lo importante no es el calendario: cada cita agendada arma la base de clientes que hoy vive en un cuaderno.</p>
+      </div>
+    </article>
+
+    <article class="caso revelar" data-retraso="160">
+      <div class="caso__foto caso__foto--grafo"><img src="assets/img/grafo-vault.svg" alt="Grafo real de 71 notas conectadas por 453 enlaces" loading="lazy" width="1000" height="1000"></div>
+      <div class="caso__cuerpo">
+        <span class="caso__estado caso__estado--vivo">● En producción</span>
+        <h3 class="caso__nombre">Mi propio sistema</h3>
+        <p class="caso__rubro">71 notas · 453 enlaces reales</p>
+        <p class="caso__texto">Ese dibujo no es un adorno: es mi segundo cerebro, generado desde el archivo. Agentes que reportan a horario fijo, transcripción local y reglas de seguridad impuestas por código.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- LABORATORIO ========================================================== -->
+<section class="seccion" id="laboratorio">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">04 —</span>
+    <div>
+      <h2 class="titulo">Laboratorio</h2>
+      <p class="parrafo" style="margin-top:16px">
+        Explicar qué es un agente no sirve de nada. <b>Es más rápido que lo
+        uses.</b> Herramientas gratis, sin registrarte.
+      </p>
+    </div>
+  </div>
+
+  <!-- REVISAR: las tres están marcadas "en construcción" a propósito.
+       Ninguna funciona todavía. En cuanto haya una en línea, se le cambia
+       el chip y pasa a ser el argumento principal de la web. -->
+  <div class="lab">
+    <article class="herramienta revelar">
+      <span class="herramienta__chip herramienta__chip--pronto">En construcción</span>
+      <h3 class="herramienta__nombre">Transcribe tu reunión</h3>
+      <p class="herramienta__texto">Sube un audio y recibe la transcripción con su resumen. El motor ya funciona y corre en local, sin mandar tu grabación a nadie.</p>
+    </article>
+
+    <article class="herramienta revelar" data-retraso="80">
+      <span class="herramienta__chip herramienta__chip--pronto">En construcción</span>
+      <h3 class="herramienta__nombre">Revisa tu web</h3>
+      <p class="herramienta__texto">Pega la dirección de tu página y recibe qué está fallando: contraste, tamaño de los botones en el celular, peso de las imágenes y si tu código está expuesto.</p>
+    </article>
+
+    <article class="herramienta revelar" data-retraso="160">
+      <span class="herramienta__chip herramienta__chip--pronto">En construcción</span>
+      <h3 class="herramienta__nombre">Agenda conmigo</h3>
+      <p class="herramienta__texto">Reserva una llamada y recibe la confirmación al instante. Es el mismo sistema de agendamiento que instalo en los negocios.</p>
+    </article>
+  </div>
+
+  <p class="revelar" data-retraso="240" style="margin-top:clamp(28px,4vw,44px)">
+    <a class="boton" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20av%C3%ADsame%20cuando%20el%20laboratorio%20est%C3%A9%20en%20l%C3%ADnea" target="_blank" rel="noopener">Avísame cuando estén listas</a>
+  </p>
+</section>
+
+<!-- CUSCO ================================================================ -->
+<section class="cusco">
+  <img class="cusco__foto" src="assets/img/cusco.jpg" alt="Muros de Sacsayhuamán con la ciudad de Cusco al fondo" loading="lazy" width="1200" height="600">
+  <div class="cusco__velo" aria-hidden="true"></div>
+  <div class="cusco__texto">
+    <h2 class="titulo revelar"><em>Yachay</em> es conocimiento en quechua.</h2>
+    <p class="parrafo revelar" data-retraso="80" style="margin:18px auto 0;text-align:center">
+      El signo de la marca es la <b>chakana</b>, la cruz andina escalonada —
+      la misma figura de estos muros. Trabajo desde Cusco, y se nota.
+    </p>
+  </div>
+</section>
+
+<!-- LETRERO ============================================================== -->
+<div class="letrero" aria-hidden="true">
+  <div class="letrero__pista"><span>Yachai —</span><span>Yachai —</span></div>
+</div>
+
+<!-- PIE ================================================================== -->
+<footer class="pie" id="contacto">
+  <div class="pie__grid">
+    <div class="revelar">
+      <p class="pie__titulo">Escríbeme</p>
+      <ul class="pie__lista" role="list">
+        <li class="pie__grande"><a href="https://wa.me/51969322677" target="_blank" rel="noopener">+51 969 322 677</a></li>
+        <li><a href="https://wa.me/51969322677?text=Hola%20Rodrigo" target="_blank" rel="noopener">WhatsApp directo</a></li>
+        <!-- REVISAR: correo propio -->
+        <li>[correo@yachai]</li>
+      </ul>
+    </div>
+
+    <div class="revelar" data-retraso="80">
+      <p class="pie__titulo">Qué resuelvo</p>
+      <ul class="pie__lista" role="list">
+        <li><a href="#servicios">Bots y agentes</a></li>
+        <li><a href="#servicios">CRMs y bases de datos</a></li>
+        <li><a href="#servicios">Webs e infraestructura</a></li>
+        <li><a href="#servicios">Software a medida</a></li>
+      </ul>
+    </div>
+
+    <div class="revelar" data-retraso="160">
+      <p class="pie__titulo">Quién</p>
+      <ul class="pie__lista" role="list">
+        <li>Rodrigo Vicente Miranda Vargas</li>
+        <li>Cusco, Perú</li>
+        <!-- REVISAR: redes reales -->
+        <li>[Instagram] · [LinkedIn]</li>
+      </ul>
+    </div>
+
+    <div class="revelar" data-retraso="240">
+      <p class="pie__titulo">Yachai</p>
+      <p class="parrafo" style="font-size:.9rem;margin:0">
+        <i>Yachay</i> es <b>conocimiento</b> en quechua. El signo es la
+        <b>chakana</b>, la cruz andina. De Cusco, y se nota.
+      </p>
+    </div>
+  </div>
+
+  <div class="pie__base">
+    <span>© <span id="anio">2026</span> Yachai · Cusco, Perú</span>
+    <span>Automatización · IA aplicada · Seguridad</span>
+  </div>
+</footer>
+
+</main>
+
+<script>document.getElementById('anio').textContent = new Date().getFullYear();</script>
+<script src="assets/js/main.js?v=2" defer></script>
+</body>
+</html>
