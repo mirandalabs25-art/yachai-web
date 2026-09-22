@@ -9,6 +9,15 @@
   var sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.documentElement.classList.add('js');
 
+  // Si GSAP cargó, movimiento.js se encarga del scroll (hero y carrusel).
+  // Si no cargó, este archivo hace todo solo, como antes.
+  var usaGsap = !!(window.gsap && window.ScrollTrigger) && !sinMovimiento;
+
+  // Estado del hero que GSAP anima desde movimiento.js:
+  //   armado: 0 = vértices dispersos, 1 = chakana formada
+  //   zoom / giro: la cámara que atraviesa la chakana al bajar
+  var estado = window.YACHAI_HERO = { armado: usaGsap ? 0 : 1, zoom: 1, giro: 0 };
+
   /* ======================================================================
      1. Hero generativo — grafo de nodos sobre una chakana
      ----------------------------------------------------------------------
@@ -41,17 +50,22 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
+  var cx = 0, cy = 0, escala = 1;
+
   function sembrar() {
     if (!lienzo) return;
     nodos = [];
-    var escala = Math.min(ancho, alto) / 14;
-    var cx = ancho / 2, cy = alto / 2;
+    escala = Math.min(ancho, alto) / 14;
+    cx = ancho / 2; cy = alto / 2;
 
     // Nodos ancla: los vértices de la chakana, más brillantes y quietos.
+    // bx/by es su lugar en la chakana (relativo al centro); ox/oy, el punto
+    // disperso desde el que llegan cuando la chakana se arma.
     CHAKANA.forEach(function (p) {
       nodos.push({
         x: cx + p[0] * escala, y: cy + p[1] * escala,
-        bx: cx + p[0] * escala, by: cy + p[1] * escala,
+        bx: p[0] * escala, by: p[1] * escala,
+        ox: (Math.random() - 0.5) * ancho, oy: (Math.random() - 0.5) * alto,
         vx: 0, vy: 0, r: 2.1, ancla: true, fase: Math.random() * 6.28
       });
     });
@@ -76,10 +90,22 @@
 
     var i, j, a, b, dx, dy, d;
     var limite = Math.min(ancho, alto) * 0.19;
+    var k = estado.armado, z = estado.zoom;
+    var cos = Math.cos(estado.giro), sen = Math.sin(estado.giro);
+
+    // Ubicar las anclas: de su punto disperso a su vértice (armado), y
+    // después girar y acercar alrededor del centro (la cámara del scroll).
+    for (i = 0; i < CHAKANA.length; i++) {
+      a = nodos[i];
+      var px = a.ox + (a.bx - a.ox) * k + Math.sin(t + a.fase) * 5;
+      var py = a.oy + (a.by - a.oy) * k + Math.cos(t * 0.8 + a.fase) * 5;
+      a.x = cx + (px * cos - py * sen) * z;
+      a.y = cy + (px * sen + py * cos) * z;
+    }
 
     // El contorno de la chakana, uniendo anclas consecutivas. Sin esto la
-    // forma no se lee: quedaban puntos sueltos.
-    ctx.strokeStyle = 'rgba(245,197,24,.30)';
+    // forma no se lee: quedaban puntos sueltos. Aparece a medida que se arma.
+    ctx.strokeStyle = 'rgba(245,197,24,' + (0.30 * k * k).toFixed(3) + ')';
     ctx.lineWidth = 1;
     ctx.beginPath();
     for (i = 0; i < CHAKANA.length; i++) {
@@ -87,6 +113,13 @@
       if (i === 0) ctx.moveTo(a.x, a.y); else ctx.lineTo(a.x, a.y);
     }
     ctx.closePath();
+    ctx.stroke();
+
+    // El hueco del centro, como en el signo de la marca. Al bajar, la
+    // cámara lo atraviesa.
+    ctx.strokeStyle = 'rgba(245,197,24,' + (0.45 * k * k).toFixed(3) + ')';
+    ctx.beginPath();
+    ctx.arc(cx, cy, escala * 1.05 * z, 0, 6.2832);
     ctx.stroke();
 
     // Enlaces de proximidad, para que los nodos queden encima.
@@ -113,9 +146,7 @@
     for (i = 0; i < nodos.length; i++) {
       a = nodos[i];
       if (a.ancla) {
-        // Respiran alrededor de su posición, no se van.
-        a.x = a.bx + Math.sin(t + a.fase) * 5;
-        a.y = a.by + Math.cos(t * 0.8 + a.fase) * 5;
+        // Ya ubicadas arriba: respiran alrededor de su vértice, no se van.
         ctx.fillStyle = 'rgba(245,197,24,.92)';
       } else {
         a.x += a.vx; a.y += a.vy;
@@ -173,7 +204,7 @@
   function pintar() {
     var alto = document.documentElement.scrollHeight - window.innerHeight;
     if (progreso) progreso.style.transform = 'scaleX(' + (alto > 0 ? window.scrollY / alto : 0) + ')';
-    if (sinMovimiento) return;
+    if (sinMovimiento || usaGsap) return;
 
     if (hero) {
       var ah = Math.min(1, Math.max(0, window.scrollY / window.innerHeight));
