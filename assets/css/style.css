@@ -34,6 +34,8 @@
 *,*::before,*::after{box-sizing:border-box}
 
 html{scroll-behavior:smooth}
+/* Al llegar a una sección por un enlace, que la cabecera fija no tape el título. */
+[id]{scroll-margin-top:var(--cabecera,110px)}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 body{
@@ -632,3 +634,48 @@ a{color:inherit;text-decoration:none}
 .agenda__mensaje{font-size:.95rem;line-height:1.6;color:var(--hueso);margin:0 0 18px;min-height:3.2em}
 .agenda__boton{display:block;text-align:center}
 @media (min-width:901px){.registro{position:sticky;top:130px}}
+
+/* --- atajo: ir directo a una cara (2026-09-22) --------------------------- */
+/* Tapa el hero al subir (va encima, opaco). Escritorio: la presentación a la
+   izquierda y la lista a la derecha; móvil: una columna. */
+.atajo{
+  position:relative;z-index:1;background:var(--negro);border-top:1px solid var(--filete);
+  padding:clamp(64px,10vw,130px) var(--gutter);
+  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  column-gap:clamp(32px,6vw,96px);row-gap:clamp(28px,4vw,40px);align-items:start;
+}
+.atajo__intro{grid-column:1}
+.atajo__intro .titulo{margin:12px 0 16px}
+.atajo__intro .rubros{margin-top:clamp(24px,4vw,36px)}
+.atajo__lista{grid-column:2;grid-row:1 / span 2;list-style:none;margin:0;padding:0;border-top:1px solid var(--filete)}
+.atajo__accion{grid-column:1;display:grid;gap:12px;justify-items:start}
+.atajo__accion .parrafo{margin:0}
+@media (max-width:900px){
+  /* minmax(0,…): sin esto, la fila de rubros (que se desliza de lado) estira
+     la columna y la página entera se sale del ancho del celular. */
+  .atajo{grid-template-columns:minmax(0,1fr)}
+  .atajo__intro,.atajo__lista,.atajo__accion{grid-column:1;grid-row:auto}
+}
+.atajo__fila{
+  display:grid;grid-template-columns:3.4ch 1fr auto;align-items:center;gap:14px;
+  min-height:56px;padding:clamp(15px,2.2vw,22px) 4px;border-bottom:1px solid var(--filete);
+  transition:background .2s,padding .25s;
+}
+.atajo__num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--qori)}
+.atajo__texto{font-size:clamp(1.02rem,1.9vw,1.3rem);font-weight:700;line-height:1.25;letter-spacing:-.01em}
+.atajo__flecha{font-family:var(--mono);color:var(--gris);transition:transform .25s,color .2s}
+.atajo__fila:hover,.atajo__fila:focus-visible{background:var(--carbon);padding-left:14px}
+.atajo__fila:hover .atajo__flecha,.atajo__fila:focus-visible .atajo__flecha{color:var(--qori);transform:translateX(4px)}
+.atajo__item--tuyo .atajo__fila{border-left:2px solid var(--qori);padding-left:12px}
+.atajo__item--tuyo .atajo__texto::after{
+  content:'Para tu negocio';display:block;margin-top:6px;
+  font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--qori);
+}
+
+/* "Ver los 7": dentro de cada cara, para volver a la lista */
+.cara__arriba{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0}
+.cara__volver{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gris);padding:10px 0;border-bottom:1px solid var(--filete-fuerte);line-height:1;
+}
+.cara__volver:hover,.cara__volver:focus-visible{color:var(--qori)}

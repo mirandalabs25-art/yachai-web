@@ -14,36 +14,29 @@
   var ScrollTrigger = window.ScrollTrigger;
   gsap.registerPlugin(ScrollTrigger);
 
-  var estado = window.YACHAI_HERO;
   var $ = function (s) { return document.querySelector(s); };
   var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
 
   /* ======================================================================
-     1. Entrada: la chakana se arma
-     Los veinte vértices llegan desde donde estaban sueltos y se cierran en
-     la cruz. El titular ya sube solo por CSS; la bajada llega detrás.
+     1. Entrada: el titular sube solo por CSS; la bajada llega detrás.
      ====================================================================== */
 
   var entrada = gsap.timeline({ delay: 0.15 });
-  if (estado) entrada.to(estado, { armado: 1, duration: 2.4, ease: 'expo.inOut' }, 0);
   entrada.from('.hero__bajada', { autoAlpha: 0, y: 18, duration: 1, ease: 'power3.out' }, 0.7);
   entrada.from('.hero__pie', { autoAlpha: 0, duration: 1 }, 1.2);
 
   /* ======================================================================
-     2. Bajar atraviesa la chakana
-     Mientras la escena de la chakana sube sobre el hero, la cruz gira un octavo de
-     vuelta y la cámara entra por el hueco del centro.
+     2. Al bajar, el hero se apaga mientras la sección siguiente lo tapa.
      ====================================================================== */
 
   var heroScroll = gsap.timeline({
     scrollTrigger: {
-      trigger: '.giro',
-      start: 'top bottom',   // la escena de la chakana asoma por abajo
-      end: 'top top',        // la escena llegó arriba y queda fija
+      trigger: '.atajo',
+      start: 'top bottom',   // la sección del atajo asoma por abajo
+      end: 'top top',
       scrub: 0.8
     }
   });
-  if (estado) heroScroll.to(estado, { zoom: 5.5, giro: Math.PI / 4, ease: 'power2.in' }, 0);
   heroScroll
     .to('.hero__texto', { autoAlpha: 0, y: -60, ease: 'power1.in' }, 0)
     // fromTo sin render inmediato: si no, pisa el fundido de entrada del pie.
@@ -66,7 +59,9 @@
       trigger: giro,
       start: 'top top',
       end: 'bottom bottom',
-      snap: { snapTo: puntos, duration: { min: 0.25, max: 0.7 }, delay: 0.12, ease: 'power2.inOut' }
+      // directional:false = frena en la cara más cercana, no en la siguiente.
+      // Si no, un salto directo desde el atajo terminaba una cara más allá.
+      snap: { snapTo: puntos, directional: false, duration: { min: 0.25, max: 0.7 }, delay: 0.12, ease: 'power2.inOut' }
     });
   }
 

@@ -15,11 +15,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/css/style.css?v=4">
+<link rel="stylesheet" href="assets/css/style.css?v=5">
 </head>
 <body>
 
-<a class="saltar" href="#servicios">Saltar al contenido</a>
+<a class="saltar" href="#atajo">Saltar al contenido</a>
 <div class="progreso" aria-hidden="true"></div>
 
 <!-- CABECERA ============================================================= -->
@@ -46,7 +46,7 @@
   </a>
 
   <ul class="nav__links" role="list">
-    <li><a href="#servicios">Qué resuelvo</a></li>
+    <li><a href="#atajo">Qué resuelvo</a></li>
     <li><a href="#casos">Casos</a></li>
     <li><a href="#laboratorio">Laboratorio</a></li>
     <li><a href="#como">Cómo trabajo</a></li>
@@ -75,8 +75,26 @@
       agentes que trabajan solos, bases de datos que recuerdan y webs que te
       encuentran.
     </p>
+  </div>
+
+  <div class="hero__pie">
+    <p class="dato">Cusco · Perú</p>
+    <span class="dato hero__scroll">Baja</span>
+  </div>
+</section>
+
+<!-- ATAJO: ir directo a una cara ======================================== -->
+<!-- Para quien no quiere recorrer las siete: toca tu problema y la chakana
+     se abre directo en esa cara. El enlace ?cara=04 hace lo mismo desde
+     afuera (un QR, un mensaje). Los botones de rubro reordenan la lista. -->
+<section class="atajo" id="atajo" aria-labelledby="atajo-titulo">
+  <div class="atajo__intro">
+    <p class="dato dato--qori">Ve directo</p>
+    <h2 class="titulo" id="atajo-titulo">¿Qué te está pasando?</h2>
+    <p class="parrafo">Toca el que más te pesa y te muestro cómo se resuelve. O baja y recórrelos todos.</p>
+
     <div class="rubros" role="group" aria-labelledby="rubros-titulo">
-      <p class="dato dato--qori" id="rubros-titulo">¿Qué negocio tienes?</p>
+      <p class="dato" id="rubros-titulo">¿Qué negocio tienes?</p>
       <div class="rubros__lista">
         <button type="button" class="rubro" data-rubro="tienda" aria-pressed="false">Tienda</button>
         <button type="button" class="rubro" data-rubro="restaurante" aria-pressed="false">Restaurante</button>
@@ -89,9 +107,19 @@
     </div>
   </div>
 
-  <div class="hero__pie">
-    <p class="dato">Cusco · Perú</p>
-    <span class="dato hero__scroll">Baja</span>
+  <ol class="atajo__lista" role="list">
+    <li data-dolor="01"><a class="atajo__fila" href="#cara-01" data-dolor="01"><span class="atajo__num">01</span><span class="atajo__texto">Me paso el día contestando mensajes</span><span class="atajo__flecha" aria-hidden="true">→</span></a></li>
+    <li data-dolor="02"><a class="atajo__fila" href="#cara-02" data-dolor="02"><span class="atajo__num">02</span><span class="atajo__texto">Tengo todo en un cuaderno y en la cabeza</span><span class="atajo__flecha" aria-hidden="true">→</span></a></li>
+    <li data-dolor="03"><a class="atajo__fila" href="#cara-03" data-dolor="03"><span class="atajo__num">03</span><span class="atajo__texto">Hago lo mismo todos los días</span><span class="atajo__flecha" aria-hidden="true">→</span></a></li>
+    <li data-dolor="04"><a class="atajo__fila" href="#cara-04" data-dolor="04"><span class="atajo__num">04</span><span class="atajo__texto">No existo en internet</span><span class="atajo__flecha" aria-hidden="true">→</span></a></li>
+    <li data-dolor="05"><a class="atajo__fila" href="#cara-05" data-dolor="05"><span class="atajo__num">05</span><span class="atajo__texto">Publico poco, o publico sin orden</span><span class="atajo__flecha" aria-hidden="true">→</span></a></li>
+    <li data-dolor="06"><a class="atajo__fila" href="#cara-06" data-dolor="06"><span class="atajo__num">06</span><span class="atajo__texto">Tengo horas de audio y papeles sin procesar</span><span class="atajo__flecha" aria-hidden="true">→</span></a></li>
+    <li data-dolor="07"><a class="atajo__fila" href="#cara-07" data-dolor="07"><span class="atajo__num">07</span><span class="atajo__texto">Necesito algo que no existe</span><span class="atajo__flecha" aria-hidden="true">→</span></a></li>
+  </ol>
+
+  <div class="atajo__accion">
+    <p class="parrafo">¿Tu caso no está en la lista?</p>
+    <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20tengo%20un%20problema%20en%20mi%20negocio%20y%20quiero%20saber%20si%20tiene%20arreglo" target="_blank" rel="noopener">Cuéntamelo por WhatsApp</a>
   </div>
 </section>
 
@@ -107,11 +135,11 @@
 
     <div class="giro__caras">
 
-      <article class="cara" data-dolor="01">
+      <article class="cara" id="cara-01" data-dolor="01">
         <div class="cara__medio"><img class="cara__img" src="assets/img/giro/01-mensajes.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
         <div class="cara__contenido">
           <header class="cara__cabeza">
-            <span class="cara__num">01</span>
+            <p class="cara__arriba"><span class="cara__num">01</span><a class="cara__volver" href="#atajo">Ver los 7</a></p>
             <h2 class="cara__dolor">«Me paso el día contestando mensajes.»</h2>
           </header>
           <div class="demo demo--chat" aria-label="Ejemplo de conversación con el bot">
@@ -131,11 +159,11 @@
         </div>
       </article>
 
-      <article class="cara" data-dolor="02">
+      <article class="cara" id="cara-02" data-dolor="02">
         <div class="cara__medio"><img class="cara__img" src="assets/img/giro/02-cuaderno.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
         <div class="cara__contenido">
           <header class="cara__cabeza">
-            <span class="cara__num">02</span>
+            <p class="cara__arriba"><span class="cara__num">02</span><a class="cara__volver" href="#atajo">Ver los 7</a></p>
             <h2 class="cara__dolor">«Tengo todo en un cuaderno y en la cabeza.»</h2>
           </header>
           <div class="demo demo--ficha" aria-label="Ejemplo de ficha de cliente">
@@ -154,11 +182,11 @@
         </div>
       </article>
 
-      <article class="cara" data-dolor="03">
+      <article class="cara" id="cara-03" data-dolor="03">
         <div class="cara__medio"><img class="cara__img" src="assets/img/giro/03-repite.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
         <div class="cara__contenido">
           <header class="cara__cabeza">
-            <span class="cara__num">03</span>
+            <p class="cara__arriba"><span class="cara__num">03</span><a class="cara__volver" href="#atajo">Ver los 7</a></p>
             <h2 class="cara__dolor">«Hago lo mismo todos los días.»</h2>
           </header>
           <div class="demo demo--aviso" aria-label="Ejemplo de aviso del asistente">
@@ -175,11 +203,11 @@
         </div>
       </article>
 
-      <article class="cara" data-dolor="04">
+      <article class="cara" id="cara-04" data-dolor="04">
         <div class="cara__medio"><img class="cara__img" src="assets/img/giro/04-web.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
         <div class="cara__contenido">
           <header class="cara__cabeza">
-            <span class="cara__num">04</span>
+            <p class="cara__arriba"><span class="cara__num">04</span><a class="cara__volver" href="#atajo">Ver los 7</a></p>
             <h2 class="cara__dolor">«No existo en internet.»</h2>
           </header>
           <div class="demo demo--busqueda" aria-label="Ejemplo de tu negocio apareciendo en una búsqueda">
@@ -196,11 +224,11 @@
         </div>
       </article>
 
-      <article class="cara" data-dolor="05">
+      <article class="cara" id="cara-05" data-dolor="05">
         <div class="cara__medio"><img class="cara__img" src="assets/img/giro/05-publicar.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
         <div class="cara__contenido">
           <header class="cara__cabeza">
-            <span class="cara__num">05</span>
+            <p class="cara__arriba"><span class="cara__num">05</span><a class="cara__volver" href="#atajo">Ver los 7</a></p>
             <h2 class="cara__dolor">«Publico poco, o publico sin orden.»</h2>
           </header>
           <div class="demo demo--cola" aria-label="Ejemplo de publicaciones programadas con aprobación">
@@ -217,11 +245,11 @@
         </div>
       </article>
 
-      <article class="cara" data-dolor="06">
+      <article class="cara" id="cara-06" data-dolor="06">
         <div class="cara__medio"><img class="cara__img" src="assets/img/giro/06-audio.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
         <div class="cara__contenido">
           <header class="cara__cabeza">
-            <span class="cara__num">06</span>
+            <p class="cara__arriba"><span class="cara__num">06</span><a class="cara__volver" href="#atajo">Ver los 7</a></p>
             <h2 class="cara__dolor">«Tengo horas de audio y papeles sin procesar.»</h2>
           </header>
           <div class="demo demo--audio" aria-label="Ejemplo de audio convertido en texto">
@@ -239,11 +267,11 @@
         </div>
       </article>
 
-      <article class="cara" data-dolor="07">
+      <article class="cara" id="cara-07" data-dolor="07">
         <div class="cara__medio"><img class="cara__img" src="assets/img/giro/07-medida.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
         <div class="cara__contenido">
           <header class="cara__cabeza">
-            <span class="cara__num">07</span>
+            <p class="cara__arriba"><span class="cara__num">07</span><a class="cara__volver" href="#atajo">Ver los 7</a></p>
             <h2 class="cara__dolor">«Necesito algo que no existe.»</h2>
           </header>
           <div class="demo demo--nodos" aria-label="Ejemplo de un sistema a medida conectando piezas">
@@ -627,7 +655,7 @@
 <!-- GSAP 3.15 (gratis, incluidos los plugins). Si no carga, main.js hace todo solo. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=5" defer></script>
-<script src="assets/js/movimiento.js?v=3" defer></script>
+<script src="assets/js/main.js?v=6" defer></script>
+<script src="assets/js/movimiento.js?v=4" defer></script>
 </body>
 </html>
