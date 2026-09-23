@@ -225,7 +225,35 @@
 
   function suave(x) { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); }
 
-  /* --- video de cada cara: solo si el <article> trae data-video --------- */
+  /* --- video de cada cara: solo si el <article> trae data-video ---------
+     Tres defensas, porque en celulares reales el autoplay falla por razones
+     que el navegador de escritorio no muestra (2026-09-22: "en el celular no
+     se ven los videos"):
+     1. Si el celular bloquea la reproducción automática (app con visor
+        propio, ahorro de batería, modo bajo consumo del iPhone), aparece
+        "▶ Ver en movimiento". El primer toque en cualquier parte desbloquea
+        todos los videos.
+     2. Si el video da error al cargar (típico del iPhone cuando el servidor
+        no entrega el archivo por partes), se reintenta bajándolo entero y
+        reproduciéndolo desde memoria.
+     3. El botón muestra en letra chica el motivo, para poder diagnosticarlo
+        desde una captura del celular. */
+
+  function marcarBloqueo(cara, motivo) {
+    if (!cara) return;
+    cara.classList.add('video-bloqueado');
+    var b = cara.querySelector('.cara__play');
+    if (!b) {
+      b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'cara__play';
+      b.innerHTML = '<span>▶ Ver en movimiento</span><small></small>';
+      b.addEventListener('click', function () { desbloquear(); reproducir(cara); });
+      cara.querySelector('.cara__cabeza').appendChild(b);
+    }
+    b.querySelector('small').textContent = motivo || '';
+  }
+
   function crearVideo(cara) {
     var src = cara && cara.dataset.video;
     if (!src) return null;
@@ -233,21 +261,61 @@
     if (!v) {
       v = document.createElement('video');
       v.className = 'cara__img cara__video';
-      v.muted = true; v.loop = true; v.playsInline = true;
+      v.muted = true; v.defaultMuted = true; v.loop = true; v.playsInline = true;
       v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+      v.setAttribute('webkit-playsinline', ''); v.setAttribute('disablepictureinpicture', '');
       v.preload = 'auto';
       v.poster = cara.querySelector('.cara__img').currentSrc || '';
+      v.addEventListener('playing', function () { cara.classList.remove('video-bloqueado'); });
+      v.addEventListener('error', function () {
+        var codigo = v.error ? v.error.code : '?';
+        if (v.dataset.reintento) { marcarBloqueo(cara, 'error de carga ' + codigo); return; }
+        v.dataset.reintento = '1';
+        fetch(src).then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.blob();
+        }).then(function (b) {
+          v.src = URL.createObjectURL(b);
+          if (cara === caraMostrada) reproducir(cara);
+        }).catch(function (e) { marcarBloqueo(cara, 'error ' + codigo + ' · ' + (e && e.message || '')); });
+      });
       v.src = src;
       cara.querySelector('.cara__medio').appendChild(v);
     }
     return v;
   }
-  function prepararVideo(cara) {
+
+  function reproducir(cara) {
     var v = crearVideo(cara);
     if (!v) return;
     var p = v.play();
-    if (p && p.catch) p.catch(function () {});   // sin autoplay: queda el póster
+    if (p && p.then) {
+      p.then(function () { cara.classList.remove('video-bloqueado'); })
+       .catch(function (e) { if (cara === caraMostrada) marcarBloqueo(cara, e && e.name || 'bloqueado'); });
+    }
   }
+  function prepararVideo(cara) { reproducir(cara); }
+
+  // El primer toque "desbloquea" todos los videos: se reproducen y pausan
+  // una vez dentro del gesto, y desde ahí el celular los deja arrancar solos.
+  // Solo hace falta si alguno quedó bloqueado; si no, no baja nada de más.
+  var desbloqueado = false;
+  function desbloquear() {
+    if (desbloqueado || !document.querySelector('.cara.video-bloqueado')) return;
+    desbloqueado = true;
+    caras.forEach(function (c) {
+      var v = crearVideo(c);
+      if (!v) return;
+      var p = v.play();
+      if (p && p.then) {
+        p.then(function () { if (c !== caraMostrada) v.pause(); }).catch(function () {});
+      }
+    });
+  }
+  ['touchend', 'click', 'keydown'].forEach(function (tipo) {
+    document.addEventListener(tipo, desbloquear, { passive: true });
+  });
+
   function pausarVideo(cara) {
     var v = cara && cara.querySelector('video');
     if (v) v.pause();
