@@ -373,7 +373,10 @@
     var abierto = abre * (1 - cierra);
     var r = abierto * m.maxR;
 
-    escena.style.setProperty('--fondo', '1');
+    // Escena 1: se abre desde el hueco de la chakana del hero (la sección
+    // arranca montada sobre él), así que el fondo negro entra recién cuando
+    // la escena ya cubre todo; antes se ve el hero detrás.
+    escena.style.setProperty('--fondo', i === 0 ? suave((t - 0.25) / 0.1).toFixed(3) : '1');
     escena.style.setProperty('--rx', r.toFixed(1) + 'px');
     escena.style.setProperty('--ry', r.toFixed(1) + 'px');
     escena.style.setProperty('--hy', (H / 2) + 'px');
@@ -587,8 +590,9 @@
   var formulario = chat && chat.querySelector('.chat__formulario');
   var campo = chat && chat.querySelector('.chat__campo');
   var etiqueta = chat && chat.querySelector('.chat__etiqueta');
-  var datos = { nombre: '', negocio: '', interes: '' };
+  var datos = { nombre: '', negocio: '', interes: '', consulta: '' };
   var ocupado = false;
+  var pidiendo = '';
 
   function bajarRegistro() { if (registro) registro.scrollTop = registro.scrollHeight; }
 
@@ -657,6 +661,7 @@
     ['Quiero una web', 'web'],
     ['Quiero automatizar algo', 'automatizar'],
     ['Quiero aprender IA', 'ia'],
+    ['Hacer una consulta', 'consulta'],
     ['Hablar con Rodrigo', 'datos']
   ];
 
@@ -743,18 +748,23 @@
           ofrecer([['Lo quiero', 'datos'], ['Ver cómo se ve', '@cara-' + (PRIMERO[partes[1]][0] || '01')], ['Ver otro negocio', 'rubro'], ['Volver al inicio', 'inicio']]);
         });
         break;
+      case 'consulta':
+        decir(['Cuéntame tu consulta y te respondo por WhatsApp.'], function () {
+          pedir('consulta', 'Tu consulta', 'off', 'Ej.: ¿pueden hacer un bot para mi restaurante?');
+        });
+        break;
       case 'datos':
         decir(['Perfecto. ¿Cómo te llamas?'], function () { pedir('nombre', 'Tu nombre', 'name', ''); });
         break;
     }
   }
 
-  var pidiendo = '';
   function pedir(que, texto, autocompletar, ejemplo) {
     pidiendo = que;
     opcionesEl.innerHTML = '';
     etiqueta.textContent = texto;
     campo.value = '';
+    campo.maxLength = que === 'consulta' ? 400 : 120;
     campo.setAttribute('autocomplete', autocompletar);
     campo.placeholder = ejemplo;
     formulario.hidden = false;
@@ -762,9 +772,10 @@
   }
 
   function cerrar() {
-    var texto = 'Hola Rodrigo, soy ' + datos.nombre + '. Tengo ' + datos.negocio +
-      '. Me interesa: ' + (datos.interes || 'conocer más de Yachai') +
-      '. (Te escribo desde el asistente de la web de Yachai)';
+    var texto = 'Hola Rodrigo, soy ' + datos.nombre + '.' +
+      (datos.negocio ? ' Tengo ' + datos.negocio + '.' : '') +
+      (datos.consulta ? ' Mi consulta: ' + datos.consulta : ' Me interesa: ' + (datos.interes || 'conocer más de Yachai') + '.') +
+      ' (Te escribo desde la web de Yachai)';
     var a = document.createElement('a');
     a.className = 'boton boton--qori chat__enviar';
     a.href = WHATSAPP + encodeURIComponent(texto);
@@ -779,13 +790,17 @@
   if (formulario) {
     formulario.addEventListener('submit', function (e) {
       e.preventDefault();
-      var valor = campo.value.trim().slice(0, 120);
+      var valor = campo.value.trim().slice(0, pidiendo === 'consulta' ? 400 : 120);
       if (!valor) { campo.focus(); return; }
       formulario.hidden = true;
       burbuja('yo', valor);
-      if (pidiendo === 'nombre') {
+      if (pidiendo === 'consulta') {
+        datos.consulta = valor;
+        if (datos.nombre) { cerrar(); return; }
+        decir(['Anotado. ¿Cómo te llamas?'], function () { pedir('nombre', 'Tu nombre', 'name', ''); });
+      } else if (pidiendo === 'nombre') {
         datos.nombre = valor;
-        if (datos.negocio) { cerrar(); return; }
+        if (datos.negocio || datos.consulta) { cerrar(); return; }
         decir(['Gracias, ' + valor + '. ¿Qué negocio tienes?'], function () {
           pedir('negocio', 'Tu negocio', 'organization', 'Ej.: una tienda de ropa en San Blas');
         });
@@ -796,18 +811,20 @@
     });
   }
 
-  // Arranca cuando el asistente entra en pantalla: así el visitante ve cómo
-  // escribe, en vez de encontrar la conversación ya hecha.
+  // Arranca cuando el asistente entra en pantalla (o cuando se abre desde
+  // los botones fijos): así el visitante ve cómo escribe.
   var arrancado = false;
-  function arrancar() {
+  function arrancar(despues) {
     if (arrancado || !registro) return;
     arrancado = true;
-    decir(['¡Hola! Soy el asistente de Yachai.', '¿Qué te gustaría saber?'], function () { ofrecer(INICIO); });
+    decir(['¡Hola! Soy el asistente de Yachai.', despues ? '' : '¿Qué te gustaría saber?'].filter(Boolean), function () {
+      if (despues) despues(); else ofrecer(INICIO);
+    });
   }
   // Se revisa con el scroll (y no solo con IntersectionObserver): algunos
   // visores de apps avisan tarde la visibilidad, y así arranca igual.
   function revisarAsistente() {
-    if (arrancado || !chat) return;
+    if (arrancado || !chat || chat.closest('.panel-asistente')) return;
     var r = chat.getBoundingClientRect();
     if (r.top < window.innerHeight * 0.85 && r.bottom > 0) arrancar();
   }
@@ -817,17 +834,50 @@
     revisarAsistente();
   }
 
-  // Botón flotante: siempre a mano, salvo cuando el asistente ya está a la vista.
-  var flotante = document.querySelector('.flotante');
-  var seccionAsistente = document.getElementById('asistente');
-  if (flotante && seccionAsistente && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (e) {
-      flotante.classList.toggle('flotante--oculto', e[0].isIntersecting || window.scrollY < window.innerHeight * 0.5);
-    }, { threshold: 0.15 }).observe(seccionAsistente);
-    window.addEventListener('scroll', function () {
-      if (window.scrollY < window.innerHeight * 0.5) flotante.classList.add('flotante--oculto');
-    }, { passive: true });
+  /* --- Botones fijos: Asistente · Consultar · WhatsApp --------------------
+     Siempre visibles (pedido del usuario, 2026-09-22). "Asistente" y
+     "Consultar" abren el chat en una ventana flotante, sin mover la página:
+     el mismo chat de la sección se muda a la ventana y vuelve al cerrarla,
+     así la conversación no se pierde. */
+  var panel = document.getElementById('panel-asistente');
+  var marcaChat = document.createComment(' aquí vive el chat cuando el panel está cerrado ');
+  if (chat) chat.parentNode.insertBefore(marcaChat, chat);
+
+  function abrirPanel(modo) {
+    if (!panel || !chat) return;
+    panel.querySelector('.panel-asistente__cuerpo').appendChild(chat);
+    panel.hidden = false;
+    document.documentElement.classList.add('con-panel');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-abrir-asistente]'), function (b) {
+      b.setAttribute('aria-expanded', 'true');
+    });
+    var consulta = modo === 'consulta';
+    if (!arrancado) {
+      arrancar(consulta ? function () { ir('consulta'); } : null);
+    } else if (consulta && !ocupado && pidiendo !== 'consulta') {
+      burbuja('yo', 'Quiero hacer una consulta');
+      ir('consulta');
+    }
+    bajarRegistro();
+    panel.querySelector('.panel-asistente__cerrar').focus({ preventScroll: true });
   }
+
+  function cerrarPanel() {
+    if (!panel || panel.hidden) return;
+    marcaChat.parentNode.insertBefore(chat, marcaChat.nextSibling);
+    panel.hidden = true;
+    document.documentElement.classList.remove('con-panel');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-abrir-asistente]'), function (b) {
+      b.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-abrir-asistente]');
+    if (b) { e.preventDefault(); abrirPanel(b.getAttribute('data-abrir-asistente')); return; }
+    if (e.target.closest('.panel-asistente__cerrar')) cerrarPanel();
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') cerrarPanel(); });
 
   /* ======================================================================
      4b. Describe tu web → WhatsApp

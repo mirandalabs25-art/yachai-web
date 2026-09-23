@@ -238,10 +238,10 @@ a{color:inherit;text-decoration:none}
 .cara__caso b{color:var(--qori);font-weight:500}
 
 /* --- la escena fija ------------------------------------------------------ */
-/* 7 escenas × 100svh + la pantalla fija. (Hasta el 2026-09-22 arrancaba
-   montada sobre el hero; ahora va después de la información.) */
-.giro--vivo{height:800vh}
-@supports (height:100svh){.giro--vivo{height:800svh}}
+/* Arranca montada sobre el hero (margen negativo): la escena 1 se abre
+   desde el hueco de la chakana de nodos. 7 escenas × 100svh + la pantalla fija. */
+.giro--vivo{height:800vh;margin-top:-100vh}
+@supports (height:100svh){.giro--vivo{height:800svh;margin-top:-100svh}}
 .giro--vivo .giro__escena{position:sticky;top:0;height:100vh;overflow:hidden;isolation:isolate}
 @supports (height:100svh){.giro--vivo .giro__escena{height:100svh}}
 .giro--vivo{background:transparent}
@@ -719,19 +719,6 @@ a{color:inherit;text-decoration:none}
 .chat__campo:focus{outline:2px solid var(--qori);outline-offset:0;border-color:var(--qori)}
 textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
 
-/* --- botón flotante del asistente ---------------------------------------- */
-.flotante{
-  position:fixed;z-index:60;
-  right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));
-  display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:12px 16px;
-  background:var(--qori);color:var(--negro);border:1px solid var(--negro);
-  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  transition:opacity .3s,transform .3s;
-}
-.flotante::before{content:'';width:11px;height:11px;background:var(--negro);
-  clip-path:polygon(33% 0,67% 0,67% 33%,100% 33%,100% 67%,67% 67%,67% 100%,33% 100%,33% 67%,0 67%,0 33%,33% 33%)}
-.flotante--oculto{opacity:0;transform:translateY(14px);pointer-events:none}
-
 /* --- describe tu web ------------------------------------------------------ */
 .describe{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid var(--filete)}
 .describe__paso{padding:clamp(18px,3vw,28px);border-bottom:1px solid var(--filete);min-width:0}
@@ -815,4 +802,55 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
   display:block;position:absolute;z-index:3;left:50%;top:50%;width:0;height:0;
   transform:translate(-50%,-50%);border:1px solid var(--qori);border-radius:50%;
   box-shadow:0 0 18px rgba(245,197,24,.35);pointer-events:none;opacity:0;transition:opacity .25s;
+}
+
+/* --- accesos fijos: Asistente · Consultar · WhatsApp (siempre visibles) ---- */
+.accesos{
+  position:fixed;z-index:60;display:flex;gap:6px;
+  right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));
+}
+.accesos__boton{
+  display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 16px;
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--hueso);background:rgba(0,0,0,.85);border:1px solid var(--filete-fuerte);border-radius:0;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);cursor:pointer;transition:background .2s,color .2s,border-color .2s;
+}
+.accesos__boton:hover,.accesos__boton:focus-visible{border-color:var(--qori);color:var(--qori)}
+.accesos__boton--qori{background:var(--qori);border-color:var(--qori);color:var(--negro)}
+.accesos__boton--qori:hover,.accesos__boton--qori:focus-visible{background:var(--negro);color:var(--qori)}
+.accesos__boton--wa{border-color:#25d366;color:#25d366}
+.accesos__boton--qori::before{content:'';width:11px;height:11px;margin-right:8px;background:currentColor;
+  clip-path:polygon(33% 0,67% 0,67% 33%,100% 33%,100% 67%,67% 67%,67% 100%,33% 100%,33% 67%,0 67%,0 33%,33% 33%)}
+/* En el celular, una barra abajo de lado a lado; la página deja lugar para ella. */
+@media (max-width:640px){
+  .accesos{
+    left:0;right:0;bottom:0;gap:6px;padding:8px max(10px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));
+    background:rgba(0,0,0,.92);border-top:1px solid var(--filete);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  }
+  .accesos__boton{flex:1 1 0;padding:0 6px;font-size:10.5px;letter-spacing:.08em}
+  body{padding-bottom:64px}
+  .giro--vivo .cara__contenido{padding-bottom:calc(clamp(18px,3.5vh,36px) + 64px)}
+}
+
+/* --- ventana flotante del asistente -------------------------------------- */
+.panel-asistente{
+  position:fixed;z-index:70;display:flex;flex-direction:column;
+  right:max(14px,env(safe-area-inset-right));bottom:calc(max(14px,env(safe-area-inset-bottom)) + 58px);
+  width:min(400px,calc(100vw - 28px));height:min(600px,calc(100vh - 140px));
+  background:var(--carbon);border:1px solid var(--filete-fuerte);
+}
+@supports (height:100svh){.panel-asistente{height:min(600px,calc(100svh - 140px))}}
+.panel-asistente[hidden]{display:none}
+.panel-asistente__barra{display:flex;justify-content:flex-end;border-bottom:1px solid var(--filete);flex:0 0 auto}
+.panel-asistente__cerrar{
+  min-height:42px;padding:0 16px;background:transparent;border:0;cursor:pointer;
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--hueso);
+}
+.panel-asistente__cerrar:hover,.panel-asistente__cerrar:focus-visible{color:var(--qori)}
+.panel-asistente__cuerpo{flex:1;min-height:0;display:flex}
+.panel-asistente .chat{max-width:none;flex:1;min-height:0;border:0}
+.panel-asistente .chat__registro{flex:1;min-height:0;max-height:none}
+@media (max-width:640px){
+  .panel-asistente{left:0;right:0;width:auto;bottom:62px;height:calc(100vh - 150px);border-left:0;border-right:0}
+  @supports (height:100svh){.panel-asistente{height:calc(100svh - 150px)}}
 }
