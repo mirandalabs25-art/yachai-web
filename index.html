@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Yachai — Automatización e IA aplicada · Cusco</title>
-<meta name="description" content="Rodrigo Vicente Miranda Vargas. Bots, agentes, CRMs y webs para negocios de Cusco. Seis rubros distintos y los que vengan.">
+<meta name="description" content="Yachai: automatización e inteligencia artificial desde Cusco. Bots que atienden, CRM, webs, agentes y software a medida. Tres años automatizando negocios.">
 <meta name="theme-color" content="#000000">
 
 <meta property="og:type" content="website">
@@ -15,11 +15,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/css/style.css?v=8">
+<link rel="stylesheet" href="assets/css/style.css?v=9">
 </head>
 <body>
 
-<a class="saltar" href="#servicios">Saltar al contenido</a>
+<a class="saltar" href="#asistente">Saltar al contenido</a>
 <div class="progreso" aria-hidden="true"></div>
 
 <!-- CABECERA ============================================================= -->
@@ -46,11 +46,11 @@
   </a>
 
   <ul class="nav__links" role="list">
+    <li><a href="#asistente">Asistente</a></li>
     <li><a href="#servicios">Qué resuelvo</a></li>
-    <li><a href="#ideas">Ideas</a></li>
-    <li><a href="#casos">Casos</a></li>
-    <li><a href="#laboratorio">Laboratorio</a></li>
-    <li><a href="#como">Cómo trabajo</a></li>
+    <li><a href="#describe">Tu web</a></li>
+    <li><a href="#trabajos">Trabajos</a></li>
+    <li><a href="#seguro">Seguridad</a></li>
     <li><a href="#quien">Quién soy</a></li>
     <li><a href="#agenda">Agenda</a></li>
   </ul>
@@ -71,11 +71,14 @@
       <span><i>por <em>ti</em>.</i></span>
     </h1>
     <p class="parrafo hero__bajada">
-      Soy <b>Rodrigo Miranda</b>. Construyo los sistemas que hacen que tu
-      negocio siga funcionando cuando tú no estás encima: bots que atienden,
-      agentes que trabajan solos, bases de datos que recuerdan y webs que te
-      encuentran.
+      Soy <b>Rodrigo Miranda</b>, de <b>Yachai</b>: automatización e
+      inteligencia artificial desde Cusco. Construyo los sistemas que hacen
+      que tu negocio siga funcionando cuando tú no estás encima.
     </p>
+    <div class="hero__acciones">
+      <a class="boton boton--qori" href="#asistente">Hablar con el asistente</a>
+      <a class="boton" href="#servicios">Ver qué resuelvo</a>
+    </div>
   </div>
 
   <div class="hero__pie">
@@ -84,18 +87,56 @@
   </div>
 </section>
 
-<!-- GIRO: la chakana cibernética y los siete dolores ===================== -->
-<!-- Cada vuelta de la chakana abre una cara: la escena (imagen hoy, video de
-     Kling después: basta con agregar data-video="assets/video/NN.mp4" al
-     <article>), la frase del dolor, una demostración en HTML y el botón.
-     El texto nunca va dentro de la imagen ni del video: la IA lo deforma.
-     Sin JS o con "reducir movimiento", las caras quedan una debajo de otra. -->
-<section class="giro" id="servicios" aria-label="Qué resuelvo">
-  <div class="giro__escena">
-    <div class="giro__fondo" aria-hidden="true"></div>
+<main class="contenido">
 
-    <div class="giro__caras">
+<!-- ASISTENTE ============================================================ -->
+<!-- La acción principal de la landing del QR: quien escanea no sabe qué es
+     Yachai. Bot con botones, sin IA (decisión del 2026-09-22); lo que deja
+     la persona llega a WhatsApp con el mensaje armado. Guion en main.js. -->
+<section class="seccion asistente" id="asistente" aria-labelledby="asistente-titulo">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">Hola —</span>
+    <div>
+      <h2 class="titulo" id="asistente-titulo">¿En qué te ayudo?</h2>
+      <p class="parrafo" style="margin-top:16px">
+        Toca una opción. En un minuto sabes qué puede hacer Yachai por tu
+        negocio y, si quieres, me dejas tus datos y te escribo.
+      </p>
+    </div>
+  </div>
 
+  <div class="chat">
+    <p class="chat__cabeza"><span class="chat__signo" aria-hidden="true"></span><span>Asistente de Yachai</span><span class="chat__estado">en línea</span></p>
+    <div class="chat__registro" role="log" aria-live="polite"></div>
+    <div class="chat__opciones" role="group" aria-label="Opciones"></div>
+    <form class="chat__formulario" hidden>
+      <label class="chat__etiqueta" for="chat-dato">Tu nombre</label>
+      <div class="chat__fila">
+        <input id="chat-dato" class="chat__campo" type="text" maxlength="120" enterkeyhint="send">
+        <button class="boton boton--qori" type="submit">Enviar</button>
+      </div>
+    </form>
+    <noscript><p class="parrafo" style="padding:16px">Escríbeme directo por WhatsApp: <a href="https://wa.me/51969322677">+51 969 322 677</a></p></noscript>
+  </div>
+</section>
+
+<!-- ESCENAS: qué resuelvo ================================================ -->
+<!-- Reemplaza a la chakana que giraba con el scroll (2026-09-22: "da muchas
+     vueltas, molesta a los ojos"). Cada problema es un bloque quieto con su
+     video en bucle (arranca al entrar en pantalla), su demo y su botón. -->
+<section class="seccion escenas" id="servicios" aria-labelledby="escenas-titulo">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">01 —</span>
+    <div>
+      <h2 class="titulo" id="escenas-titulo">Qué resuelvo</h2>
+      <p class="parrafo" style="margin-top:16px">
+        Siete problemas que escucho todas las semanas, <b>y cómo se ven
+        resueltos.</b>
+      </p>
+    </div>
+  </div>
+
+  <div class="escenas__lista">
       <article class="cara" id="cara-01" data-dolor="01" data-video="assets/video/01-mensajes.mp4">
         <div class="cara__medio"><img class="cara__img" src="assets/img/giro/01-mensajes.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
         <div class="cara__contenido">
@@ -249,81 +290,11 @@
           </div>
         </div>
       </article>
-
-    </div>
-
-    <!-- La chakana: dos caras de la misma pieza. Gira con el scroll. -->
-    <div class="giro__chakana" aria-hidden="true">
-      <div class="giro__pieza">
-        <img class="giro__lado giro__lado--frente" src="assets/img/giro/08-chakana.webp" alt="" width="900" height="900">
-        <img class="giro__lado giro__lado--reverso" src="assets/img/giro/09-chakana-reverso.webp" alt="" width="900" height="900" loading="lazy">
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<main class="contenido">
-
-<!-- BANDA ================================================================ -->
-<section class="banda">
-  <p class="banda__texto revelar">Seis rubros distintos. Y los que vengan.</p>
-  <p class="revelar" data-retraso="80" style="margin:0">
-    <a class="boton boton--negro" href="#casos">Ver los casos</a>
-  </p>
-</section>
-
-<!-- IDEAS: más formas de trabajar ======================================== -->
-<!-- Corrección del usuario (2026-09-22): los siete de la chakana son solo
-     ejemplos; hay muchas más formas de trabajar y muchos más rubros (por
-     ejemplo, enseñar IA). Esta sección los reúne: las siete de arriba (tocar
-     una salta directo a esa cara) y otras ideas que llevan a WhatsApp con el
-     mensaje ya escrito. Los botones de rubro ponen primero lo que le sirve a
-     cada negocio. Todo sale del vault; nada presentado como caso terminado. -->
-<section class="ideas seccion" id="ideas" aria-labelledby="ideas-titulo">
-  <div class="seccion__cabecera revelar">
-    <span class="seccion__num">Ideas —</span>
-    <div>
-      <h2 class="titulo" id="ideas-titulo">Esto es solo el comienzo</h2>
-      <p class="parrafo" style="margin-top:16px">
-        Las siete de arriba son ejemplos. <b>Hay muchas más formas de trabajar
-        juntos</b>: estas son algunas. Si tu idea no está, también se conversa.
-      </p>
-    </div>
   </div>
 
-  <div class="rubros" role="group" aria-labelledby="rubros-titulo">
-    <p class="dato" id="rubros-titulo">¿Qué negocio tienes?</p>
-    <div class="rubros__lista">
-      <button type="button" class="rubro" data-rubro="tienda" aria-pressed="false">Tienda</button>
-      <button type="button" class="rubro" data-rubro="restaurante" aria-pressed="false">Restaurante</button>
-      <button type="button" class="rubro" data-rubro="hotel" aria-pressed="false">Hotel</button>
-      <button type="button" class="rubro" data-rubro="turismo" aria-pressed="false">Turismo</button>
-      <button type="button" class="rubro" data-rubro="consultorio" aria-pressed="false">Consultorio</button>
-      <button type="button" class="rubro" data-rubro="oficina" aria-pressed="false">Oficina</button>
-      <button type="button" class="rubro" data-rubro="academia" aria-pressed="false">Academia</button>
-      <button type="button" class="rubro" data-rubro="agencia" aria-pressed="false">Agencia</button>
-      <button type="button" class="rubro" data-rubro="otro" aria-pressed="false">Otro</button>
-    </div>
-  </div>
-
-  <div class="ideas__cuerpo">
-    <div class="ideas__bloque">
-      <p class="dato dato--qori">Las que viste arriba</p>
-      <ol class="ideas__dolores" role="list">
-        <li data-dolor="01"><a class="ideas__dolor" href="#cara-01" data-dolor="01"><span>01</span>Contestar mensajes</a></li>
-        <li data-dolor="02"><a class="ideas__dolor" href="#cara-02" data-dolor="02"><span>02</span>Salir del cuaderno</a></li>
-        <li data-dolor="03"><a class="ideas__dolor" href="#cara-03" data-dolor="03"><span>03</span>Tareas repetidas</a></li>
-        <li data-dolor="04"><a class="ideas__dolor" href="#cara-04" data-dolor="04"><span>04</span>Existir en internet</a></li>
-        <li data-dolor="05"><a class="ideas__dolor" href="#cara-05" data-dolor="05"><span>05</span>Publicar con orden</a></li>
-        <li data-dolor="06"><a class="ideas__dolor" href="#cara-06" data-dolor="06"><span>06</span>Audios y papeles</a></li>
-        <li data-dolor="07"><a class="ideas__dolor" href="#cara-07" data-dolor="07"><span>07</span>Algo a medida</a></li>
-      </ol>
-    </div>
-
-    <div class="ideas__bloque">
-      <p class="dato dato--qori">Y muchas más</p>
-      <ul class="ideas__lista" role="list">
+  <div class="mas-ideas revelar">
+    <p class="dato dato--qori">Y muchas más</p>
+    <ul class="ideas__lista" role="list">
         <li data-rubros="academia oficina agencia consultorio turismo tienda restaurante hotel otro">
           <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20aprender%20a%20usar%20IA%20en%20mi%20trabajo" target="_blank" rel="noopener">
             <span class="idea__dolor">«Quiero aprender a usar IA.»</span>
@@ -385,132 +356,128 @@
           </a>
         </li>
       </ul>
-    </div>
-  </div>
-
-  <div class="ideas__accion revelar">
-    <p class="parrafo">¿Tu idea no está en la lista?</p>
-    <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20tengo%20una%20idea%20para%20mi%20negocio%20y%20quiero%20saber%20si%20se%20puede" target="_blank" rel="noopener">Cuéntamela por WhatsApp</a>
   </div>
 </section>
 
-<!-- CIFRAS =============================================================== -->
-<section class="seccion">
-  <div class="seccion__cabecera revelar">
-    <span class="seccion__num">01 —</span>
-    <div>
-      <h2 class="titulo">Lo que hay detrás</h2>
-      <p class="parrafo" style="margin-top:16px">
-        No vendo cursos ni teoría. Lo que ofrezco es lo que ya tengo corriendo.
-      </p>
-    </div>
-  </div>
-
-  <div class="cifras">
-    <div class="revelar">
-      <div class="cifra__valor" data-cifra="6" data-sufijo="+">6+</div>
-      <p class="cifra__texto">Rubros atendidos</p>
-    </div>
-    <div class="revelar" data-retraso="80">
-      <div class="cifra__valor" data-cifra="2" data-sufijo=" años">2 años</div>
-      <p class="cifra__texto">Automatizando con n8n</p>
-    </div>
-    <div class="revelar" data-retraso="160">
-      <div class="cifra__valor" data-cifra="491">491</div>
-      <p class="cifra__texto">Productos catalogados</p>
-    </div>
-    <div class="revelar" data-retraso="240">
-      <div class="cifra__valor" data-cifra="1" data-sufijo="%">1%</div>
-      <p class="cifra__texto">Carga del servidor propio</p>
-    </div>
-  </div>
+<!-- BANDA ================================================================ -->
+<section class="banda">
+  <p class="banda__texto revelar">Seis rubros distintos. Y los que vengan.</p>
+  <p class="revelar" data-retraso="80" style="margin:0">
+    <a class="boton boton--negro" href="#casos">Ver los casos</a>
+  </p>
 </section>
 
-<!-- CASOS ================================================================ -->
-<section class="seccion" id="casos">
+<!-- DESCRIBE TU WEB ====================================================== -->
+<!-- REVISAR: hoy la imagen se hace a mano (ChatGPT) y se envía por
+     WhatsApp. Cuando la automatización esté lista, este formulario la va a
+     disparar sola. También confirmar si la vista previa es gratis. -->
+<section class="seccion" id="describe" aria-labelledby="describe-titulo">
   <div class="seccion__cabecera revelar">
     <span class="seccion__num">02 —</span>
     <div>
-      <h2 class="titulo">Casos</h2>
+      <h2 class="titulo" id="describe-titulo">Describe tu web</h2>
       <p class="parrafo" style="margin-top:16px">
-        Un tatuador, una tienda de gorras y un estudio jurídico no se parecen
-        en nada. <b>El sistema que necesitan, sí.</b>
+        Cuéntame cómo te la imaginas y <b>te envío por WhatsApp una imagen de
+        cómo quedaría</b>, antes de comprometerte a nada.
       </p>
     </div>
   </div>
 
-  <div class="casos">
-    <article class="caso revelar">
-      <div class="caso__foto"><img src="assets/img/caso-famystore.jpg" alt="Portada de la web de la tienda de gorras" loading="lazy" width="1000" height="625"></div>
-      <div class="caso__cuerpo">
-        <span class="caso__estado caso__estado--vivo">● En producción</span>
-        <h3 class="caso__nombre">Tienda de gorras</h3>
-        <p class="caso__rubro">Retail · Cusco</p>
-        <p class="caso__texto">Web propia con dominio y HTTPS sobre servidor propio, catálogo de 491 productos y contacto directo a WhatsApp. Antes no aparecía en ninguna búsqueda.</p>
+  <form class="describe revelar">
+    <div class="describe__paso">
+      <label class="dato" for="describe-negocio">1 · Tu negocio</label>
+      <input id="describe-negocio" class="chat__campo" name="negocio" type="text" maxlength="120" placeholder="Ej.: una cafetería en San Blas">
+    </div>
+    <div class="describe__paso">
+      <p class="dato">2 · El estilo</p>
+      <div class="agenda__opciones describe__estilos" role="group" aria-label="Estilo">
+        <button type="button" class="opcion" aria-pressed="false">Elegante</button>
+        <button type="button" class="opcion" aria-pressed="false">Moderna</button>
+        <button type="button" class="opcion" aria-pressed="false">Colorida</button>
+        <button type="button" class="opcion" aria-pressed="false">Minimalista</button>
+        <button type="button" class="opcion" aria-pressed="false">Andina</button>
       </div>
-    </article>
-
-    <article class="caso revelar" data-retraso="80">
-      <div class="caso__foto"><img src="assets/img/caso-trueink.jpg" alt="Portada de la web del estudio de tatuajes" loading="lazy" width="1000" height="625"></div>
-      <div class="caso__cuerpo">
-        <span class="caso__estado">◐ En construcción</span>
-        <h3 class="caso__nombre">Estudio de tatuajes</h3>
-        <p class="caso__rubro">Servicios · dos sedes</p>
-        <p class="caso__texto">Web y agendamiento automático. Lo importante no es el calendario: cada cita agendada arma la base de clientes que hoy vive en un cuaderno.</p>
-      </div>
-    </article>
-
-    <article class="caso revelar" data-retraso="160">
-      <div class="caso__foto caso__foto--grafo"><img src="assets/img/grafo-vault.svg" alt="Grafo real de 71 notas conectadas por 453 enlaces" loading="lazy" width="1000" height="1000"></div>
-      <div class="caso__cuerpo">
-        <span class="caso__estado caso__estado--vivo">● En producción</span>
-        <h3 class="caso__nombre">Mi propio sistema</h3>
-        <p class="caso__rubro">71 notas · 453 enlaces reales</p>
-        <p class="caso__texto">Ese dibujo no es un adorno: es mi segundo cerebro, generado desde el archivo. Agentes que reportan a horario fijo, transcripción local y reglas de seguridad impuestas por código.</p>
-      </div>
-    </article>
-  </div>
+    </div>
+    <div class="describe__paso describe__paso--ancho">
+      <label class="dato" for="describe-idea">3 · Cómo la imaginas</label>
+      <textarea id="describe-idea" class="chat__campo" name="idea" rows="4" maxlength="600" placeholder="Colores, qué quieres mostrar, una web que te guste…"></textarea>
+    </div>
+    <div class="describe__paso describe__paso--ancho describe__envio">
+      <button class="boton boton--qori" type="submit">Quiero ver mi web</button>
+      <p class="dato">Te llega por WhatsApp. Esta página no guarda nada.</p>
+    </div>
+  </form>
 </section>
 
-<!-- LABORATORIO ========================================================== -->
-<section class="seccion" id="laboratorio">
+<!-- TRABAJOS ============================================================= -->
+<!-- Sin nombres de marca a propósito (2026-09-22): si se nombra, la gente
+     va a buscarla y todavía no está lista. Referencias amplias por rubro,
+     con el estado real de cada una. -->
+<section class="seccion" id="trabajos" aria-labelledby="trabajos-titulo">
   <div class="seccion__cabecera revelar">
     <span class="seccion__num">03 —</span>
     <div>
-      <h2 class="titulo">Laboratorio</h2>
+      <h2 class="titulo" id="trabajos-titulo">En qué estamos trabajando</h2>
       <p class="parrafo" style="margin-top:16px">
-        Explicar qué es un agente no sirve de nada. <b>Es más rápido que lo
-        uses.</b> Herramientas gratis, sin registrarte.
+        Yachai nació en Cusco y empezó con negocios de aquí. Cada uno con un
+        problema distinto y la misma raíz: <b>todo dependía de una sola
+        persona.</b>
       </p>
     </div>
   </div>
 
-  <!-- REVISAR: las tres están marcadas "en construcción" a propósito.
-       Ninguna funciona todavía. En cuanto haya una en línea, se le cambia
-       el chip y pasa a ser el argumento principal de la web. -->
-  <div class="lab">
-    <article class="herramienta revelar">
-      <span class="herramienta__chip herramienta__chip--pronto">En construcción</span>
-      <h3 class="herramienta__nombre">Transcribe tu reunión</h3>
-      <p class="herramienta__texto">Sube un audio y recibe la transcripción con su resumen. El motor ya funciona y corre en local, sin mandar tu grabación a nadie.</p>
-    </article>
-
-    <article class="herramienta revelar" data-retraso="80">
-      <span class="herramienta__chip herramienta__chip--pronto">En construcción</span>
-      <h3 class="herramienta__nombre">Revisa tu web</h3>
-      <p class="herramienta__texto">Pega la dirección de tu página y recibe qué está fallando: contraste, tamaño de los botones en el celular, peso de las imágenes y si tu código está expuesto.</p>
-    </article>
-
-    <article class="herramienta revelar" data-retraso="160">
-      <span class="herramienta__chip herramienta__chip--pronto">En construcción</span>
-      <h3 class="herramienta__nombre">Agenda conmigo</h3>
-      <p class="herramienta__texto">Reserva una llamada y recibe la confirmación al instante. Es el mismo sistema de agendamiento que instalo en los negocios.</p>
-    </article>
+  <div class="cifras trabajos__cifras">
+    <div class="revelar">
+      <div class="cifra__valor" data-cifra="3" data-sufijo="+">3+</div>
+      <p class="cifra__texto">Años automatizando</p>
+    </div>
+    <div class="revelar" data-retraso="80">
+      <div class="cifra__valor" data-cifra="5" data-sufijo="+">5+</div>
+      <p class="cifra__texto">Años en marketing y CRM</p>
+    </div>
+    <div class="revelar" data-retraso="160">
+      <div class="cifra__valor" data-cifra="6" data-sufijo="+">6+</div>
+      <p class="cifra__texto">Rubros atendidos</p>
+    </div>
+    <div class="revelar" data-retraso="240">
+      <div class="cifra__valor" data-cifra="491">491</div>
+      <p class="cifra__texto">Productos en un catálogo en línea</p>
+    </div>
   </div>
 
-  <p class="revelar" data-retraso="240" style="margin-top:clamp(28px,4vw,44px)">
-    <a class="boton" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20av%C3%ADsame%20cuando%20el%20laboratorio%20est%C3%A9%20en%20l%C3%ADnea" target="_blank" rel="noopener">Avísame cuando estén listas</a>
-  </p>
+  <div class="trabajos">
+    <article class="trabajo revelar">
+      <span class="caso__estado caso__estado--vivo">● En producción</span>
+      <h3 class="caso__nombre">Tiendas de productos</h3>
+      <p class="caso__texto">Web propia con catálogo de 491 productos, dominio, servidor propio y pedidos directo a WhatsApp.</p>
+    </article>
+    <article class="trabajo revelar" data-retraso="80">
+      <span class="caso__estado">◐ En marcha</span>
+      <h3 class="caso__nombre">Estudios jurídicos</h3>
+      <p class="caso__texto">Introducción a la IA para el equipo, y un asistente que vigila los plazos para que nadie los revise a mano.</p>
+    </article>
+    <article class="trabajo revelar" data-retraso="160">
+      <span class="caso__estado">◐ En construcción</span>
+      <h3 class="caso__nombre">Webs para negocios de servicios</h3>
+      <p class="caso__texto">Web con agendamiento: cada cita arma la base de clientes que hoy vive en un cuaderno.</p>
+    </article>
+    <article class="trabajo revelar">
+      <span class="caso__estado caso__estado--vivo">● Entregado</span>
+      <h3 class="caso__nombre">Libros y proyectos largos</h3>
+      <p class="caso__texto">Años de material ordenados con IA para convertirlos en un libro.</p>
+    </article>
+    <article class="trabajo revelar" data-retraso="80">
+      <span class="caso__estado">○ En preparación</span>
+      <h3 class="caso__nombre">Agencias de marketing</h3>
+      <p class="caso__texto">Automatizaciones y agentes para reportes de campañas y tareas que se repiten.</p>
+    </article>
+    <article class="trabajo trabajo--grafo revelar" data-retraso="160">
+      <img src="assets/img/grafo-vault.svg" alt="Grafo de notas conectadas del segundo cerebro" loading="lazy" width="1000" height="1000">
+      <span class="caso__estado caso__estado--vivo">● En producción</span>
+      <h3 class="caso__nombre">Mi propio sistema</h3>
+      <p class="caso__texto">Un segundo cerebro con todo lo que estudio y construyo, conectado. Agentes que me reportan a horario fijo y reglas de seguridad impuestas por código.</p>
+    </article>
+  </div>
 </section>
 
 <!-- CÓMO TRABAJO ========================================================= -->
@@ -595,12 +562,64 @@
       <p class="registro__linea registro__linea--si"><b class="registro__quien">bot</b> Con gusto te reservo una cita. ¿Qué día te acomoda?</p>
     </figure>
   </div>
+  <div class="estudio revelar">
+    <p class="dato dato--qori">Lo que estudio y aplico primero en mis propios sistemas</p>
+    <ul class="estudio__lista" role="list">
+      <li><b>Instrucciones tramposas.</b> Alguien le escribe al bot «ignora tus reglas». Se frena en el código, no con una instrucción más.</li>
+      <li><b>Trampas escondidas en lo que el bot lee.</b> Un documento o una web con órdenes ocultas. El bot las trata como datos, nunca como órdenes.</li>
+      <li><b>Bases de conocimiento envenenadas.</b> Si alguien mete información falsa, el bot la repetiría. Se controla qué entra y quién lo sube.</li>
+      <li><b>Complementos de terceros.</b> Un estudio de 2026 encontró fallas críticas en más de 1 de cada 8 complementos públicos para agentes de IA. Se revisan antes de instalarlos.</li>
+      <li><b>Permisos mínimos.</b> Cada pieza hace solo lo que necesita. Mi propio servidor funciona en solo lectura, salvo aprobación expresa.</li>
+      <li><b>Datos de tus clientes.</b> Nada sensible viaja en la web pública, y cada cliente se identifica por su número, no por lo que dice.</li>
+    </ul>
+  </div>
+
+</section>
+
+<!-- CON QUÉ TRABAJO ====================================================== -->
+<section class="seccion" id="stack" aria-labelledby="stack-titulo">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">06 —</span>
+    <div>
+      <h2 class="titulo" id="stack-titulo">Con qué trabajo</h2>
+      <p class="parrafo" style="margin-top:16px">
+        Para quien quiere saber qué hay debajo. <b>La herramienta se elige
+        después del problema</b>, no al revés.
+      </p>
+    </div>
+  </div>
+  <div class="stack">
+    <div class="stack__grupo revelar">
+      <p class="dato dato--qori">Automatización y CRM</p>
+      <ul role="list"><li>Go High Level</li><li>HubSpot</li><li>n8n</li></ul>
+    </div>
+    <div class="stack__grupo revelar" data-retraso="60">
+      <p class="dato dato--qori">Código</p>
+      <ul role="list"><li>Python</li><li>Git</li><li>Claude Code</li><li>Codex</li></ul>
+    </div>
+    <div class="stack__grupo revelar" data-retraso="120">
+      <p class="dato dato--qori">Datos e infraestructura</p>
+      <ul role="list"><li>Bases de datos</li><li>Servidor propio</li><li>Dominios y HTTPS</li></ul>
+    </div>
+    <div class="stack__grupo revelar">
+      <p class="dato dato--qori">Inteligencia artificial</p>
+      <ul role="list"><li>Agentes y bots</li><li>Transcripción local</li><li>Imagen y video con IA</li></ul>
+    </div>
+    <div class="stack__grupo revelar" data-retraso="60">
+      <p class="dato dato--qori">Marketing</p>
+      <ul role="list"><li>Meta Ads</li><li>CRM</li><li>Software a medida</li></ul>
+    </div>
+    <div class="stack__grupo revelar" data-retraso="120">
+      <p class="dato dato--qori">Conocimiento</p>
+      <ul role="list"><li>Segundo cerebro</li><li>Ciberseguridad de IA</li></ul>
+    </div>
+  </div>
 </section>
 
 <!-- QUIÉN SOY ============================================================ -->
 <section class="seccion" id="quien">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">06 —</span>
+    <span class="seccion__num">07 —</span>
     <div>
       <h2 class="titulo">Quién está detrás</h2>
     </div>
@@ -611,17 +630,17 @@
       <img src="assets/img/rodrigo.jpg" alt="Rodrigo Vicente Miranda Vargas" loading="lazy" width="800" height="948">
       <span class="quien__firma">Rodrigo Miranda · Cusco</span>
     </div>
-    <div class="quien__texto revelar" data-retraso="100">
-      <p class="parrafo"><b>Rodrigo Vicente Miranda Vargas.</b> Llevo dos años
-      automatizando negocios y no vengo del software: vengo de resolverle
-      problemas concretos a gente que conozco.</p>
-      <p class="parrafo">Mi primer cliente fue la tienda de mi mamá. Después un
-      estudio de tatuajes, un estudio jurídico, una agencia de marketing. Cada
-      uno con un problema distinto y la misma raíz: <b>todo dependía de una
-      sola persona.</b></p>
-      <p class="parrafo">Trabajo desde Cusco, con servidor propio, y lo que
-      construyo queda a tu nombre. Si algo no lo sé hacer todavía, te lo digo
-      antes de empezar.</p>
+        <div class="quien__texto revelar" data-retraso="100">
+      <p class="parrafo"><b>Rodrigo Vicente Miranda Vargas.</b> Fundé Yachai en
+      Cusco: <i>yachay</i> es conocimiento en quechua. Llevo tres años
+      automatizando negocios y más de cinco en marketing, trabajando con CRM.</p>
+      <p class="parrafo">Empecé con negocios de gente que conozco: una tienda,
+      un estudio jurídico, un estudio de tatuajes, una agencia de marketing.
+      Cada uno con un problema distinto y la misma raíz: <b>todo dependía de
+      una sola persona.</b></p>
+      <p class="parrafo">Yachai nació para Cusco y va a crecer a otras
+      ciudades, paso a paso. Lo que construyo queda a tu nombre, y si algo no
+      lo sé hacer todavía, te lo digo antes de empezar.</p>
     </div>
   </div>
 </section>
@@ -633,7 +652,7 @@
      definidos, y no se inventan. -->
 <section class="seccion" id="agenda">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">07 —</span>
+    <span class="seccion__num">08 —</span>
     <div>
       <h2 class="titulo">Agenda una llamada</h2>
       <p class="parrafo" style="margin-top:16px">
@@ -733,10 +752,12 @@
 </main>
 
 <script>document.getElementById('anio').textContent = new Date().getFullYear();</script>
+<a class="flotante flotante--oculto" href="#asistente">Asistente</a>
+
 <!-- GSAP 3.15 (gratis, incluidos los plugins). Si no carga, main.js hace todo solo. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=11" defer></script>
-<script src="assets/js/movimiento.js?v=5" defer></script>
+<script src="assets/js/main.js?v=12" defer></script>
+<script src="assets/js/movimiento.js?v=6" defer></script>
 </body>
 </html>

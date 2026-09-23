@@ -30,50 +30,20 @@
   entrada.from('.hero__pie', { autoAlpha: 0, duration: 1 }, 1.2);
 
   /* ======================================================================
-     2. Bajar atraviesa la chakana del hero
-     La cruz gira un octavo de vuelta y la cámara entra por su hueco. En el
-     mismo tramo (el 38 % de una pantalla), main.js abre la escena 1 desde
-     ese hueco: se entra a la primera cara a través de la chakana de nodos.
-     (Corrección del 2026-09-22: antes aparecía primero la chakana de
-     obsidiana y daba una vuelta sola; sobraba.)
+     2. Al bajar, el hero se apaga
+     Sin zoom ni giro (2026-09-22: "mucho ruido, molesta a los ojos"): la
+     chakana queda quieta y solo se oscurecen el fondo y el texto mientras
+     la sección siguiente lo tapa.
      ====================================================================== */
 
   var heroScroll = gsap.timeline({
-    scrollTrigger: {
-      trigger: '.hero',
-      start: 'top top',
-      end: '+=38%',
-      scrub: 0.6
-    }
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=70%', scrub: 0.6 }
   });
-  if (estado) heroScroll.to(estado, { zoom: 5.5, giro: Math.PI / 4, ease: 'power2.in' }, 0);
   heroScroll
     .to('.hero__texto', { autoAlpha: 0, y: -60, ease: 'power1.in' }, 0)
     // fromTo sin render inmediato: si no, pisa el fundido de entrada del pie.
     .fromTo('.hero__pie', { autoAlpha: 1 }, { autoAlpha: 0, ease: 'none', duration: 0.4, immediateRender: false }, 0)
     .fromTo('.hero__sombra', { '--sombra': 0 }, { '--sombra': 0.75, ease: 'none' }, 0);
-
-  /* ======================================================================
-     3. La chakana de obsidiana: el imán que frena en cada cara abierta
-     El giro lo pinta main.js desde el scroll. Acá solo se agrega el snap:
-     al soltar el dedo, la página se acomoda en la cara abierta más cercana.
-     ====================================================================== */
-
-  var giro = $('.giro');
-  if (giro && giro.classList.contains('giro--vivo')) {
-    var nCaras = $$('.cara').length;
-    var puntos = [0];
-    for (var k = 0; k < nCaras; k++) puntos.push((k + 0.62) / nCaras);
-    puntos.push(1);
-    ScrollTrigger.create({
-      trigger: giro,
-      start: 'top top',
-      end: 'bottom bottom',
-      // directional:false = frena en la cara más cercana, no en la siguiente.
-      // Si no, un salto directo terminaba una cara más allá.
-      snap: { snapTo: puntos, directional: false, duration: { min: 0.25, max: 0.7 }, delay: 0.12, ease: 'power2.inOut' }
-    });
-  }
 
   /* ======================================================================
      4. La banda se enciende palabra por palabra
