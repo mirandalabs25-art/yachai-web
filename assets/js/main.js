@@ -315,10 +315,10 @@
   }
 
   /* --- la demostración de cada cara, paso por paso ---------------------- */
-  function correrDemo(cara) {
-    var pasos = cara.querySelectorAll('.demo [data-paso]');
+  function correrDemo(cara, retraso) {
+    var pasos = cara.querySelectorAll('.demo [data-paso], .registro[data-paso], .registro [data-paso]');
     // En el celular la demo arranca después de que se vio el video solo.
-    var t = window.matchMedia('(max-width: 899px)').matches ? 1800 : 300;
+    var t = retraso || (window.matchMedia('(max-width: 899px)').matches ? 1800 : 300);
     cara._relojes = [];
     Array.prototype.forEach.call(pasos, function (p, k) {
       cara._relojes.push(setTimeout(function () {
@@ -576,7 +576,12 @@
      nunca como HTML.
      ====================================================================== */
 
-  var WHATSAPP = 'https://wa.me/51969322677?text=';
+  // Datos del sitio (assets/js/datos.js, lo genera herramientas/construir.js
+  // desde contenido/sitio.js): así el asistente funciona igual en las
+  // páginas que no tienen las escenas del inicio.
+  var DATOS = window.YACHAI_DATOS || { servicios: {}, rubros: {}, ideas: [], precios: {}, asesoria: {} };
+  var WHATSAPP = 'https://wa.me/' + (DATOS.whatsapp || '51969322677') + '?text=';
+  function soles(n) { return 'S/' + Number(n).toLocaleString('en-US'); }
 
   // Qué problemas de la sección "Qué resuelvo" van primero en cada rubro.
   var PRIMERO = {
@@ -605,16 +610,24 @@
   function limpiar(t) { return (t || '').replace(/[«»]/g, '').replace(/\.\s*$/, '').trim(); }
   function tituloDolor(d) {
     var c = document.getElementById('cara-' + d);
-    return c ? limpiar(c.querySelector('.cara__dolor').textContent) : '';
+    if (c) return limpiar(c.querySelector('.cara__dolor').textContent);
+    return DATOS.servicios[d] ? limpiar(DATOS.servicios[d].dolor) : '';
   }
   function entregaDolor(d) {
     var c = document.getElementById('cara-' + d);
-    return c ? c.querySelector('.cara__entrega').textContent.trim() : '';
+    if (c) return c.querySelector('.cara__entrega').textContent.trim();
+    return DATOS.servicios[d] ? DATOS.servicios[d].entrega : '';
   }
   function ideasDe(rubro) {
-    return Array.prototype.slice.call(document.querySelectorAll('.ideas__lista li'))
-      .filter(function (li) { return (' ' + li.dataset.rubros + ' ').indexOf(' ' + rubro + ' ') >= 0; })
-      .map(function (li) { return limpiar(li.querySelector('.idea__dolor').textContent); });
+    var lis = document.querySelectorAll('.mas-ideas .ideas__lista li[data-rubros]');
+    if (lis.length) {
+      return Array.prototype.slice.call(lis)
+        .filter(function (li) { return (' ' + li.dataset.rubros + ' ').indexOf(' ' + rubro + ' ') >= 0; })
+        .map(function (li) { return limpiar(li.querySelector('.idea__dolor').textContent); });
+    }
+    return (DATOS.ideas || [])
+      .filter(function (i) { return i.rubros.indexOf(rubro) >= 0; })
+      .map(function (i) { return i.dolor; });
   }
 
   var chat = document.querySelector('.chat');
@@ -683,13 +696,21 @@
     return ul;
   }
 
+  // Secciones que viven en otra página: si no están en esta, se va allá.
+  var FUERA = { describe: 'contacto.html#describe', agenda: 'contacto.html#agenda', seguro: 'seguridad.html' };
   function saltarA(id) {
     var el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: sinMovimiento ? 'auto' : 'smooth', block: 'start' });
+    if (el) {
+      cerrarPanel();
+      el.scrollIntoView({ behavior: sinMovimiento ? 'auto' : 'smooth', block: 'start' });
+    } else if (FUERA[id]) {
+      location.href = FUERA[id];
+    }
   }
 
   var INICIO = [
     ['Quiero más información', 'info'],
+    ['Asesoría gratis', 'asesoria'],
     ['¿Qué le sirve a mi negocio?', 'rubro'],
     ['Quiero una web', 'web'],
     ['Quiero automatizar algo', 'automatizar'],
@@ -699,8 +720,14 @@
   ];
 
   function ir(destino) {
+    if (destino.charAt(0) === '>') {         // ir a otra página del sitio
+      location.href = destino.slice(1);
+      return;
+    }
     if (destino.indexOf('@cara-') === 0) {   // saltar a esa escena de la chakana
-      irACara(destino.slice(6));
+      var d = destino.slice(6);
+      if (document.getElementById('cara-' + d)) { cerrarPanel(); irACara(d); }
+      else if (DATOS.servicios[d]) location.href = DATOS.servicios[d].url;
       return;
     }
     if (destino.charAt(0) === '@') {        // saltar a una sección de la página
@@ -731,9 +758,17 @@
       case 'precio':
         datos.interes = datos.interes || 'un presupuesto';
         decir([
-          'Depende de lo que necesites: no es lo mismo un bot de WhatsApp que un sistema a medida.',
-          'Por eso primero conversamos y te doy un presupuesto claro, sin compromiso.'
-        ], function () { ofrecer([['Quiero un presupuesto', 'datos'], ['Volver al inicio', 'inicio']]); });
+          'Depende de lo que necesites. Como referencia: un bot de WhatsApp desde ' + soles(DATOS.precios['bot-de-whatsapp'] || 800) +
+            ' y una web propia desde ' + soles(DATOS.precios['web-propia'] || 950) + '.',
+          'Y por lanzamiento, la asesoría para armar tu plan es gratis (precio regular ' + soles(DATOS.asesoria.precio || 600) + ').'
+        ], function () { ofrecer([['Quiero la asesoría gratis', 'asesoria'], ['Ver todos los precios', '>precios.html'], ['Volver al inicio', 'inicio']]); });
+        break;
+      case 'asesoria':
+        datos.interes = 'la asesoría gratis de lanzamiento';
+        decir([
+          'Por lanzamiento, la asesoría es gratis. Su precio regular es ' + soles(DATOS.asesoria.precio || 600) + '.',
+          DATOS.asesoria.texto || 'Entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos.'
+        ], function () { ofrecer([['La quiero', 'datos'], ['Ver precios', '>precios.html'], ['Volver al inicio', 'inicio']]); });
         break;
       case 'web':
         datos.interes = 'una web para mi negocio';
@@ -759,7 +794,10 @@
       case 'dolor':
         datos.interes = tituloDolor(partes[1]).toLowerCase();
         decir([entregaDolor(partes[1])], function () {
-          ofrecer([['Ver cómo se ve', '@cara-' + partes[1]], ['Lo quiero', 'datos'], ['Ver otra', 'automatizar'], ['Volver al inicio', 'inicio']]);
+          var opciones = [['Lo quiero', 'datos']];
+          if (document.getElementById('cara-' + partes[1])) opciones.push(['Ver cómo se ve', '@cara-' + partes[1]]);
+          if (DATOS.servicios[partes[1]]) opciones.push(['Cómo funciona y precio', '>' + DATOS.servicios[partes[1]].url]);
+          ofrecer(opciones.concat([['Ver otra', 'automatizar'], ['Volver al inicio', 'inicio']]));
         });
         break;
       case 'rubro':
@@ -778,7 +816,11 @@
           .concat(ideasDe(partes[1]).slice(0, 2));
         datos.interes = 'soluciones para ' + datos.negocio;
         decir(['Para ' + datos.negocio + ', esto es lo que más sirve:', lista(sugerencias)], function () {
-          ofrecer([['Lo quiero', 'datos'], ['Ver cómo se ve', '@cara-' + (PRIMERO[partes[1]][0] || '01')], ['Ver otro negocio', 'rubro'], ['Volver al inicio', 'inicio']]);
+          var opciones = [['Lo quiero', 'datos']];
+          var pagina = DATOS.rubros[partes[1]];
+          if (pagina) opciones.push(['Ver soluciones para ' + pagina.nombre.toLowerCase(), '>' + pagina.url]);
+          else opciones.push(['Ver cómo se ve', '@cara-' + (PRIMERO[partes[1]][0] || '01')]);
+          ofrecer(opciones.concat([['Ver otro negocio', 'rubro'], ['Volver al inicio', 'inicio']]));
         });
         break;
       case 'consulta':
@@ -804,11 +846,24 @@
     campo.focus({ preventScroll: true });
   }
 
+  // De dónde llega el mensaje: la página, y ?origen=qr (u otro) si vino de
+  // una puerta marcada. Sin CRM todavía, así se sabe qué puerta funciona.
+  function origen() {
+    var partes = [];
+    var p = document.body.getAttribute('data-origen');
+    if (p) partes.push('página: ' + p);
+    try {
+      var o = new URLSearchParams(location.search).get('origen');
+      if (o) partes.push('origen: ' + o.replace(/[^\w\s-]/g, '').slice(0, 40));
+    } catch (e) {}
+    return partes.length ? ' · ' + partes.join(' · ') : '';
+  }
+
   function cerrar() {
     var texto = 'Hola Rodrigo, soy ' + datos.nombre + '.' +
       (datos.negocio ? ' Tengo ' + datos.negocio + '.' : '') +
       (datos.consulta ? ' Mi consulta: ' + datos.consulta : ' Me interesa: ' + (datos.interes || 'conocer más de Yachai') + '.') +
-      ' (Te escribo desde la web de Yachai)';
+      ' (Te escribo desde la web de Yachai' + origen() + ')';
     var a = document.createElement('a');
     a.className = 'boton boton--qori chat__enviar';
     a.href = WHATSAPP + encodeURIComponent(texto);
@@ -968,7 +1023,7 @@
     if (eleccion.franja) texto += ' ' + eleccion.franja;
     texto += '.';
     if (agendaMensaje) agendaMensaje.textContent = texto;
-    if (agendaBoton) agendaBoton.href = 'https://wa.me/51969322677?text=' + encodeURIComponent(texto);
+    if (agendaBoton) agendaBoton.href = WHATSAPP + encodeURIComponent(texto);
   }
 
   function grupoExclusivo(contenedor, alElegir) {
@@ -1001,6 +1056,27 @@
   }
   var agendaFranjas = document.querySelector('.agenda__franjas');
   if (agendaFranjas) grupoExclusivo(agendaFranjas, function (b) { eleccion.franja = b.dataset.franja; });
+
+  /* --- demostraciones de las páginas interiores ---------------------------
+     Las mismas de las escenas del inicio: arrancan cuando entran en
+     pantalla, una vez. Sin movimiento, se ven completas desde el principio. */
+  var demosPagina = document.querySelectorAll('.demo--animada');
+  if (demosPagina.length) {
+    if (sinMovimiento || !('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(document.querySelectorAll('.demo--animada [data-paso]:not([data-fugaz])'), function (p) {
+        p.classList.add('visible');
+      });
+    } else {
+      var vigiaDemo = new IntersectionObserver(function (e) {
+        e.forEach(function (x) {
+          if (!x.isIntersecting) return;
+          vigiaDemo.unobserve(x.target);
+          correrDemo(x.target.parentNode, 500);
+        });
+      }, { threshold: 0.35 });
+      Array.prototype.forEach.call(demosPagina, function (d) { vigiaDemo.observe(d); });
+    }
+  }
 
   /* --- marquesinas: duplicar para que el bucle no corte ------------------ */
   ['.anuncio__pista', '.letrero__pista'].forEach(function (sel) {

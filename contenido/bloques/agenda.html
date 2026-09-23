@@ -1,0 +1,37 @@
+<!-- AGENDA =============================================================== -->
+<!-- REVISAR: reemplazar por el calendario de Cal.com cuando exista la
+     cuenta (confirmación automática). Hoy la confirmación es a mano, por
+     WhatsApp: no se muestran horarios disponibles porque no los hay
+     definidos, y no se inventan. -->
+<section class="seccion" id="agenda">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">07 —</span>
+    <div>
+      <h2 class="titulo">Agenda una llamada</h2>
+      <p class="parrafo" style="margin-top:16px">
+        Elige el día y la franja que te acomodan. <b>Te confirmo la hora
+        exacta por WhatsApp.</b>
+      </p>
+    </div>
+  </div>
+
+  <div class="agenda revelar">
+    <div class="agenda__paso">
+      <p class="dato">1 · El día</p>
+      <div class="agenda__opciones agenda__dias" role="group" aria-label="Día de la llamada"></div>
+    </div>
+    <div class="agenda__paso">
+      <p class="dato">2 · La franja</p>
+      <div class="agenda__opciones agenda__franjas" role="group" aria-label="Franja horaria">
+        <button type="button" class="opcion" data-franja="en la mañana" aria-pressed="false">Mañana</button>
+        <button type="button" class="opcion" data-franja="en la tarde" aria-pressed="false">Tarde</button>
+        <button type="button" class="opcion" data-franja="en la noche" aria-pressed="false">Noche</button>
+      </div>
+    </div>
+    <div class="agenda__paso">
+      <p class="dato">3 · Tu mensaje</p>
+      <p class="agenda__mensaje" aria-live="polite">Hola Rodrigo, quiero agendar una llamada.</p>
+      <a class="boton boton--qori agenda__boton" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20agendar%20una%20llamada." target="_blank" rel="noopener">Enviar por WhatsApp</a>
+    </div>
+  </div>
+</section>

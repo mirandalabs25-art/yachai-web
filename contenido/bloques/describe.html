@@ -1,0 +1,41 @@
+<!-- DESCRIBE TU WEB ====================================================== -->
+<!-- REVISAR: hoy la imagen se hace a mano (ChatGPT) y se envía por
+     WhatsApp. Cuando la automatización esté lista, este formulario la va a
+     disparar sola. También confirmar si la vista previa es gratis. -->
+<section class="seccion" id="describe" aria-labelledby="describe-titulo">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">04 —</span>
+    <div>
+      <h2 class="titulo" id="describe-titulo">Describe tu web</h2>
+      <p class="parrafo" style="margin-top:16px">
+        Cuéntame cómo te la imaginas y <b>te envío por WhatsApp una imagen de
+        cómo quedaría</b>, antes de comprometerte a nada.
+      </p>
+    </div>
+  </div>
+
+  <form class="describe revelar">
+    <div class="describe__paso">
+      <label class="dato" for="describe-negocio">1 · Tu negocio</label>
+      <input id="describe-negocio" class="chat__campo" name="negocio" type="text" maxlength="120" placeholder="Ej.: una cafetería en San Blas">
+    </div>
+    <div class="describe__paso">
+      <p class="dato">2 · El estilo</p>
+      <div class="agenda__opciones describe__estilos" role="group" aria-label="Estilo">
+        <button type="button" class="opcion" aria-pressed="false">Elegante</button>
+        <button type="button" class="opcion" aria-pressed="false">Moderna</button>
+        <button type="button" class="opcion" aria-pressed="false">Colorida</button>
+        <button type="button" class="opcion" aria-pressed="false">Minimalista</button>
+        <button type="button" class="opcion" aria-pressed="false">Andina</button>
+      </div>
+    </div>
+    <div class="describe__paso describe__paso--ancho">
+      <label class="dato" for="describe-idea">3 · Cómo la imaginas</label>
+      <textarea id="describe-idea" class="chat__campo" name="idea" rows="4" maxlength="600" placeholder="Colores, qué quieres mostrar, una web que te guste…"></textarea>
+    </div>
+    <div class="describe__paso describe__paso--ancho describe__envio">
+      <button class="boton boton--qori" type="submit">Quiero ver mi web</button>
+      <p class="dato">Te llega por WhatsApp. Esta página no guarda nada.</p>
+    </div>
+  </form>
+</section>
