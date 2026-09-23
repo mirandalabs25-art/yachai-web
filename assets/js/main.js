@@ -196,7 +196,6 @@
   var giro      = document.querySelector('.giro');
   var escena    = document.querySelector('.giro__escena');
   var contCaras = document.querySelector('.giro__caras');
-  var aro       = document.querySelector('.giro__aro');
   var cabecera  = document.querySelector('.cabecera');
   var caras     = [];
   var giroVivo  = !!(giro && escena && contCaras) && !sinMovimiento;
@@ -356,35 +355,69 @@
     if (cara) { cara.classList.add('abierta'); correrDemo(cara); }
   }
 
+  // La chakanita con puntos que abre y cierra cada escena (pedido del
+  // usuario, 2026-09-22: "en vez de ese círculo, una chakanita con puntos").
+  // Usa los mismos 20 vértices que la chakana del hero.
+  var nodosSvg = document.querySelector('.giro__nodos');
+  var contornoSvg = nodosSvg && nodosSvg.querySelector('.giro__contorno');
+  var puntosSvg = [];
+  if (nodosSvg) {
+    var grupo = nodosSvg.querySelector('.giro__puntos');
+    CHAKANA.forEach(function () {
+      var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('r', '3');
+      grupo.appendChild(c);
+      puntosSvg.push(c);
+    });
+  }
+
   function pintarGiro() {
     if (!giroVivo) return;
-    var H = escena.clientHeight || window.innerHeight;
+    var W = escena.clientWidth, H = escena.clientHeight || window.innerHeight;
     var y = window.scrollY - giro.offsetTop;
     var P = Math.max(0, y / m.tramo);          // 0 … número de caras
     var i = Math.min(caras.length - 1, Math.floor(P));
     var t = Math.min(1, P - i);
 
-    // Transición en iris (2026-09-22: se sacó la chakana de imagen que
-    // giraba entre escenas). Cada escena se abre desde un punto en el centro
-    // hasta llenar la pantalla, se lee, y se cierra otra vez en el centro.
-    // La última no se cierra: la sección termina con ella abierta.
+    // Cada escena se abre desde el centro con forma de chakana hasta llenar
+    // la pantalla, se lee, y se cierra otra vez en una chakana. La última no
+    // se cierra: la sección termina con ella abierta.
     var abre = suave((t - 0.04) / 0.3);
     var cierra = i === caras.length - 1 ? 0 : suave((t - 0.84) / 0.16);
     var abierto = abre * (1 - cierra);
-    var r = abierto * m.maxR;
 
-    // Escena 1: se abre desde el hueco de la chakana del hero (la sección
-    // arranca montada sobre él), así que el fondo negro entra recién cuando
-    // la escena ya cubre todo; antes se ve el hero detrás.
+    // Tamaño: con el cuadrado central (±3 unidades) ya cubre toda la
+    // pantalla, gire como gire. Giro: en la escena 1 acompaña a la chakana
+    // del hero (que gira al bajar); en las demás, un deslizamiento suave de
+    // ~20° mientras se abre o se cierra.
+    var escalaMax = Math.sqrt(W * W + H * H) / 2 / 3 * 1.06;
+    var s = abierto * escalaMax;
+    var desdeHero = i === 0 && t < 0.5;
+    var ang = desdeHero ? (estado.giro || 0) : (1 - abierto) * 0.35;
+    var cos = Math.cos(ang), sen = Math.sin(ang), cx = W / 2, cy = H / 2;
+    var pts = CHAKANA.map(function (p) {
+      return [cx + (p[0] * cos - p[1] * sen) * s, cy + (p[0] * sen + p[1] * cos) * s];
+    });
+    var poligono = pts.map(function (q) { return q[0].toFixed(1) + 'px ' + q[1].toFixed(1) + 'px'; }).join(',');
+
+    // Escena 1: el fondo negro entra recién cuando la escena ya cubre todo;
+    // antes se ve el hero detrás.
     escena.style.setProperty('--fondo', i === 0 ? suave((t - 0.25) / 0.1).toFixed(3) : '1');
-    escena.style.setProperty('--rx', r.toFixed(1) + 'px');
-    escena.style.setProperty('--ry', r.toFixed(1) + 'px');
-    escena.style.setProperty('--hy', (H / 2) + 'px');
+    escena.style.setProperty('--forma', 'polygon(' + poligono + ')');
     escena.style.setProperty('--velo', abierto.toFixed(3));
-    if (aro) {
-      // Un aro dorado fino marca el borde del círculo mientras se abre o se cierra.
-      aro.style.width = aro.style.height = (r * 2).toFixed(1) + 'px';
-      aro.style.opacity = abierto > 0.002 && abierto < 0.97 ? '1' : '0';
+
+    // El contorno y los puntos dorados: se ven mientras la chakana se abre o
+    // se cierra. En la escena 1, al abrir, no hacen falta: ya están los del hero.
+    if (nodosSvg) {
+      var verNodos = abierto > 0.002 && abierto < 0.97 && !desdeHero;
+      nodosSvg.style.opacity = verNodos ? '1' : '0';
+      if (verNodos) {
+        contornoSvg.setAttribute('points', pts.map(function (q) { return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' '));
+        puntosSvg.forEach(function (c, k) {
+          c.setAttribute('cx', pts[k][0].toFixed(1));
+          c.setAttribute('cy', pts[k][1].toFixed(1));
+        });
+      }
     }
 
     mostrar(abierto > 0.002 ? caras[i] : null);

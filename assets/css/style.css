@@ -252,7 +252,8 @@ a{color:inherit;text-decoration:none}
 .giro--vivo .cara.es-visible{visibility:visible}
 .giro--vivo .cara__medio{
   position:absolute;inset:0;height:auto;
-  clip-path:ellipse(var(--rx,0px) var(--ry,0px) at var(--hx,50%) var(--hy,50%));
+  /* La forma la calcula main.js: una chakana que crece desde el centro. */
+  clip-path:var(--forma,polygon(50% 50%,50% 50%,50% 50%));
 }
 /* Velo para leer encima de la escena: oscuro arriba y abajo. */
 .giro--vivo .cara__medio::after{
@@ -796,13 +797,14 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
 .mas-ideas{margin-top:clamp(48px,7vw,88px)}
 .mas-ideas > .dato{margin-bottom:14px}
 
-/* --- iris de las escenas: el aro dorado que marca el borde al abrir y cerrar */
-.giro__aro{display:none}
-.giro--vivo .giro__aro{
-  display:block;position:absolute;z-index:3;left:50%;top:50%;width:0;height:0;
-  transform:translate(-50%,-50%);border:1px solid var(--qori);border-radius:50%;
-  box-shadow:0 0 18px rgba(245,197,24,.35);pointer-events:none;opacity:0;transition:opacity .25s;
+/* --- la chakanita con puntos que abre y cierra cada escena ------------- */
+.giro__nodos{display:none}
+.giro--vivo .giro__nodos{
+  display:block;position:absolute;inset:0;width:100%;height:100%;z-index:3;
+  overflow:visible;pointer-events:none;opacity:0;transition:opacity .25s;
 }
+.giro__contorno{fill:none;stroke:var(--qori);stroke-width:1;stroke-opacity:.75}
+.giro__puntos circle{fill:var(--qori);filter:drop-shadow(0 0 4px rgba(245,197,24,.6))}
 
 /* --- accesos fijos: Asistente · Consultar · WhatsApp (siempre visibles) ---- */
 .accesos{

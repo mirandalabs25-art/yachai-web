@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/css/style.css?v=12">
+<link rel="stylesheet" href="assets/css/style.css?v=13">
 </head>
 <body>
 
@@ -89,7 +89,7 @@
 
 <!-- GIRO: la chakana cibernética y los siete dolores ===================== -->
 <!-- Va pegada al hero: la escena 1 se abre desde el hueco de la chakana de
-     nodos. Después, cada escena se abre y se cierra en iris, desde el centro
+     nodos. Después, cada escena se abre y se cierra con forma de chakana, desde el centro
      (la chakana de imagen que giraba entre ellas se sacó el 2026-09-22). Cada
      una trae: la escena (imagen hoy, video de
      Kling después: basta con agregar data-video="assets/video/NN.mp4" al
@@ -258,8 +258,9 @@
 
     </div>
 
-    <!-- El borde del iris: un aro dorado fino que acompaña la apertura. -->
-    <div class="giro__aro" aria-hidden="true"></div>
+    <!-- La chakanita con puntos: contorno y 20 nodos dorados que acompañan la
+     apertura y el cierre de cada escena (los puntos los crea main.js). -->
+    <svg class="giro__nodos" aria-hidden="true"><polygon class="giro__contorno"/><g class="giro__puntos"></g></svg>
 
   </div>
 </section>
@@ -774,7 +775,7 @@
 <!-- GSAP 3.15 (gratis, incluidos los plugins). Si no carga, main.js hace todo solo. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=15" defer></script>
+<script src="assets/js/main.js?v=16" defer></script>
 <script src="assets/js/movimiento.js?v=7" defer></script>
 </body>
 </html>
