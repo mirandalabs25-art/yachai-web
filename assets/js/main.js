@@ -9,13 +9,14 @@
   var sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.documentElement.classList.add('js');
 
-  // Si GSAP cargó, movimiento.js arma la chakana del hero y lo apaga al
-  // bajar. Si no cargó, este archivo hace todo solo.
+  // Si GSAP cargó, movimiento.js arma la chakana del hero, hace entrar la
+  // cámara por su hueco al bajar y agrega el imán de la chakana de obsidiana.
+  // Si no cargó, este archivo hace todo solo.
   var usaGsap = !!(window.gsap && window.ScrollTrigger) && !sinMovimiento;
 
   // Estado del hero que GSAP anima desde movimiento.js:
   //   armado: 0 = vértices dispersos, 1 = chakana formada
-  //   zoom / giro: quedan en 1 y 0 (el zoom al bajar se sacó el 2026-09-22)
+  //   zoom / giro: la cámara que atraviesa la chakana al bajar
   var estado = window.YACHAI_HERO = { armado: usaGsap ? 0 : 1, zoom: 1, giro: 0 };
 
   /* ======================================================================
@@ -177,14 +178,14 @@
   }
 
   /* ======================================================================
-     2. Scroll del hero y escenas de "Qué resuelvo"
+     2. Scroll: el hero se apaga y la chakana gira
      ----------------------------------------------------------------------
-     La chakana de obsidiana que giraba con el scroll se sacó (2026-09-22:
-     "da muchas vueltas, molesta a los ojos"). Las siete escenas quedan
-     quietas, una debajo de otra: cada video en bucle arranca cuando su
-     escena entra en pantalla y se pausa al salir, y la demo se anima una
-     sola vez. Con "reducir movimiento" no arranca nada: quedan las fotos y
-     las demos completas.
+     La sección .giro es alta y su escena queda fija. El scroll se reparte
+     en tramos: una intro (aparece la chakana) y un tramo por cara. En cada
+     tramo la chakana da media vuelta (a los 90° cambia la escena que se ve
+     por el hueco), el hueco se abre hasta llenar la pantalla, se lee, y se
+     vuelve a cerrar. Todo sale de window.scrollY: funciona con o sin GSAP
+     (GSAP solo agrega el "imán" que frena en cada cara).
      ====================================================================== */
 
   var progreso   = document.querySelector('.progreso');
@@ -192,46 +193,52 @@
   var heroTexto  = document.querySelector('.hero__texto');
   var heroSombra = document.querySelector('.hero__sombra');
 
-  function pintar() {
-    var alto = document.documentElement.scrollHeight - window.innerHeight;
-    if (progreso) progreso.style.transform = 'scaleX(' + (alto > 0 ? window.scrollY / alto : 0) + ')';
-    revisarEscenas();
-    if (sinMovimiento || usaGsap) return;
-    // Sin GSAP: el hero se apaga a mano.
-    if (hero) {
-      var ah = Math.min(1, Math.max(0, window.scrollY / window.innerHeight));
-      if (heroTexto) {
-        heroTexto.style.opacity = String(Math.max(0, 1 - ah * 1.6));
-        heroTexto.style.transform = 'translateY(' + (ah * -34).toFixed(1) + 'px)';
-      }
-      if (heroSombra) heroSombra.style.setProperty('--sombra', (ah * 0.75).toFixed(3));
-    }
+  var giro      = document.querySelector('.giro');
+  var escena    = document.querySelector('.giro__escena');
+  var contCaras = document.querySelector('.giro__caras');
+  var chakana   = document.querySelector('.giro__chakana');
+  var pieza     = document.querySelector('.giro__pieza');
+  var cabecera  = document.querySelector('.cabecera');
+  var caras     = [];
+  var giroVivo  = !!(giro && escena && contCaras && chakana && pieza) && !sinMovimiento;
+
+  // Medidas del hueco central de la imagen de la chakana (medidas en el
+  // PNG de 1254 px: radio 164 px = 13,1 %; centro 0,8 % arriba del medio).
+  // Se usa un poco menos de radio para que el borde quede bajo el aro dorado.
+  var HUECO = 0.128, HUECO_Y = -0.0084, INTRO = 0;
+  var m = { tramo: 1, tam: 0, hueco: 0, maxR: 0, hy: 0 };
+
+  function leerCaras() {
+    caras = contCaras ? Array.prototype.slice.call(contCaras.querySelectorAll('.cara')) : [];
   }
-  var revisarEscenas = function () {};   // se completa más abajo
 
-  var pedido = false;
-  function alHacerScroll() {
-    if (pedido) return;
-    pedido = true;
-    window.requestAnimationFrame(function () { pintar(); pedido = false; });
+  function medirGiro() {
+    if (!giroVivo) return;
+    var W = escena.clientWidth, H = escena.clientHeight || window.innerHeight;
+    m.tramo = Math.max(1, (giro.offsetHeight - H) / (caras.length + INTRO));
+    m.tam = chakana.offsetWidth;
+    m.hueco = m.tam * HUECO;
+    m.maxR = Math.sqrt(W * W + H * H) / 2 + 40;
+    if (cabecera) escena.style.setProperty('--alto-cabecera', cabecera.offsetHeight + 'px');
+    escena.style.setProperty('--hx', (W / 2) + 'px');
+    m.hy = chakana.offsetTop + m.tam * HUECO_Y;
   }
-  window.addEventListener('scroll', alHacerScroll, { passive: true });
-  window.addEventListener('resize', alHacerScroll);
-  pintar();
 
-  var caras = Array.prototype.slice.call(document.querySelectorAll('.cara'));
-  var caraActiva = null;
+  function suave(x) { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); }
 
-  /* --- video de cada escena: solo si el <article> trae data-video --------
+  /* --- video de cada cara: solo si el <article> trae data-video ---------
      Tres defensas, porque en celulares reales el autoplay falla por razones
-     que el navegador de escritorio no muestra:
-     1. Si el celular bloquea la reproducción automática, aparece
+     que el navegador de escritorio no muestra (2026-09-22: "en el celular no
+     se ven los videos"):
+     1. Si el celular bloquea la reproducción automática (app con visor
+        propio, ahorro de batería, modo bajo consumo del iPhone), aparece
         "▶ Ver en movimiento". El primer toque en cualquier parte desbloquea
         todos los videos.
      2. Si el video da error al cargar (típico del iPhone cuando el servidor
-        no entrega el archivo por partes), se reintenta bajándolo entero.
-     3. El botón muestra en letra chica el motivo, para diagnosticarlo con
-        una captura del celular. */
+        no entrega el archivo por partes), se reintenta bajándolo entero y
+        reproduciéndolo desde memoria.
+     3. El botón muestra en letra chica el motivo, para poder diagnosticarlo
+        desde una captura del celular. */
 
   function marcarBloqueo(cara, motivo) {
     if (!cara) return;
@@ -243,7 +250,7 @@
       b.className = 'cara__play';
       b.innerHTML = '<span>▶ Ver en movimiento</span><small></small>';
       b.addEventListener('click', function () { desbloquear(); reproducir(cara); });
-      cara.querySelector('.cara__medio').appendChild(b);
+      cara.querySelector('.cara__cabeza').appendChild(b);
     }
     b.querySelector('small').textContent = motivo || '';
   }
@@ -258,7 +265,6 @@
       v.muted = true; v.defaultMuted = true; v.loop = true; v.playsInline = true;
       v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
       v.setAttribute('webkit-playsinline', ''); v.setAttribute('disablepictureinpicture', '');
-      v.setAttribute('aria-hidden', 'true');
       v.preload = 'auto';
       v.poster = cara.querySelector('.cara__img').currentSrc || '';
       v.addEventListener('playing', function () { cara.classList.remove('video-bloqueado'); });
@@ -271,12 +277,11 @@
           return r.blob();
         }).then(function (b) {
           v.src = URL.createObjectURL(b);
-          if (cara === caraActiva) reproducir(cara);
+          if (cara === caraMostrada) reproducir(cara);
         }).catch(function (e) { marcarBloqueo(cara, 'error ' + codigo + ' · ' + (e && e.message || '')); });
       });
       v.src = src;
-      var boton = cara.querySelector('.cara__play');
-      cara.querySelector('.cara__medio').insertBefore(v, boton);
+      cara.querySelector('.cara__medio').appendChild(v);
     }
     return v;
   }
@@ -287,16 +292,14 @@
     var p = v.play();
     if (p && p.then) {
       p.then(function () { cara.classList.remove('video-bloqueado'); })
-       .catch(function (e) { if (cara === caraActiva) marcarBloqueo(cara, e && e.name || 'bloqueado'); });
+       .catch(function (e) { if (cara === caraMostrada) marcarBloqueo(cara, e && e.name || 'bloqueado'); });
     }
   }
-  function pausar(cara) {
-    var v = cara && cara.querySelector('video');
-    if (v) v.pause();
-  }
+  function prepararVideo(cara) { reproducir(cara); }
 
-  // El primer toque "desbloquea" los videos: se reproducen y pausan una vez
-  // dentro del gesto. Solo si alguno quedó bloqueado; si no, no baja nada.
+  // El primer toque "desbloquea" todos los videos: se reproducen y pausan
+  // una vez dentro del gesto, y desde ahí el celular los deja arrancar solos.
+  // Solo hace falta si alguno quedó bloqueado; si no, no baja nada de más.
   var desbloqueado = false;
   function desbloquear() {
     if (desbloqueado || !document.querySelector('.cara.video-bloqueado')) return;
@@ -305,59 +308,155 @@
       var v = crearVideo(c);
       if (!v) return;
       var p = v.play();
-      if (p && p.then) p.then(function () { if (c !== caraActiva) v.pause(); }).catch(function () {});
+      if (p && p.then) {
+        p.then(function () { if (c !== caraMostrada) v.pause(); }).catch(function () {});
+      }
     });
   }
   ['touchend', 'click', 'keydown'].forEach(function (tipo) {
     document.addEventListener(tipo, desbloquear, { passive: true });
   });
 
-  /* --- la demostración de cada escena, paso por paso --------------------- */
-  function correrDemo(demo) {
-    var pasos = demo.querySelectorAll('[data-paso]');
-    var t = 250;
+  function pausarVideo(cara) {
+    var v = cara && cara.querySelector('video');
+    if (v) v.pause();
+  }
+
+  /* --- la demostración de cada cara, paso por paso ---------------------- */
+  function correrDemo(cara) {
+    var pasos = cara.querySelectorAll('.demo [data-paso]');
+    // En el celular la demo arranca después de que se vio el video solo.
+    var t = window.matchMedia('(max-width: 899px)').matches ? 1800 : 300;
+    cara._relojes = [];
     Array.prototype.forEach.call(pasos, function (p, k) {
-      setTimeout(function () {
+      cara._relojes.push(setTimeout(function () {
         p.classList.add('visible');
         var antes = pasos[k - 1];
         if (antes && antes.hasAttribute('data-fugaz')) antes.classList.remove('visible');
-      }, t);
+      }, t));
       t += p.hasAttribute('data-fugaz') ? 1000 : 700;
     });
   }
-
-  // Se revisa con el propio scroll, no con IntersectionObserver: algunos
-  // visores de apps (y el navegador de prueba) avisan tarde la visibilidad,
-  // y un video que no se entera de que está en pantalla no arranca nunca.
-  if (!sinMovimiento && caras.length) {
-    document.querySelector('.escenas').classList.add('escenas--vivas');
-    revisarEscenas = function () {
-      var alto = window.innerHeight;
-      caras.forEach(function (cara, i) {
-        // Video: arranca con un 35 % de la escena a la vista y se pausa al
-        // salir; deja bajando el de la escena siguiente.
-        var r = cara.querySelector('.cara__medio').getBoundingClientRect();
-        var visible = Math.max(0, Math.min(r.bottom, alto) - Math.max(r.top, 0)) / (r.height || 1);
-        if (visible >= 0.35) {
-          if (caraActiva !== cara || !cara.querySelector('video') || cara.querySelector('video').paused) {
-            caraActiva = cara;
-            reproducir(cara);
-            crearVideo(caras[i + 1]);
-          }
-        } else if (cara.querySelector('video') && !cara.querySelector('video').paused) {
-          pausar(cara);
-        }
-        // Demo: se anima una sola vez, cuando entra bien en pantalla.
-        var demo = cara.querySelector('.demo');
-        if (demo && !demo.dataset.corrida) {
-          var d = demo.getBoundingClientRect();
-          if (d.top < alto * 0.8 && d.bottom > 0) { demo.dataset.corrida = '1'; correrDemo(demo); }
-        }
-      });
-    };
-    window.addEventListener('load', alHacerScroll);
-    alHacerScroll();
+  function detenerDemo(cara) {
+    (cara._relojes || []).forEach(clearTimeout);
+    cara._relojes = [];
+    Array.prototype.forEach.call(cara.querySelectorAll('.demo [data-paso]'), function (p) {
+      p.classList.remove('visible');
+    });
   }
+
+  var caraMostrada = null, caraAbierta = null;
+  function mostrar(cara) {
+    if (cara === caraMostrada) return;
+    if (caraMostrada) { caraMostrada.classList.remove('es-visible'); pausarVideo(caraMostrada); }
+    caraMostrada = cara;
+    if (cara) {
+      cara.classList.add('es-visible');
+      prepararVideo(cara);
+      crearVideo(caras[caras.indexOf(cara) + 1]);   // la siguiente se va bajando
+    }
+  }
+  function abrir(cara) {
+    if (cara === caraAbierta) return;
+    if (caraAbierta) { caraAbierta.classList.remove('abierta'); detenerDemo(caraAbierta); }
+    caraAbierta = cara;
+    if (cara) { cara.classList.add('abierta'); correrDemo(cara); }
+  }
+
+  function pintarGiro() {
+    if (!giroVivo) return;
+    var W = escena.clientWidth, H = escena.clientHeight || window.innerHeight;
+    var y = window.scrollY - giro.offsetTop;   // la sección arranca pegada al hero
+    var P = Math.max(0, y / m.tramo);          // 0 … número de caras
+    var i = Math.min(caras.length - 1, Math.floor(P));
+    var t = Math.min(1, P - i);
+    var angulo, escala = 1, op = 1, abierto, activa, hy = null;
+
+    if (i === 0) {
+      // Cara 1: se abre desde el hueco de la chakana del hero, sin que
+      // aparezca antes la de obsidiana. Esa entra recién al cerrar la cara,
+      // para girar hacia la 2.
+      angulo = 0;
+      activa = caras[0];
+      abierto = suave(t / 0.35) * (1 - suave((t - 0.82) / 0.18));
+      if (t < 0.5) {
+        op = 0;
+        hy = H / 2;                            // el centro de la chakana del hero
+      } else {
+        escala = 1 + abierto * 2.6;
+        op = 1 - Math.min(1, abierto * 1.5);
+      }
+    } else {
+      var f = suave(t / 0.25);                 // media vuelta desde la cara anterior
+      angulo = (i - 1 + f) * 180;
+      activa = f < 0.5 ? caras[i - 1] : caras[i];
+      abierto = suave((t - 0.25) / 0.25) * (1 - suave((t - 0.82) / 0.18));
+      escala = 1 + abierto * 2.6;              // la cámara entra por el hueco
+      op = 1 - Math.min(1, abierto * 1.5);
+    }
+
+    var cosA = Math.abs(Math.cos(angulo * Math.PI / 180));
+    var ry = (i === 0 && t < 0.5)
+      ? abierto * m.maxR
+      : m.hueco * escala + abierto * (m.maxR - m.hueco * escala);
+
+    // El fondo negro de la escena entra cuando la cara 1 ya cubre todo: antes
+    // se tiene que ver el hero detrás.
+    escena.style.setProperty('--fondo', suave((P - 0.25) / 0.1).toFixed(3));
+    escena.style.setProperty('--rx', (ry * cosA).toFixed(1) + 'px');
+    escena.style.setProperty('--ry', ry.toFixed(1) + 'px');
+    escena.style.setProperty('--hy', (hy !== null ? hy : m.hy) + 'px');
+    escena.style.setProperty('--velo', abierto.toFixed(3));
+    chakana.style.setProperty('--escala', escala.toFixed(3));
+    chakana.style.opacity = op.toFixed(3);
+    pieza.style.transform = 'rotateY(' + angulo.toFixed(2) + 'deg)';
+    // El canto dorado solo existe cuando la pieza está casi de perfil.
+    pieza.style.setProperty('--canto', Math.max(0, (0.35 - cosA) / 0.35).toFixed(3));
+
+    mostrar(abierto > 0.001 || i > 0 ? activa : null);
+    abrir(abierto > 0.55 ? activa : null);
+  }
+
+  if (giroVivo) {
+    giro.classList.add('giro--vivo');
+    leerCaras();
+    medirGiro();
+    // Las escenas se piden apenas termina de cargar la página, no cuando
+    // la cara se abre: así no hay un parpadeo negro en el celular.
+    window.addEventListener('load', function () {
+      Array.prototype.forEach.call(giro.querySelectorAll('img[loading="lazy"]'), function (im) { im.loading = 'eager'; });
+    });
+  }
+
+  function pintar() {
+    var alto = document.documentElement.scrollHeight - window.innerHeight;
+    if (progreso) progreso.style.transform = 'scaleX(' + (alto > 0 ? window.scrollY / alto : 0) + ')';
+    if (sinMovimiento) return;
+    pintarGiro();
+    if (usaGsap) return;
+
+    // Sin GSAP: el hero se apaga a mano.
+    if (hero) {
+      var ah = Math.min(1, Math.max(0, window.scrollY / window.innerHeight));
+      if (heroTexto) {
+        heroTexto.style.opacity = String(Math.max(0, 1 - ah * 1.6));
+        heroTexto.style.transform = 'translateY(' + (ah * -34).toFixed(1) + 'px)';
+      }
+      if (heroSombra) heroSombra.style.setProperty('--sombra', (ah * 0.75).toFixed(3));
+    }
+  }
+
+  var pedido = false;
+  function alHacerScroll() {
+    if (pedido) return;
+    pedido = true;
+    window.requestAnimationFrame(function () { pintar(); pedido = false; });
+  }
+
+  window.addEventListener('scroll', alHacerScroll, { passive: true });
+  window.addEventListener('resize', function () { medirGiro(); alHacerScroll(); });
+  window.addEventListener('load', function () { medirGiro(); pintar(); });
+  pintar();
 
   /* ======================================================================
      3. Revelado y cifras
@@ -401,6 +500,63 @@
       el.textContent = el.dataset.cifra + (el.dataset.sufijo || '');
     });
   }
+
+  /* ======================================================================
+     3b. Saltos directos a una escena de la chakana
+     ----------------------------------------------------------------------
+     El asistente ("Ver cómo se ve"), el menú y el enlace ?cara=04 llevan de
+     golpe a esa escena ya abierta. De golpe y no con scroll suave: un viaje
+     suave por el medio haría girar la chakana por todas las caras.
+     ====================================================================== */
+
+  function saltar(top) {
+    try { window.scrollTo({ top: top, behavior: 'instant' }); }
+    catch (e) { window.scrollTo(0, top); }
+  }
+
+  function irACara(dolor) {
+    var cara = document.getElementById('cara-' + dolor);
+    if (!cara) return;
+    if (giroVivo) {
+      medirGiro();
+      saltar(giro.offsetTop + (INTRO + caras.indexOf(cara) + 0.62) * m.tramo);
+      alHacerScroll();
+    } else {
+      saltar(cara.getBoundingClientRect().top + window.scrollY);
+    }
+  }
+
+  // Alto de la cabecera fija: el CSS lo usa como scroll-margin-top, para
+  // que al llegar a una sección el título no quede tapado.
+  function medirCabecera() {
+    if (cabecera) document.documentElement.style.setProperty('--cabecera', cabecera.offsetHeight + 'px');
+  }
+  medirCabecera();
+  window.addEventListener('resize', medirCabecera);
+
+  // Enlaces internos (menú, botones del hero): si el viaje cruza la chakana,
+  // van de golpe.
+  document.addEventListener('click', function (e) {
+    var enlace = e.target.closest('a[href^="#"]');
+    if (!enlace || !giroVivo) return;
+    var destino = document.getElementById(enlace.getAttribute('href').slice(1));
+    if (!destino) return;
+    var top = destino === giro ? giro.offsetTop + 0.62 * m.tramo
+      : destino.getBoundingClientRect().top + window.scrollY - (cabecera ? cabecera.offsetHeight : 0);
+    var g0 = giro.offsetTop, g1 = g0 + giro.offsetHeight, desde = window.scrollY;
+    if (destino === giro || (Math.min(desde, top) < g1 && Math.max(desde, top) > g0)) {
+      e.preventDefault();
+      saltar(Math.max(0, top));
+      alHacerScroll();
+    }
+  });
+
+  try {
+    var caraUrl = new URLSearchParams(location.search).get('cara');
+    if (caraUrl && /^0[1-7]$/.test(caraUrl)) {
+      window.addEventListener('load', function () { setTimeout(function () { irACara(caraUrl); }, 60); });
+    }
+  } catch (e) {}
 
   /* ======================================================================
      4. Asistente con botones (la acción principal de la landing del QR)
@@ -534,6 +690,10 @@
   ];
 
   function ir(destino) {
+    if (destino.indexOf('@cara-') === 0) {   // saltar a esa escena de la chakana
+      irACara(destino.slice(6));
+      return;
+    }
     if (destino.charAt(0) === '@') {        // saltar a una sección de la página
       saltarA(destino.slice(1));
       return;

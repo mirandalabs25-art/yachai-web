@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/css/style.css?v=9">
+<link rel="stylesheet" href="assets/css/style.css?v=10">
 </head>
 <body>
 
@@ -87,56 +87,18 @@
   </div>
 </section>
 
-<main class="contenido">
+<!-- GIRO: la chakana cibernética y los siete dolores ===================== -->
+<!-- Cada vuelta de la chakana abre una cara: la escena (imagen hoy, video de
+     Kling después: basta con agregar data-video="assets/video/NN.mp4" al
+     <article>), la frase del dolor, una demostración en HTML y el botón.
+     El texto nunca va dentro de la imagen ni del video: la IA lo deforma.
+     Sin JS o con "reducir movimiento", las caras quedan una debajo de otra. -->
+<section class="giro" id="servicios" aria-label="Qué resuelvo">
+  <div class="giro__escena">
+    <div class="giro__fondo" aria-hidden="true"></div>
 
-<!-- ASISTENTE ============================================================ -->
-<!-- La acción principal de la landing del QR: quien escanea no sabe qué es
-     Yachai. Bot con botones, sin IA (decisión del 2026-09-22); lo que deja
-     la persona llega a WhatsApp con el mensaje armado. Guion en main.js. -->
-<section class="seccion asistente" id="asistente" aria-labelledby="asistente-titulo">
-  <div class="seccion__cabecera revelar">
-    <span class="seccion__num">Hola —</span>
-    <div>
-      <h2 class="titulo" id="asistente-titulo">¿En qué te ayudo?</h2>
-      <p class="parrafo" style="margin-top:16px">
-        Toca una opción. En un minuto sabes qué puede hacer Yachai por tu
-        negocio y, si quieres, me dejas tus datos y te escribo.
-      </p>
-    </div>
-  </div>
+    <div class="giro__caras">
 
-  <div class="chat">
-    <p class="chat__cabeza"><span class="chat__signo" aria-hidden="true"></span><span>Asistente de Yachai</span><span class="chat__estado">en línea</span></p>
-    <div class="chat__registro" role="log" aria-live="polite"></div>
-    <div class="chat__opciones" role="group" aria-label="Opciones"></div>
-    <form class="chat__formulario" hidden>
-      <label class="chat__etiqueta" for="chat-dato">Tu nombre</label>
-      <div class="chat__fila">
-        <input id="chat-dato" class="chat__campo" type="text" maxlength="120" enterkeyhint="send">
-        <button class="boton boton--qori" type="submit">Enviar</button>
-      </div>
-    </form>
-    <noscript><p class="parrafo" style="padding:16px">Escríbeme directo por WhatsApp: <a href="https://wa.me/51969322677">+51 969 322 677</a></p></noscript>
-  </div>
-</section>
-
-<!-- ESCENAS: qué resuelvo ================================================ -->
-<!-- Reemplaza a la chakana que giraba con el scroll (2026-09-22: "da muchas
-     vueltas, molesta a los ojos"). Cada problema es un bloque quieto con su
-     video en bucle (arranca al entrar en pantalla), su demo y su botón. -->
-<section class="seccion escenas" id="servicios" aria-labelledby="escenas-titulo">
-  <div class="seccion__cabecera revelar">
-    <span class="seccion__num">01 —</span>
-    <div>
-      <h2 class="titulo" id="escenas-titulo">Qué resuelvo</h2>
-      <p class="parrafo" style="margin-top:16px">
-        Siete problemas que escucho todas las semanas, <b>y cómo se ven
-        resueltos.</b>
-      </p>
-    </div>
-  </div>
-
-  <div class="escenas__lista">
       <article class="cara" id="cara-01" data-dolor="01" data-video="assets/video/01-mensajes.mp4">
         <div class="cara__medio"><img class="cara__img" src="assets/img/giro/01-mensajes.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
         <div class="cara__contenido">
@@ -290,6 +252,60 @@
           </div>
         </div>
       </article>
+
+    </div>
+
+    <!-- La chakana: dos caras de la misma pieza. Gira con el scroll. -->
+    <div class="giro__chakana" aria-hidden="true">
+      <div class="giro__pieza">
+        <img class="giro__lado giro__lado--frente" src="assets/img/giro/08-chakana.webp" alt="" width="900" height="900">
+        <img class="giro__lado giro__lado--reverso" src="assets/img/giro/09-chakana-reverso.webp" alt="" width="900" height="900" loading="lazy">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<main class="contenido">
+
+
+
+<!-- BANDA ================================================================ -->
+<section class="banda">
+  <p class="banda__texto revelar">Seis rubros distintos. Y los que vengan.</p>
+  <p class="revelar" data-retraso="80" style="margin:0">
+    <a class="boton boton--negro" href="#casos">Ver los casos</a>
+  </p>
+</section>
+
+<!-- ASISTENTE ============================================================ -->
+<!-- La acción principal de la landing del QR: quien escanea no sabe qué es
+     Yachai. Bot con botones, sin IA (decisión del 2026-09-22); lo que deja
+     la persona llega a WhatsApp con el mensaje armado. Guion en main.js. -->
+<section class="seccion asistente" id="asistente" aria-labelledby="asistente-titulo">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">Hola —</span>
+    <div>
+      <h2 class="titulo" id="asistente-titulo">¿En qué te ayudo?</h2>
+      <p class="parrafo" style="margin-top:16px">
+        Toca una opción. En un minuto sabes qué puede hacer Yachai por tu
+        negocio y, si quieres, me dejas tus datos y te escribo.
+      </p>
+    </div>
+  </div>
+
+  <div class="chat">
+    <p class="chat__cabeza"><span class="chat__signo" aria-hidden="true"></span><span>Asistente de Yachai</span><span class="chat__estado">en línea</span></p>
+    <div class="chat__registro" role="log" aria-live="polite"></div>
+    <div class="chat__opciones" role="group" aria-label="Opciones"></div>
+    <form class="chat__formulario" hidden>
+      <label class="chat__etiqueta" for="chat-dato">Tu nombre</label>
+      <div class="chat__fila">
+        <input id="chat-dato" class="chat__campo" type="text" maxlength="120" enterkeyhint="send">
+        <button class="boton boton--qori" type="submit">Enviar</button>
+      </div>
+    </form>
+    <noscript><p class="parrafo" style="padding:16px">Escríbeme directo por WhatsApp: <a href="https://wa.me/51969322677">+51 969 322 677</a></p></noscript>
   </div>
 
   <div class="mas-ideas revelar">
@@ -359,21 +375,13 @@
   </div>
 </section>
 
-<!-- BANDA ================================================================ -->
-<section class="banda">
-  <p class="banda__texto revelar">Seis rubros distintos. Y los que vengan.</p>
-  <p class="revelar" data-retraso="80" style="margin:0">
-    <a class="boton boton--negro" href="#casos">Ver los casos</a>
-  </p>
-</section>
-
 <!-- DESCRIBE TU WEB ====================================================== -->
 <!-- REVISAR: hoy la imagen se hace a mano (ChatGPT) y se envía por
      WhatsApp. Cuando la automatización esté lista, este formulario la va a
      disparar sola. También confirmar si la vista previa es gratis. -->
 <section class="seccion" id="describe" aria-labelledby="describe-titulo">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">02 —</span>
+    <span class="seccion__num">01 —</span>
     <div>
       <h2 class="titulo" id="describe-titulo">Describe tu web</h2>
       <p class="parrafo" style="margin-top:16px">
@@ -415,7 +423,7 @@
      con el estado real de cada una. -->
 <section class="seccion" id="trabajos" aria-labelledby="trabajos-titulo">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">03 —</span>
+    <span class="seccion__num">02 —</span>
     <div>
       <h2 class="titulo" id="trabajos-titulo">En qué estamos trabajando</h2>
       <p class="parrafo" style="margin-top:16px">
@@ -483,7 +491,7 @@
 <!-- CÓMO TRABAJO ========================================================= -->
 <section class="seccion" id="como">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">04 —</span>
+    <span class="seccion__num">03 —</span>
     <div>
       <h2 class="titulo">Cómo trabajo</h2>
       <p class="parrafo" style="margin-top:16px">
@@ -523,7 +531,7 @@
      estándar de agentes del hub: el agente propone, el código valida. -->
 <section class="seccion" id="seguro">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">05 —</span>
+    <span class="seccion__num">04 —</span>
     <div>
       <h2 class="titulo">Seguro por diseño</h2>
       <p class="parrafo" style="margin-top:16px">
@@ -579,7 +587,7 @@
 <!-- CON QUÉ TRABAJO ====================================================== -->
 <section class="seccion" id="stack" aria-labelledby="stack-titulo">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">06 —</span>
+    <span class="seccion__num">05 —</span>
     <div>
       <h2 class="titulo" id="stack-titulo">Con qué trabajo</h2>
       <p class="parrafo" style="margin-top:16px">
@@ -619,7 +627,7 @@
 <!-- QUIÉN SOY ============================================================ -->
 <section class="seccion" id="quien">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">07 —</span>
+    <span class="seccion__num">06 —</span>
     <div>
       <h2 class="titulo">Quién está detrás</h2>
     </div>
@@ -652,7 +660,7 @@
      definidos, y no se inventan. -->
 <section class="seccion" id="agenda">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">08 —</span>
+    <span class="seccion__num">07 —</span>
     <div>
       <h2 class="titulo">Agenda una llamada</h2>
       <p class="parrafo" style="margin-top:16px">
@@ -757,7 +765,7 @@
 <!-- GSAP 3.15 (gratis, incluidos los plugins). Si no carga, main.js hace todo solo. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=12" defer></script>
-<script src="assets/js/movimiento.js?v=6" defer></script>
+<script src="assets/js/main.js?v=13" defer></script>
+<script src="assets/js/movimiento.js?v=7" defer></script>
 </body>
 </html>
