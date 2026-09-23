@@ -1104,10 +1104,10 @@ function construir() {
   for (const [f, html] of Object.entries(todo)) fs.writeFileSync(path.join(RAIZ, f), html);
   fs.writeFileSync(lista, JSON.stringify(Object.keys(PAGINAS).sort(), null, 1) + '\n');
 
-  const revisar_ = Object.values(todo).join('').match(/REVISAR/g) || [];
+  const pendientes = new Set(Object.values(todo).join('').match(/REVISAR:[^\n>]*/g) || []);
   console.log(`✓ ${Object.keys(PAGINAS).length} páginas + index.html`);
   console.log(`  ${S.SERVICIOS.length} servicios · ${S.RUBROS.length} rubros · ${ARTICULOS.length} artículos y ${CASOS.length} casos desde el vault`);
-  console.log(`  ${revisar_.length} marcas REVISAR pendientes`);
+  console.log(`  ${pendientes.size} datos por confirmar (REVISAR)`);
 }
 
 construir();
