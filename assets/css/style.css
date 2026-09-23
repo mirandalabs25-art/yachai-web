@@ -219,7 +219,7 @@ a{color:inherit;text-decoration:none}
    escena queda fija y la chakana gira con el scroll. */
 
 .giro{position:relative;z-index:1;background:var(--negro)}
-.giro__fondo,.giro__chakana,.giro__guia{display:none}
+.giro__fondo,.giro__chakana{display:none}
 
 .cara{position:relative;border-top:1px solid var(--filete)}
 .cara__medio{position:relative;height:min(70vh,620px);overflow:hidden}
@@ -238,8 +238,10 @@ a{color:inherit;text-decoration:none}
 .cara__caso b{color:var(--qori);font-weight:500}
 
 /* --- la escena fija ------------------------------------------------------ */
-.giro--vivo{height:850vh}
-@supports (height:100svh){.giro--vivo{height:850svh}}
+/* Arranca montada sobre el hero (margen negativo): la cara 1 se abre desde
+   el hueco de la chakana de nodos. 7 caras × 100svh + la pantalla fija. */
+.giro--vivo{height:800vh;margin-top:-100vh}
+@supports (height:100svh){.giro--vivo{height:800svh;margin-top:-100svh}}
 .giro--vivo .giro__escena{position:sticky;top:0;height:100vh;overflow:hidden;isolation:isolate}
 @supports (height:100svh){.giro--vivo .giro__escena{height:100svh}}
 .giro--vivo{background:transparent}
@@ -308,10 +310,6 @@ a{color:inherit;text-decoration:none}
   content:'';position:absolute;top:2%;bottom:3%;left:50%;width:16px;margin-left:-8px;
   background:linear-gradient(to bottom,#6b5208,#f5c518 18%,#8a6a0a 50%,#f5c518 82%,#6b5208);
   box-shadow:0 0 22px rgba(245,197,24,.55);transform:rotateY(90deg);opacity:var(--canto,0);
-}
-.giro--vivo .giro__guia{
-  display:block;position:absolute;z-index:4;left:0;right:0;bottom:clamp(20px,5vh,44px);
-  text-align:center;opacity:var(--guia,1);transition:opacity .4s;
 }
 
 /* --- demostraciones (HTML encima de la escena, nunca dentro del video) ---- */
@@ -635,47 +633,40 @@ a{color:inherit;text-decoration:none}
 .agenda__boton{display:block;text-align:center}
 @media (min-width:901px){.registro{position:sticky;top:130px}}
 
-/* --- atajo: ir directo a una cara (2026-09-22) --------------------------- */
-/* Tapa el hero al subir (va encima, opaco). Escritorio: la presentación a la
-   izquierda y la lista a la derecha; móvil: una columna. */
-.atajo{
-  position:relative;z-index:1;background:var(--negro);border-top:1px solid var(--filete);
-  padding:clamp(64px,10vw,130px) var(--gutter);
-  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
-  column-gap:clamp(32px,6vw,96px);row-gap:clamp(28px,4vw,40px);align-items:start;
+/* --- ideas: más formas de trabajar (2026-09-22) -------------------------- */
+.ideas .rubros{margin:0 0 clamp(28px,4vw,44px)}
+.ideas__cuerpo{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(28px,5vw,72px);align-items:start}
+@media (max-width:900px){.ideas__cuerpo{grid-template-columns:minmax(0,1fr)}}
+.ideas__bloque > .dato{margin-bottom:14px}
+
+.ideas__dolores{list-style:none;margin:0;padding:0;border-top:1px solid var(--filete)}
+.ideas__dolor{
+  display:flex;align-items:center;gap:14px;min-height:50px;padding:12px 4px;
+  border-bottom:1px solid var(--filete);font-weight:600;transition:background .2s,padding .25s,color .2s;
 }
-.atajo__intro{grid-column:1}
-.atajo__intro .titulo{margin:12px 0 16px}
-.atajo__intro .rubros{margin-top:clamp(24px,4vw,36px)}
-.atajo__lista{grid-column:2;grid-row:1 / span 2;list-style:none;margin:0;padding:0;border-top:1px solid var(--filete)}
-.atajo__accion{grid-column:1;display:grid;gap:12px;justify-items:start}
-.atajo__accion .parrafo{margin:0}
-@media (max-width:900px){
-  /* minmax(0,…): sin esto, la fila de rubros (que se desliza de lado) estira
-     la columna y la página entera se sale del ancho del celular. */
-  .atajo{grid-template-columns:minmax(0,1fr)}
-  .atajo__intro,.atajo__lista,.atajo__accion{grid-column:1;grid-row:auto}
+.ideas__dolor span{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--qori);min-width:3ch}
+.ideas__dolor::after{content:'↑';margin-left:auto;font-family:var(--mono);color:var(--gris)}
+.ideas__dolor:hover,.ideas__dolor:focus-visible{background:var(--carbon);padding-left:12px;color:var(--qori)}
+
+.ideas__lista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--filete);border-left:1px solid var(--filete)}
+@media (max-width:640px){.ideas__lista{grid-template-columns:minmax(0,1fr)}}
+.idea{
+  display:flex;flex-direction:column;gap:8px;height:100%;
+  padding:clamp(16px,2.2vw,22px);border-right:1px solid var(--filete);border-bottom:1px solid var(--filete);
+  transition:background .2s;
 }
-.atajo__fila{
-  display:grid;grid-template-columns:3.4ch 1fr auto;align-items:center;gap:14px;
-  min-height:56px;padding:clamp(15px,2.2vw,22px) 4px;border-bottom:1px solid var(--filete);
-  transition:background .2s,padding .25s;
-}
-.atajo__num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--qori)}
-.atajo__texto{font-size:clamp(1.02rem,1.9vw,1.3rem);font-weight:700;line-height:1.25;letter-spacing:-.01em}
-.atajo__flecha{font-family:var(--mono);color:var(--gris);transition:transform .25s,color .2s}
-.atajo__fila:hover,.atajo__fila:focus-visible{background:var(--carbon);padding-left:14px}
-.atajo__fila:hover .atajo__flecha,.atajo__fila:focus-visible .atajo__flecha{color:var(--qori);transform:translateX(4px)}
-.atajo__item--tuyo .atajo__fila{border-left:2px solid var(--qori);padding-left:12px}
-.atajo__item--tuyo .atajo__texto::after{
+.idea:hover,.idea:focus-visible{background:var(--carbon)}
+.idea__dolor{font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.idea__entrega{font-size:.88rem;line-height:1.55;color:var(--gris);flex:1}
+.idea::after{content:'Conversarlo →';font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--qori)}
+
+/* Lo que le sirve al rubro elegido */
+.ideas__dolores li.es-tuyo .ideas__dolor{border-left:2px solid var(--qori);padding-left:12px}
+.ideas__lista li.es-tuyo .idea{background:rgba(245,197,24,.06)}
+.ideas__lista li.es-tuyo .idea__dolor::after{
   content:'Para tu negocio';display:block;margin-top:6px;
   font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--qori);
 }
 
-/* "Ver los 7": dentro de cada cara, para volver a la lista */
-.cara__arriba{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0}
-.cara__volver{
-  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--gris);padding:10px 0;border-bottom:1px solid var(--filete-fuerte);line-height:1;
-}
-.cara__volver:hover,.cara__volver:focus-visible{color:var(--qori)}
+.ideas__accion{margin-top:clamp(28px,4vw,44px);display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
+.ideas__accion .parrafo{margin:0}

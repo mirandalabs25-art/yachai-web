@@ -16,27 +16,37 @@
 
   var $ = function (s) { return document.querySelector(s); };
   var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+  var estado = window.YACHAI_HERO;
 
   /* ======================================================================
-     1. Entrada: el titular sube solo por CSS; la bajada llega detrás.
+     1. Entrada: la chakana del hero se arma
+     Los veinte vértices llegan desde donde estaban sueltos y se cierran en
+     la cruz. El titular ya sube solo por CSS; la bajada llega detrás.
      ====================================================================== */
 
   var entrada = gsap.timeline({ delay: 0.15 });
+  if (estado) entrada.to(estado, { armado: 1, duration: 2.4, ease: 'expo.inOut' }, 0);
   entrada.from('.hero__bajada', { autoAlpha: 0, y: 18, duration: 1, ease: 'power3.out' }, 0.7);
   entrada.from('.hero__pie', { autoAlpha: 0, duration: 1 }, 1.2);
 
   /* ======================================================================
-     2. Al bajar, el hero se apaga mientras la sección siguiente lo tapa.
+     2. Bajar atraviesa la chakana del hero
+     La cruz gira un octavo de vuelta y la cámara entra por su hueco. En el
+     mismo tramo (el 38 % de una pantalla), main.js abre la escena 1 desde
+     ese hueco: se entra a la primera cara a través de la chakana de nodos.
+     (Corrección del 2026-09-22: antes aparecía primero la chakana de
+     obsidiana y daba una vuelta sola; sobraba.)
      ====================================================================== */
 
   var heroScroll = gsap.timeline({
     scrollTrigger: {
-      trigger: '.atajo',
-      start: 'top bottom',   // la sección del atajo asoma por abajo
-      end: 'top top',
-      scrub: 0.8
+      trigger: '.hero',
+      start: 'top top',
+      end: '+=38%',
+      scrub: 0.6
     }
   });
+  if (estado) heroScroll.to(estado, { zoom: 5.5, giro: Math.PI / 4, ease: 'power2.in' }, 0);
   heroScroll
     .to('.hero__texto', { autoAlpha: 0, y: -60, ease: 'power1.in' }, 0)
     // fromTo sin render inmediato: si no, pisa el fundido de entrada del pie.
@@ -44,23 +54,23 @@
     .fromTo('.hero__sombra', { '--sombra': 0 }, { '--sombra': 0.75, ease: 'none' }, 0);
 
   /* ======================================================================
-     3. La chakana: el imán que frena en cada cara abierta
+     3. La chakana de obsidiana: el imán que frena en cada cara abierta
      El giro lo pinta main.js desde el scroll. Acá solo se agrega el snap:
      al soltar el dedo, la página se acomoda en la cara abierta más cercana.
      ====================================================================== */
 
   var giro = $('.giro');
   if (giro && giro.classList.contains('giro--vivo')) {
-    var nCaras = $$('.cara').length, INTRO = 0.5, total = nCaras + INTRO;
+    var nCaras = $$('.cara').length;
     var puntos = [0];
-    for (var k = 0; k < nCaras; k++) puntos.push((INTRO + k + 0.62) / total);
+    for (var k = 0; k < nCaras; k++) puntos.push((k + 0.62) / nCaras);
     puntos.push(1);
     ScrollTrigger.create({
       trigger: giro,
       start: 'top top',
       end: 'bottom bottom',
       // directional:false = frena en la cara más cercana, no en la siguiente.
-      // Si no, un salto directo desde el atajo terminaba una cara más allá.
+      // Si no, un salto directo terminaba una cara más allá.
       snap: { snapTo: puntos, directional: false, duration: { min: 0.25, max: 0.7 }, delay: 0.12, ease: 'power2.inOut' }
     });
   }

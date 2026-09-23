@@ -9,23 +9,36 @@
   var sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.documentElement.classList.add('js');
 
-  // Si GSAP cargó, movimiento.js apaga el hero al bajar y agrega el imán
-  // de la chakana. Si no cargó, este archivo hace todo solo.
+  // Si GSAP cargó, movimiento.js anima el hero y agrega el imán de la
+  // chakana. Si no cargó, este archivo hace todo solo.
   var usaGsap = !!(window.gsap && window.ScrollTrigger) && !sinMovimiento;
 
+  // Estado del hero que GSAP anima desde movimiento.js:
+  //   armado: 0 = vértices dispersos, 1 = chakana formada
+  //   zoom / giro: la cámara que atraviesa la chakana al bajar
+  var estado = window.YACHAI_HERO = { armado: usaGsap ? 0 : 1, zoom: 1, giro: 0 };
+
   /* ======================================================================
-     1. Hero — una red de nodos que se enlazan, de fondo
+     1. Hero generativo — grafo de nodos sobre una chakana
      ----------------------------------------------------------------------
-     Sin chakana acá (corrección del 2026-09-22): la protagonista es la
-     chakana de obsidiana de más abajo, y dos seguidas —una que además
-     giraba y crecía al bajar— hacían ruido. Queda solo el ambiente: nodos
-     sueltos que se enlazan, algunos en qori.
+     No hay foto de Rodrigo, y una de banco sería una persona ajena haciendo
+     de él. Se dibuja lo que realmente hace: nodos sueltos que se enlazan.
+     Los nodos "ancla" están puestos sobre el contorno de una chakana —
+     la cruz andina— así que la forma de Cusco se insinúa sin dibujarla.
      ====================================================================== */
 
   var lienzo = document.getElementById('lienzo');
   var ctx = lienzo && lienzo.getContext ? lienzo.getContext('2d') : null;
   var nodos = [];
   var ancho = 0, alto = 0, dpr = 1;
+
+  // Contorno de la chakana en coordenadas de rejilla (-3..3).
+  // Los 20 vertices de la chakana, en orden, centrados en (0,0).
+  var CHAKANA = [
+    [-1, 5], [1, 5], [1, 3], [3, 3], [3, 1], [5, 1], [5, -1], [3, -1],
+    [3, -3], [1, -3], [1, -5], [-1, -5], [-1, -3], [-3, -3], [-3, -1],
+    [-5, -1], [-5, 1], [-3, 1], [-3, 3], [-1, 3]
+  ];
 
   function medirLienzo() {
     if (!lienzo) return;
@@ -37,36 +50,92 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
+  var cx = 0, cy = 0, escala = 1;
+
   function sembrar() {
     if (!lienzo) return;
     nodos = [];
-    var cantidad = ancho < 700 ? 30 : 60;   // menos en pantallas chicas
-    for (var i = 0; i < cantidad; i++) {
+    escala = Math.min(ancho, alto) / 14;
+    cx = ancho / 2; cy = alto / 2;
+
+    // Nodos ancla: los vértices de la chakana, más brillantes y quietos.
+    // bx/by es su lugar en la chakana (relativo al centro); ox/oy, el punto
+    // disperso desde el que llegan cuando la chakana se arma.
+    CHAKANA.forEach(function (p) {
+      nodos.push({
+        x: cx + p[0] * escala, y: cy + p[1] * escala,
+        bx: p[0] * escala, by: p[1] * escala,
+        ox: (Math.random() - 0.5) * ancho, oy: (Math.random() - 0.5) * alto,
+        vx: 0, vy: 0, r: 2.1, ancla: true, fase: Math.random() * 6.28
+      });
+    });
+
+    // Nodos sueltos: la parte viva. Menos en pantallas chicas.
+    var sueltos = ancho < 700 ? 26 : 54;
+    for (var i = 0; i < sueltos; i++) {
       nodos.push({
         x: Math.random() * ancho, y: Math.random() * alto,
         vx: (Math.random() - 0.5) * 0.22,
         vy: (Math.random() - 0.5) * 0.22,
-        r: Math.random() * 1.1 + 0.5,
-        qori: Math.random() < 0.12
+        r: Math.random() * 1.1 + 0.5, ancla: false, fase: 0
       });
     }
   }
 
+  var t = 0;
   function dibujar() {
     if (!ctx) return;
+    t += 0.006;
     ctx.clearRect(0, 0, ancho, alto);
+
     var i, j, a, b, dx, dy, d;
     var limite = Math.min(ancho, alto) * 0.19;
+    var k = estado.armado, z = estado.zoom;
+    var cos = Math.cos(estado.giro), sen = Math.sin(estado.giro);
 
-    // Enlaces de proximidad primero, para que los nodos queden encima.
-    ctx.lineWidth = 0.6;
+    // Ubicar las anclas: de su punto disperso a su vértice (armado), y
+    // después girar y acercar alrededor del centro (la cámara del scroll).
+    for (i = 0; i < CHAKANA.length; i++) {
+      a = nodos[i];
+      var px = a.ox + (a.bx - a.ox) * k + Math.sin(t + a.fase) * 5;
+      var py = a.oy + (a.by - a.oy) * k + Math.cos(t * 0.8 + a.fase) * 5;
+      a.x = cx + (px * cos - py * sen) * z;
+      a.y = cy + (px * sen + py * cos) * z;
+    }
+
+    // El contorno de la chakana, uniendo anclas consecutivas. Sin esto la
+    // forma no se lee: quedaban puntos sueltos. Aparece a medida que se arma.
+    ctx.strokeStyle = 'rgba(245,197,24,' + (0.30 * k * k).toFixed(3) + ')';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (i = 0; i < CHAKANA.length; i++) {
+      a = nodos[i];
+      if (i === 0) ctx.moveTo(a.x, a.y); else ctx.lineTo(a.x, a.y);
+    }
+    ctx.closePath();
+    ctx.stroke();
+
+    // El hueco del centro, como en el signo de la marca. Al bajar, la
+    // cámara lo atraviesa.
+    ctx.strokeStyle = 'rgba(245,197,24,' + (0.45 * k * k).toFixed(3) + ')';
+    ctx.beginPath();
+    ctx.arc(cx, cy, escala * 1.05 * z, 0, 6.2832);
+    ctx.stroke();
+
+    // Enlaces de proximidad, para que los nodos queden encima.
     for (i = 0; i < nodos.length; i++) {
       for (j = i + 1; j < nodos.length; j++) {
         a = nodos[i]; b = nodos[j];
         dx = a.x - b.x; dy = a.y - b.y;
         d = Math.sqrt(dx * dx + dy * dy);
         if (d > limite) continue;
-        ctx.strokeStyle = 'rgba(237,237,234,' + ((1 - d / limite) * 0.16).toFixed(3) + ')';
+        var fuerza = 1 - d / limite;
+        if (a.ancla && b.ancla) continue;   // ya los une el contorno
+        var dorado = false;
+        ctx.strokeStyle = dorado
+          ? 'rgba(245,197,24,' + (fuerza * 0.5).toFixed(3) + ')'
+          : 'rgba(237,237,234,' + (fuerza * 0.16).toFixed(3) + ')';
+        ctx.lineWidth = dorado ? 1 : 0.6;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
@@ -76,12 +145,17 @@
 
     for (i = 0; i < nodos.length; i++) {
       a = nodos[i];
-      a.x += a.vx; a.y += a.vy;
-      if (a.x < 0 || a.x > ancho) a.vx *= -1;
-      if (a.y < 0 || a.y > alto) a.vy *= -1;
-      ctx.fillStyle = a.qori ? 'rgba(245,197,24,.85)' : 'rgba(237,237,234,.5)';
+      if (a.ancla) {
+        // Ya ubicadas arriba: respiran alrededor de su vértice, no se van.
+        ctx.fillStyle = 'rgba(245,197,24,.92)';
+      } else {
+        a.x += a.vx; a.y += a.vy;
+        if (a.x < 0 || a.x > ancho) a.vx *= -1;
+        if (a.y < 0 || a.y > alto) a.vy *= -1;
+        ctx.fillStyle = 'rgba(237,237,234,.5)';
+      }
       ctx.beginPath();
-      ctx.arc(a.x, a.y, a.qori ? a.r + 0.6 : a.r, 0, 6.2832);
+      ctx.arc(a.x, a.y, a.r, 0, 6.2832);
       ctx.fill();
     }
   }
@@ -130,8 +204,8 @@
   // Medidas del hueco central de la imagen de la chakana (medidas en el
   // PNG de 1254 px: radio 164 px = 13,1 %; centro 0,8 % arriba del medio).
   // Se usa un poco menos de radio para que el borde quede bajo el aro dorado.
-  var HUECO = 0.128, HUECO_Y = -0.0084, INTRO = 0.5;
-  var m = { tramo: 1, tam: 0, hueco: 0, maxR: 0 };
+  var HUECO = 0.128, HUECO_Y = -0.0084, INTRO = 0;
+  var m = { tramo: 1, tam: 0, hueco: 0, maxR: 0, hy: 0 };
 
   function leerCaras() {
     caras = contCaras ? Array.prototype.slice.call(contCaras.querySelectorAll('.cara')) : [];
@@ -146,7 +220,7 @@
     m.maxR = Math.sqrt(W * W + H * H) / 2 + 40;
     if (cabecera) escena.style.setProperty('--alto-cabecera', cabecera.offsetHeight + 'px');
     escena.style.setProperty('--hx', (W / 2) + 'px');
-    escena.style.setProperty('--hy', (chakana.offsetTop + m.tam * HUECO_Y) + 'px');
+    m.hy = chakana.offsetTop + m.tam * HUECO_Y;
   }
 
   function suave(x) { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); }
@@ -215,44 +289,55 @@
 
   function pintarGiro() {
     if (!giroVivo) return;
-    var H = window.innerHeight;
-    var y = window.scrollY - giro.offsetTop;
+    var W = escena.clientWidth, H = escena.clientHeight || window.innerHeight;
+    var y = window.scrollY - giro.offsetTop;   // la sección arranca pegada al hero
+    var P = Math.max(0, y / m.tramo);          // 0 … número de caras
+    var i = Math.min(caras.length - 1, Math.floor(P));
+    var t = Math.min(1, P - i);
+    var angulo, escala = 1, op = 1, abierto, activa, hy = null;
 
-    // Mientras la escena sube sobre el hero, su fondo pasa de transparente
-    // a negro: se ve la cámara del hero atravesando la chakana de nodos.
-    escena.style.setProperty('--fondo', suave((y + H) / H).toFixed(3));
-
-    var P = y / m.tramo - INTRO;          // -INTRO … número de caras
-    var angulo = 0, escala = 1, op = 1, abierto = 0, activa = null;
-
-    if (P < 0) {
-      var q = suave((P + INTRO) / INTRO);  // intro: la chakana aparece
-      escala = 0.72 + 0.28 * q;
-      op = q;
+    if (i === 0) {
+      // Cara 1: se abre desde el hueco de la chakana del hero, sin que
+      // aparezca antes la de obsidiana. Esa entra recién al cerrar la cara,
+      // para girar hacia la 2.
+      angulo = 0;
+      activa = caras[0];
+      abierto = suave(t / 0.35) * (1 - suave((t - 0.82) / 0.18));
+      if (t < 0.5) {
+        op = 0;
+        hy = H / 2;                            // el centro de la chakana del hero
+      } else {
+        escala = 1 + abierto * 2.6;
+        op = 1 - Math.min(1, abierto * 1.5);
+      }
     } else {
-      var i = Math.min(caras.length - 1, Math.floor(P));
-      var t = Math.min(1, P - i);
-      var f = suave(t / 0.25);             // media vuelta
-      angulo = (i + f) * 180;
-      activa = f < 0.5 ? (caras[i - 1] || null) : caras[i];
+      var f = suave(t / 0.25);                 // media vuelta desde la cara anterior
+      angulo = (i - 1 + f) * 180;
+      activa = f < 0.5 ? caras[i - 1] : caras[i];
       abierto = suave((t - 0.25) / 0.25) * (1 - suave((t - 0.82) / 0.18));
-      escala = 1 + abierto * 2.6;          // la cámara entra por el hueco
+      escala = 1 + abierto * 2.6;              // la cámara entra por el hueco
       op = 1 - Math.min(1, abierto * 1.5);
     }
 
     var cosA = Math.abs(Math.cos(angulo * Math.PI / 180));
-    var ry = m.hueco * escala + abierto * (m.maxR - m.hueco * escala);
+    var ry = (i === 0 && t < 0.5)
+      ? abierto * m.maxR
+      : m.hueco * escala + abierto * (m.maxR - m.hueco * escala);
+
+    // El fondo negro de la escena entra cuando la cara 1 ya cubre todo: antes
+    // se tiene que ver el hero detrás.
+    escena.style.setProperty('--fondo', suave((P - 0.25) / 0.1).toFixed(3));
     escena.style.setProperty('--rx', (ry * cosA).toFixed(1) + 'px');
     escena.style.setProperty('--ry', ry.toFixed(1) + 'px');
+    escena.style.setProperty('--hy', (hy !== null ? hy : m.hy) + 'px');
     escena.style.setProperty('--velo', abierto.toFixed(3));
-    escena.style.setProperty('--guia', P < -0.1 ? '1' : '0');
     chakana.style.setProperty('--escala', escala.toFixed(3));
     chakana.style.opacity = op.toFixed(3);
     pieza.style.transform = 'rotateY(' + angulo.toFixed(2) + 'deg)';
     // El canto dorado solo existe cuando la pieza está casi de perfil.
     pieza.style.setProperty('--canto', Math.max(0, (0.35 - cosA) / 0.35).toFixed(3));
 
-    mostrar(activa);
+    mostrar(abierto > 0.001 || i > 0 ? activa : null);
     abrir(abierto > 0.55 ? activa : null);
   }
 
@@ -341,26 +426,29 @@
   }
 
   /* ======================================================================
-     4. Atajo — ir directo a una cara, y reordenar por rubro
+     4. Ideas — ir directo a una cara, y ordenar por rubro
      ----------------------------------------------------------------------
-     Tocar un problema salta de golpe a esa cara ya abierta: sin recorrer
-     las otras, así la chakana no gira seis veces seguidas. ?cara=04 hace lo
-     mismo desde un enlace o un QR. Los botones de rubro son una tabla, no
-     IA (si se resuelve con un IF, no se usa un LLM); ?rubro=hotel los activa.
+     Tocar una de "las que viste arriba" salta de golpe a esa cara ya
+     abierta (sin recorrer las otras). ?cara=04 hace lo mismo desde un
+     enlace o un QR. Los botones de rubro son una tabla, no IA (si se
+     resuelve con un IF, no se usa un LLM): ordenan las caras de la chakana,
+     los atajos y las ideas. ?rubro=hotel los activa desde un QR.
      ====================================================================== */
 
   var PRIMERO = {
     tienda:      ['01', '05', '04', '02'],
     restaurante: ['01', '04', '05', '02'],
     hotel:       ['01', '04', '03', '02'],
+    turismo:     ['01', '04', '05', '02'],
     consultorio: ['01', '02', '03', '04'],
     oficina:     ['03', '06', '02', '01'],
+    academia:    ['01', '06', '02', '05'],
     agencia:     ['05', '03', '06', '07'],
     otro:        []
   };
   var botonesRubro = document.querySelectorAll('.rubro');
-  var listaAtajo = document.querySelector('.atajo__lista');
-  var atajo = document.getElementById('atajo');
+  var listaDolores = document.querySelector('.ideas__dolores');
+  var listaIdeas = document.querySelector('.ideas__lista');
 
   function saltar(top) {
     // 'instant' y no 'auto': el CSS tiene scroll suave, y un viaje suave
@@ -381,13 +469,16 @@
     }
   }
 
-  function ordenarPor(contenedor, selector, puesto, tuyaClase, prioridad) {
+  function ordenar(contenedor, selector, esTuyo, desempate) {
     if (!contenedor) return;
     var lista = Array.prototype.slice.call(contenedor.querySelectorAll(selector));
-    lista.sort(function (a, b) { return puesto(a) - puesto(b); });
+    lista.sort(function (a, b) {
+      var d = (esTuyo(b) ? 1 : 0) - (esTuyo(a) ? 1 : 0);
+      return d !== 0 ? d : desempate(a, b);
+    });
     lista.forEach(function (el) {
       contenedor.appendChild(el);
-      el.classList.toggle(tuyaClase, prioridad.indexOf(el.dataset.dolor) >= 0);
+      el.classList.toggle('es-tuyo', esTuyo(el));
     });
   }
 
@@ -398,8 +489,17 @@
       var i = prioridad.indexOf(el.dataset.dolor);
       return i >= 0 ? i : 10 + parseInt(el.dataset.dolor, 10);
     }
-    ordenarPor(contCaras, '.cara', puesto, 'cara--tuya', prioridad);
-    ordenarPor(listaAtajo, 'li', puesto, 'atajo__item--tuyo', prioridad);
+    function esDolorTuyo(el) { return prioridad.indexOf(el.dataset.dolor) >= 0; }
+    function porPuesto(a, b) { return puesto(a) - puesto(b); }
+
+    ordenar(contCaras, '.cara', esDolorTuyo, porPuesto);
+    Array.prototype.forEach.call(document.querySelectorAll('.cara'), function (c) {
+      c.classList.toggle('cara--tuya', esDolorTuyo(c));
+    });
+    ordenar(listaDolores, 'li', esDolorTuyo, porPuesto);
+    ordenar(listaIdeas, 'li', function (el) {
+      return rubro !== 'otro' && (' ' + el.dataset.rubros + ' ').indexOf(' ' + rubro + ' ') >= 0;
+    }, function () { return 0; });
     leerCaras();
     Array.prototype.forEach.call(botonesRubro, function (b) {
       b.setAttribute('aria-pressed', String(b.dataset.rubro === rubro));
@@ -412,12 +512,12 @@
     b.addEventListener('click', function () { elegirRubro(b.dataset.rubro); });
   });
 
-  if (listaAtajo) {
-    listaAtajo.addEventListener('click', function (e) {
-      var fila = e.target.closest('.atajo__fila');
-      if (!fila) return;
+  if (listaDolores) {
+    listaDolores.addEventListener('click', function (e) {
+      var enlace = e.target.closest('.ideas__dolor');
+      if (!enlace) return;
       e.preventDefault();
-      irACara(fila.dataset.dolor);
+      irACara(enlace.dataset.dolor);
     });
   }
 
@@ -429,19 +529,20 @@
   medirCabecera();
   window.addEventListener('resize', medirCabecera);
 
-  // Enlaces internos (menú, "Ver los 7"): si el viaje cruza la chakana, van
-  // de golpe. Con scroll suave, la chakana giraría hacia atrás por todas
-  // las caras en el camino.
+  // Enlaces internos (el menú): si el viaje cruza la chakana, van de golpe.
+  // Con scroll suave, la chakana giraría por todas las caras en el camino.
   document.addEventListener('click', function (e) {
     var enlace = e.target.closest('a[href^="#"]');
-    if (!enlace || !giroVivo || enlace.classList.contains('atajo__fila')) return;
+    if (!enlace || !giroVivo || enlace.classList.contains('ideas__dolor')) return;
     var destino = document.getElementById(enlace.getAttribute('href').slice(1));
     if (!destino) return;
-    var top = destino.getBoundingClientRect().top + window.scrollY - (cabecera ? cabecera.offsetHeight : 0);
+    var top = destino === giro ? giro.offsetTop + 0.62 * m.tramo
+      : destino.getBoundingClientRect().top + window.scrollY - (cabecera ? cabecera.offsetHeight : 0);
     var g0 = giro.offsetTop, g1 = g0 + giro.offsetHeight, desde = window.scrollY;
-    if (Math.min(desde, top) < g1 && Math.max(desde, top) > g0) {
+    if (destino === giro || (Math.min(desde, top) < g1 && Math.max(desde, top) > g0)) {
       e.preventDefault();
       saltar(Math.max(0, top));
+      alHacerScroll();
     }
   });
 
