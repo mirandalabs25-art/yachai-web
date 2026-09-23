@@ -898,38 +898,125 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
 .giro__contorno{fill:none;stroke:var(--qori);stroke-width:1;stroke-opacity:.75}
 .giro__puntos circle{fill:var(--qori);filter:drop-shadow(0 0 4px rgba(245,197,24,.6))}
 
-/* --- accesos fijos: Asistente · Consultar · WhatsApp (siempre visibles) ---- */
-.accesos{
-  position:fixed;z-index:60;display:flex;gap:6px;
+/* --- contacto: un solo botón, como el de WhatsApp (2026-09-23) -------------
+   Pedido del usuario: "uno solo, no lo partas en tres… un botón amarillo con
+   verde". Abre un globo con dos caminos: el asistente Yachai o Rodrigo por
+   WhatsApp. En el celular no hay barra: la página deja libre la franja de
+   abajo para este botón y para el regalo. */
+.contacto{
+  position:fixed;z-index:65;
   right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;align-items:flex-end;gap:12px;
 }
-.accesos__boton{
-  display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 16px;
-  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--hueso);background:rgba(0,0,0,.85);border:1px solid var(--filete-fuerte);border-radius:0;
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);cursor:pointer;transition:background .2s,color .2s,border-color .2s;
+.contacto__boton{
+  position:relative;width:62px;height:62px;border-radius:50%;cursor:pointer;
+  display:grid;place-items:center;padding:0;
+  background:var(--qori);color:#0b6b3a;border:3px solid #25d366;
+  box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 0 rgba(37,211,102,.55);
+  animation:contacto-latido 2.8s ease-out 1.5s 3;
+  transition:transform .2s;
 }
-.accesos__boton:hover,.accesos__boton:focus-visible{border-color:var(--qori);color:var(--qori)}
-.accesos__boton--qori{background:var(--qori);border-color:var(--qori);color:var(--negro)}
-.accesos__boton--qori:hover,.accesos__boton--qori:focus-visible{background:var(--negro);color:var(--qori)}
-.accesos__boton--wa{border-color:#25d366;color:#25d366}
-.accesos__boton--qori::before{content:'';width:11px;height:11px;margin-right:8px;background:currentColor;
-  clip-path:polygon(33% 0,67% 0,67% 33%,100% 33%,100% 67%,67% 67%,67% 100%,33% 100%,33% 67%,0 67%,0 33%,33% 33%)}
-/* En el celular, una barra abajo de lado a lado; la página deja lugar para ella. */
+.contacto__boton svg{width:32px;height:32px}
+.contacto__boton:hover,.contacto__boton:focus-visible{transform:scale(1.06)}
+.contacto__boton:focus-visible{outline:2px solid var(--hueso);outline-offset:3px}
+.contacto--abierto .contacto__boton{background:var(--hueso)}
+.contacto__punto{
+  position:absolute;top:2px;right:2px;width:13px;height:13px;border-radius:50%;
+  background:#25d366;border:2px solid var(--negro);
+}
+@keyframes contacto-latido{
+  0%{box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 0 rgba(37,211,102,.55)}
+  70%{box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 16px rgba(37,211,102,0)}
+  100%{box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 0 rgba(37,211,102,0)}
+}
+
+.contacto__globo{
+  width:min(330px,calc(100vw - 28px));
+  background:var(--carbon);border:1px solid var(--filete-fuerte);border-radius:14px;overflow:hidden;
+  box-shadow:0 18px 50px rgba(0,0,0,.6);
+}
+.contacto__globo[hidden]{display:none}
+.contacto__cabeza{
+  display:flex;align-items:center;gap:12px;margin:0;padding:14px 16px;
+  background:#0b3d24;border-bottom:1px solid rgba(37,211,102,.35);
+}
+.contacto__cabeza b{display:block;font-size:1rem;color:var(--hueso)}
+.contacto__cabeza small{display:block;font-size:.78rem;color:#7ee2a4}
+.contacto__avatar,.contacto__icono--yachai{
+  flex:0 0 auto;width:38px;height:38px;border-radius:50%;background:var(--negro);position:relative;
+}
+.contacto__avatar::after,.contacto__icono--yachai::after{
+  content:'';position:absolute;inset:10px;background:var(--qori);
+  clip-path:polygon(33% 0,67% 0,67% 33%,100% 33%,100% 67%,67% 67%,67% 100%,33% 100%,33% 67%,0 67%,0 33%,33% 33%);
+}
+.contacto__pregunta{
+  margin:14px 16px 10px;padding:10px 12px;max-width:85%;
+  background:var(--grafito);border-radius:0 10px 10px 10px;font-size:.92rem;line-height:1.45;
+}
+.contacto__opcion{
+  display:flex;align-items:center;gap:12px;width:calc(100% - 24px);margin:0 12px 10px;padding:12px;
+  background:transparent;border:1px solid var(--filete-fuerte);border-radius:10px;
+  color:var(--hueso);font:inherit;text-align:left;cursor:pointer;transition:border-color .2s,background .2s;
+}
+.contacto__opcion:last-child{margin-bottom:14px}
+.contacto__opcion b{display:block;font-size:.95rem}
+.contacto__opcion small{display:block;font-size:.8rem;color:var(--gris);margin-top:2px}
+.contacto__opcion:hover,.contacto__opcion:focus-visible{border-color:var(--qori);background:rgba(245,197,24,.06)}
+.contacto__opcion--wa:hover,.contacto__opcion--wa:focus-visible{border-color:#25d366;background:rgba(37,211,102,.08)}
+.contacto__icono--wa{
+  flex:0 0 auto;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:#25d366;color:#fff;
+}
+.contacto__icono--wa svg{width:22px;height:22px}
+
+/* --- el regalo que salta (solo en el inicio) --------------------------------- */
+.regalo{
+  position:fixed;z-index:64;
+  left:max(14px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom));
+  display:flex;align-items:flex-end;gap:8px;
+}
+.regalo__caja{
+  display:block;width:62px;height:62px;transform-origin:50% 100%;
+  filter:drop-shadow(0 6px 14px rgba(245,197,24,.45));
+  animation:regalo-salta 1.9s cubic-bezier(.3,.7,.4,1) infinite;
+}
+.regalo__caja svg{width:100%;height:100%;overflow:visible}
+.regalo__cuerpo{fill:var(--qori)}
+.regalo__tapa{fill:#ffd84a}
+.regalo__lazo{fill:#ffd84a;stroke:#000;stroke-width:1.5}
+.regalo__cinta{fill:#000;opacity:.85}
+.regalo__sombra{fill:rgba(0,0,0,.25)}
+.regalo__texto{
+  margin-bottom:6px;padding:6px 10px;
+  background:var(--negro);border:1px solid var(--qori);
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;line-height:1.25;color:var(--hueso);
+}
+.regalo__texto b{color:var(--qori);font-weight:700}
+.regalo:hover .regalo__texto,.regalo:focus-visible .regalo__texto{background:var(--qori);color:var(--negro)}
+.regalo:hover .regalo__texto b,.regalo:focus-visible .regalo__texto b{color:var(--negro)}
+.regalo:focus-visible{outline:2px solid var(--hueso);outline-offset:4px}
+@keyframes regalo-salta{
+  0%,100%{transform:translateY(0) scale(1,1)}
+  8%{transform:translateY(0) scale(1.1,.9)}
+  28%{transform:translateY(-18px) scale(.95,1.05) rotate(-7deg)}
+  46%{transform:translateY(0) scale(1.08,.92)}
+  58%{transform:translateY(-6px) rotate(5deg)}
+  70%{transform:translateY(0) scale(1,1)}
+}
+@media (prefers-reduced-motion:reduce){
+  .regalo__caja,.contacto__boton{animation:none}
+}
+
+/* En el celular, la franja de abajo queda libre para el regalo y el contacto. */
 @media (max-width:640px){
-  .accesos{
-    left:0;right:0;bottom:0;gap:6px;padding:8px max(10px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));
-    background:rgba(0,0,0,.92);border-top:1px solid var(--filete);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-  }
-  .accesos__boton{flex:1 1 0;padding:0 6px;font-size:10.5px;letter-spacing:.08em}
-  body{padding-bottom:64px}
-  .giro--vivo .cara__contenido{padding-bottom:calc(clamp(18px,3.5vh,36px) + 64px)}
+  body{padding-bottom:84px}
+  .giro--vivo .cara__contenido{padding-bottom:calc(clamp(18px,3.5vh,36px) + 76px)}
 }
 
 /* --- ventana flotante del asistente -------------------------------------- */
 .panel-asistente{
   position:fixed;z-index:70;display:flex;flex-direction:column;
-  right:max(14px,env(safe-area-inset-right));bottom:calc(max(14px,env(safe-area-inset-bottom)) + 58px);
+  right:max(14px,env(safe-area-inset-right));bottom:calc(max(14px,env(safe-area-inset-bottom)) + 76px);
   width:min(400px,calc(100vw - 28px));height:min(600px,calc(100vh - 140px));
   background:var(--carbon);border:1px solid var(--filete-fuerte);
 }
@@ -945,8 +1032,9 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
 .panel-asistente .chat{max-width:none;flex:1;min-height:0;border:0}
 .panel-asistente .chat__registro{flex:1;min-height:0;max-height:none}
 @media (max-width:640px){
-  .panel-asistente{left:0;right:0;width:auto;bottom:62px;height:calc(100vh - 150px);border-left:0;border-right:0}
-  @supports (height:100svh){.panel-asistente{height:calc(100svh - 150px)}}
+  /* Entre la cabecera y el botón de contacto, sin taparlos. */
+  .panel-asistente{left:0;right:0;width:auto;top:calc(var(--cabecera,90px) + 8px);bottom:88px;height:auto;border-left:0;border-right:0}
+  @supports (height:100svh){.panel-asistente{height:auto}}
 }
 
 /* ==========================================================================
@@ -1245,3 +1333,32 @@ a.tarjeta--qori:hover,a.tarjeta--qori:focus-visible{background:#ffd43a}
 .oferta .acciones{margin:0;gap:12px 18px}
 .oferta__mas{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid rgba(0,0,0,.35);padding-bottom:2px}
 .oferta__mas:hover,.oferta__mas:focus-visible{border-color:var(--negro)}
+
+/* --- más imágenes, las que informan (2026-09-23) ------------------------------
+   Nielsen Norman Group: se miran las imágenes que dicen algo (la escena del
+   problema, el trabajo real, la persona real) y se ignoran las decorativas.
+   Por eso son las escenas de cada servicio, las capturas y la foto de Rodrigo. */
+.tarjeta--img{padding-top:0}
+.tarjeta__img{
+  display:block;margin:0 calc(clamp(20px,2.8vw,30px) * -1) 6px;
+  aspect-ratio:16/10;overflow:hidden;background:var(--grafito);border-bottom:1px solid var(--filete);
+}
+.tarjeta__img img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.16,1,.3,1)}
+a.tarjeta:hover .tarjeta__img img,a.tarjeta:focus-visible .tarjeta__img img{transform:scale(1.05)}
+.tarjeta__img--patron{
+  background-color:var(--carbon);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M24 6h12v6h6v6h6v12h-6v6h-6v6H24v-6h-6v-6h-6V18h6v-6h6z' fill='none' stroke='%23f5c518' stroke-opacity='.22'/%3E%3C/svg%3E");
+  background-size:60px 60px;
+}
+
+/* La cabecera de cada rubro: texto y su escena, como la de los servicios. */
+.servicio__medio--rubro{aspect-ratio:4/4.4}
+.rubro__nota{
+  position:absolute;z-index:2;left:clamp(12px,2vw,22px);right:clamp(12px,2vw,22px);bottom:clamp(12px,2vw,22px);
+  margin:0;padding:12px 14px;font-size:.92rem;line-height:1.5;color:var(--hueso);
+  background:rgba(8,8,8,.84);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid var(--filete-fuerte);
+}
+.rubro__nota span{display:block;margin-bottom:6px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--qori)}
+
+/* Quién te asesora, en la página del QR: la foto real pesa más que el texto. */
+.quien--landing{max-width:980px}

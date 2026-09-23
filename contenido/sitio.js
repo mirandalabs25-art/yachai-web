@@ -20,22 +20,26 @@ const WA_NUMERO = '51969322677';
 const WA_VISIBLE = '+51 969 322 677';
 const wa = (texto) => `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(texto)}`;
 
-// RUC de persona natural. REVISAR: el usuario lo dictó como "70 58 54 54 10";
-// un RUC tiene 11 dígitos. Mientras no esté confirmado, el pie muestra
-// [RUC por confirmar] en vez de un número que podría estar mal.
-const RUC = null;
+// RUC de persona natural, confirmado por el usuario el 2026-09-23 (el dígito
+// final se validó con el algoritmo de SUNAT).
+const RUC = '10705854543';
 
 // La oferta de entrada (dictada por el usuario, 2026-09-23): 15 días de
-// asesoría gratis, el primer gancho del QR. La promoción corre un mes;
-// después la asesoría cuesta S/600.
+// asesoría gratis, el primer gancho del QR. Corre todo octubre; la asesoría
+// vale US$1,000.
+// Ojo, Indecopi (precedente de la Resolución 186-2021/CCD): un «precio
+// regular» tachado tiene que ser un precio que de verdad se cobra. Por eso no
+// se escribe «antes US$1,000», sino lo que es cierto: gratis en octubre y
+// desde noviembre cuesta eso.
 const ASESORIA = {
-  precio: 600,
+  precioTexto: 'US$1,000',
   dias: 15,
   titulo: '15 días de asesoría gratis',
   corto: 'Asesoría gratis',
   texto: '15 días de asesoría: entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos. Después lo haces conmigo o con quien quieras.',
-  // REVISAR: fechas exactas del mes de promoción (del __ al __).
-  vigencia: 'Promoción de lanzamiento, válida por un mes.',
+  vigencia: 'Del 1 al 31 de octubre de 2026.',
+  mes: 'octubre',
+  despues: 'Desde noviembre, US$1,000',
   pagina: 'asesoria-gratis.html',
   whatsapp: wa('Hola Rodrigo, quiero los 15 días de asesoría gratis para mi negocio'),
 };
@@ -309,7 +313,7 @@ const GRUPOS = [
    -------------------------------------------------------------------------- */
 const RUBROS = [
   {
-    slug: 'para-hoteles', clave: 'hotel',
+    slug: 'para-hoteles', clave: 'hotel', escena: '01',
     nombre: 'Hoteles y hospedajes', menu: 'Reservas y huéspedes, a cualquier hora',
     h1: 'Automatización para hoteles y hospedajes en Cusco',
     bajada: 'Tus huéspedes escriben a cualquier hora y en cualquier idioma. Que nadie se quede sin respuesta mientras duermes.',
@@ -331,7 +335,7 @@ const RUBROS = [
     mensaje: 'Hola Rodrigo, tengo un hotel u hospedaje en Cusco y quiero atender mejor a mis huéspedes',
   },
   {
-    slug: 'para-restaurantes', clave: 'restaurante',
+    slug: 'para-restaurantes', clave: 'restaurante', escena: '05',
     nombre: 'Restaurantes', menu: 'Carta, pedidos y el menú del día',
     h1: 'Automatización para restaurantes en Cusco',
     bajada: 'En la hora punta nadie tiene tiempo de contestar el celular. Que la carta, las reservas y el menú del día salgan solos.',
@@ -353,7 +357,7 @@ const RUBROS = [
     mensaje: 'Hola Rodrigo, tengo un restaurante en Cusco y quiero que la atención por WhatsApp sea más rápida',
   },
   {
-    slug: 'para-consultorios', clave: 'consultorio',
+    slug: 'para-consultorios', clave: 'consultorio', escena: '02',
     nombre: 'Consultorios', menu: 'Citas, recordatorios e historial',
     h1: 'Automatización para consultorios en Cusco',
     bajada: 'Salud, belleza, estética, odontología o tatuajes: citas que se agendan solas, pacientes que no te dejan plantado.',
@@ -375,7 +379,7 @@ const RUBROS = [
     mensaje: 'Hola Rodrigo, tengo un consultorio en Cusco y quiero agendar y recordar citas automáticamente',
   },
   {
-    slug: 'para-estudios-juridicos', clave: 'oficina',
+    slug: 'para-estudios-juridicos', clave: 'oficina', escena: '03',
     nombre: 'Estudios jurídicos y contables', menu: 'Plazos, expedientes y reuniones',
     h1: 'Automatización para estudios jurídicos y contables en Cusco',
     bajada: 'Plazos que se revisan uno por uno, reuniones que nadie anota y consultas que se repiten. Que el trabajo repetitivo lo haga un asistente.',
@@ -397,7 +401,7 @@ const RUBROS = [
     mensaje: 'Hola Rodrigo, tengo un estudio en Cusco y quiero automatizar plazos y consultas',
   },
   {
-    slug: 'para-tiendas', clave: 'tienda',
+    slug: 'para-tiendas', clave: 'tienda', escena: '04',
     nombre: 'Tiendas y microempresas', menu: 'Ropa, accesorios y tiendas pequeñas',
     h1: 'Automatización para tiendas y microempresas en Cusco',
     bajada: 'Ropa, accesorios, regalos, tiendas pequeñas que venden por WhatsApp y Marketplace. Menos tiempo respondiendo, más tiempo vendiendo.',

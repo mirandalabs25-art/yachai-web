@@ -2,8 +2,10 @@
 window.YACHAI_DATOS = {
  "whatsapp": "51969322677",
  "asesoria": {
-  "precio": 600,
+  "precioTexto": "US$1,000",
   "dias": 15,
+  "mes": "octubre",
+  "despues": "Desde noviembre, US$1,000",
   "texto": "15 días de asesoría: entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos. Después lo haces conmigo o con quien quieras.",
   "pagina": "asesoria-gratis.html"
  },

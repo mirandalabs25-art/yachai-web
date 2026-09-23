@@ -166,11 +166,10 @@ const SIGNO = `<svg class="marca__signo" viewBox="0 0 60 60" aria-hidden="true">
 
 function oferta(clase = '') {
   return `<div class="oferta ${clase}">
-        <p class="oferta__dato">Lanzamiento · ${esc(S.ASESORIA.vigencia.replace(/^Promoción de lanzamiento, /, '').replace(/\.$/, ''))}</p>
+        <p class="oferta__dato">Lanzamiento · todo ${esc(S.ASESORIA.mes)}</p>
         <p class="oferta__titulo">${esc(S.ASESORIA.titulo)}</p>
         <p class="oferta__texto">${esc(S.ASESORIA.texto)}</p>
-        <p class="oferta__precio">Precio regular <s>${soles(S.ASESORIA.precio)}</s> · <b>gratis</b></p>
-        <!-- REVISAR: fechas de la promoción -->
+        <p class="oferta__precio"><b>Gratis todo ${esc(S.ASESORIA.mes)}</b> · ${esc(S.ASESORIA.despues)}</p>
         <p class="acciones"><a class="boton boton--negro" href="${S.ASESORIA.whatsapp}" ${EXTERNO}>La quiero</a><a class="oferta__mas" href="${S.ASESORIA.pagina}">Qué incluye →</a></p>
       </div>`;
 }
@@ -258,8 +257,8 @@ function cabeceraMinima() {
 <div class="anuncio" aria-hidden="true">
   <div class="anuncio__pista">
     <span>${esc(S.ASESORIA.titulo)}</span><span>—</span>
-    <span>${esc(S.ASESORIA.vigencia)}</span><span>—</span>
-    <span>Precio regular ${soles(S.ASESORIA.precio)}</span><span>—</span>
+    <span>Todo ${esc(S.ASESORIA.mes)}</span><span>—</span>
+    <span>${esc(S.ASESORIA.despues)}</span><span>—</span>
     <span>Cusco · Perú</span><span>—</span>
   </div>
 </div>
@@ -328,13 +327,43 @@ ${S.RUBROS.map((r) => `        <li><a href="${r.slug}.html">${esc(r.nombre)}</a>
 </footer>`;
 }
 
-function accesos(conChat) {
-  return `<!-- ACCESOS FIJOS: siempre visibles (pedido del usuario, 2026-09-22). En el
-     celular son una barra abajo; en escritorio, un grupo en la esquina. -->
-<div class="accesos" role="group" aria-label="Contacto rápido">
-  <button type="button" class="accesos__boton accesos__boton--qori" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">Asistente</button>
-  <button type="button" class="accesos__boton" data-abrir-asistente="consulta" aria-controls="panel-asistente" aria-expanded="false">Consultar</button>
-  <a class="accesos__boton accesos__boton--wa" href="${S.wa('Hola Rodrigo, vi la web de Yachai y quiero conversar')}" ${EXTERNO}>WhatsApp</a>
+// Íconos del botón de contacto: una burbuja de chat con un teléfono (el gesto
+// de WhatsApp, dibujado acá) y la chakana de Yachai.
+const ICONO_CHAT = `<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5A12.5 12.5 0 0 0 5.2 22.3L3.5 28.5l6.4-1.7A12.5 12.5 0 1 0 16 3.5z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M12.2 10.2c.3-.1.6 0 .8.3l1.3 2.7c.1.3.1.6-.1.8l-.9 1c.8 1.6 2 2.8 3.6 3.6l1-.9c.2-.2.5-.3.8-.1l2.7 1.3c.3.2.4.5.3.8-.5 1.6-1.9 2.4-3.4 2.1-3.6-.8-6.3-3.5-7.1-7.1-.3-1.5.5-2.9 2.1-3.4z" fill="currentColor"/></svg>`;
+
+// Un solo botón de contacto (pedido del usuario, 2026-09-23: "uno solo, no lo
+// partas en tres… como un WhatsApp"). Al tocarlo pregunta con quién hablar:
+// el asistente Yachai (responde al instante) o Rodrigo, directo por WhatsApp.
+// En el inicio, además, el regalo que salta y lleva a la página del QR.
+function accesos(conChat, conRegalo = false) {
+  const regalo = conRegalo ? `
+<!-- REGALO: salta en el inicio y lleva a la asesoría gratis (pedido del
+     usuario, 2026-09-23: "un regalito que esté saltando"). Animación en CSS;
+     con "reducir movimiento", queda quieto. -->
+<a class="regalo" href="${S.ASESORIA.pagina}" aria-label="Regalo: ${esc(S.ASESORIA.titulo)} todo ${esc(S.ASESORIA.mes)}">
+  <span class="regalo__caja" aria-hidden="true"><svg viewBox="0 0 64 64"><path class="regalo__lazo" d="M32 19c-3-9-15-12-15-4 0 5 8 6 15 4zm0 0c3-9 15-12 15-4 0 5-8 6-15 4z"/><rect class="regalo__tapa" x="9" y="19" width="46" height="12" rx="2"/><rect class="regalo__cuerpo" x="12" y="31" width="40" height="26" rx="2"/><rect class="regalo__cinta" x="28.5" y="19" width="7" height="38"/><rect class="regalo__sombra" x="12" y="31" width="40" height="2.5"/></svg></span>
+  <span class="regalo__texto"><b>${S.ASESORIA.dias} días</b> gratis</span>
+</a>
+` : '';
+  return `${regalo}
+<!-- CONTACTO: un solo botón flotante, como el de WhatsApp. -->
+<div class="contacto">
+  <div class="contacto__globo" id="contacto-globo" role="dialog" aria-label="¿Con quién quieres hablar?" hidden>
+    <p class="contacto__cabeza"><span class="contacto__avatar" aria-hidden="true"></span><span><b>Yachai</b><small>En línea · te respondemos ahora</small></span></p>
+    <p class="contacto__pregunta">¡Hola! ¿Con quién quieres hablar?</p>
+    <button type="button" class="contacto__opcion" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">
+      <span class="contacto__icono contacto__icono--yachai" aria-hidden="true"></span>
+      <span><b>Con el asistente Yachai</b><small>Responde al instante, a cualquier hora</small></span>
+    </button>
+    <a class="contacto__opcion contacto__opcion--wa" href="${S.wa('Hola Rodrigo, vi la web de Yachai y quiero conversar')}" ${EXTERNO}>
+      <span class="contacto__icono contacto__icono--wa" aria-hidden="true">${ICONO_CHAT}</span>
+      <span><b>Directo con Rodrigo</b><small>Por WhatsApp · ${S.WA_VISIBLE}</small></span>
+    </a>
+  </div>
+  <button type="button" class="contacto__boton" aria-expanded="false" aria-controls="contacto-globo" aria-label="Hablemos: elige con quién">
+    ${ICONO_CHAT}
+    <span class="contacto__punto" aria-hidden="true"></span>
+  </button>
 </div>
 
 <!-- Ventana flotante del asistente. En el inicio, el chat de la sección se
@@ -389,8 +418,21 @@ function precioTexto(s) {
   return 'Desde ' + soles(s.precio.desde) + (s.precio.unidad ? ' ' + s.precio.unidad : '');
 }
 
+// Miniatura de una escena (assets/img/giro/mini/, 640×400, ~25 KB): la
+// misma imagen del inicio, liviana para las tarjetas.
+function mini(num) {
+  const c = num ? cara(num) : null;
+  return c ? c.img.replace('assets/img/giro/', 'assets/img/giro/mini/') : null;
+}
+function tarjetaImg(src) {
+  return src
+    ? `<span class="tarjeta__img"><img src="${src}" alt="" loading="lazy" decoding="async" width="640" height="400"></span>`
+    : '<span class="tarjeta__img tarjeta__img--patron" aria-hidden="true"></span>';
+}
+
 function tarjetaServicio(s, conPrecio = true) {
-  return `<li><a class="tarjeta revelar" href="${s.slug}.html">
+  return `<li><a class="tarjeta tarjeta--img revelar" href="${s.slug}.html">
+      ${tarjetaImg(mini(s.cara))}
       <span class="tarjeta__dato">${s.cara ? 'Servicio · ' + s.cara : 'Servicio'}</span>
       <b class="tarjeta__titulo">${esc(s.nombre)}</b>
       <span class="tarjeta__texto">${esc(s.entrega)}</span>
@@ -649,15 +691,22 @@ function paginaRubro(r) {
   const ideas = IDEAS.filter((i) => i.rubros.includes(r.clave));
   const casos = CASOS.filter((c) => c.rubro === r.clave);
   let n = 0;
-  const cuerpo = `<header class="pcabeza">
-  <p class="dato dato--qori">Soluciones · Cusco</p>
-  <h1 class="pcabeza__titulo">${esc(r.h1)}</h1>
-  <p class="pcabeza__bajada">${esc(r.bajada)}</p>
-  <div class="acciones">
-    <a class="boton boton--qori" href="${S.wa(r.mensaje)}" ${EXTERNO}>Conversarlo por WhatsApp</a>
-    <button type="button" class="boton" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">Preguntarle al asistente</button>
+  const escena = r.escena ? cara(r.escena) : null;
+  const cuerpo = `<section class="servicio servicio--rubro">
+  <div class="servicio__texto">
+    <p class="dato dato--qori">Soluciones · Cusco</p>
+    <h1 class="pcabeza__titulo">${esc(r.h1)}</h1>
+    <p class="pcabeza__bajada">${esc(r.bajada)}</p>
+    <div class="acciones">
+      <a class="boton boton--qori" href="${S.wa(r.mensaje)}" ${EXTERNO}>Conversarlo por WhatsApp</a>
+      <button type="button" class="boton" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">Preguntarle al asistente</button>
+    </div>
   </div>
-</header>
+  ${escena ? `<div class="servicio__medio servicio__medio--rubro">
+    <img src="${escena.img}" alt="" width="1024" height="1536" decoding="async">
+    <p class="rubro__nota"><span>Con Yachai</span>${esc(r.antesDespues[0][1])}</p>
+  </div>` : ''}
+</section>
 
 <section class="seccion">
   ${cab(++n, 'Lo que te pasa')}
@@ -727,7 +776,7 @@ function paginaSoluciones() {
 <section class="seccion">
   ${cab(1, 'Por tipo de negocio')}
   <ul class="tarjetas" role="list">
-${S.RUBROS.map((r, i) => `    <li><a class="tarjeta revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}><span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.» ${esc(r.dolores[0][1])}</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
+${S.RUBROS.map((r, i) => `    <li><a class="tarjeta tarjeta--img revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}>${tarjetaImg(mini(r.escena))}<span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.» ${esc(r.dolores[0][1])}</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
   </ul>
 </section>
 
@@ -757,12 +806,11 @@ function paginaLanding() {
     <h1 class="pcabeza__titulo">${esc(a.titulo)} para tu negocio</h1>
     <p class="pcabeza__bajada">Te digo qué se puede automatizar en tu negocio, por dónde empezar y cuánto cuesta cada paso. Por escrito y sin compromiso.</p>
     <ul class="landing__puntos" role="list">
-      <li><b>Gratis:</b> su precio regular es ${soles(a.precio)}.</li>
+      <li><b>Gratis todo ${esc(a.mes)}:</b> no pagas nada. ${esc(a.despues)}.</li>
       <li><b>Sin compromiso:</b> el plan es tuyo, lo hagas conmigo o no.</li>
       <li><b>A distancia:</b> por WhatsApp y videollamada.</li>
     </ul>
-    <!-- REVISAR: fechas exactas del mes de promoción -->
-    <p class="landing__vigencia">${esc(a.vigencia)} [del __ al __]</p>
+    <p class="landing__vigencia">Promoción válida ${esc(a.vigencia.charAt(0).toLowerCase() + a.vigencia.slice(1))}</p>
     <p class="acciones">
       <a class="boton boton--qori" href="#asistente">Empezar ahora</a>
       <a class="boton" href="${a.whatsapp}" ${EXTERNO}>Escribir por WhatsApp</a>
@@ -784,7 +832,22 @@ ${CHAT}
 </section>
 
 <section class="seccion">
-  ${cab(2, '¿Qué negocio tienes?', 'Mira qué automatizaría primero en el tuyo.')}
+  ${cab(2, 'Quién te asesora')}
+  <div class="quien quien--landing">
+    <div class="quien__foto revelar">
+      <img src="assets/img/rodrigo.jpg" alt="Rodrigo Vicente Miranda Vargas" loading="lazy" width="800" height="948">
+      <span class="quien__firma">Rodrigo Miranda · Cusco</span>
+    </div>
+    <div class="quien__texto revelar" data-retraso="100">
+      <p class="parrafo"><b>Rodrigo Vicente Miranda Vargas</b>, fundador de Yachai. Tres años automatizando negocios y más de cinco en marketing, trabajando con CRM.</p>
+      <p class="parrafo">La asesoría la doy yo, no un robot: el asistente te atiende al instante, y después sigues conmigo por WhatsApp.</p>
+      <p><a class="enlace-flecha" href="nosotros.html">Más sobre mí →</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="seccion">
+  ${cab(3, '¿Qué negocio tienes?', 'Mira qué automatizaría primero en el tuyo.')}
   <ul class="chips" role="list">
 ${S.RUBROS.map((r) => `    <li><a class="chip" href="${r.slug}.html">${esc(r.nombre)} →</a></li>`).join('\n')}
     <li><a class="chip" href="soluciones.html#otros">Otro negocio →</a></li>
@@ -792,23 +855,23 @@ ${S.RUBROS.map((r) => `    <li><a class="chip" href="${r.slug}.html">${esc(r.nom
 </section>
 ${casosFoto.length ? `
 <section class="seccion">
-  ${cab(3, 'Webs que hemos hecho', 'Como referencia: así se ve el trabajo.')}
+  ${cab(4, 'Webs que hemos hecho', 'Como referencia: así se ve el trabajo.')}
   <div class="trabajos trabajos--fotos">
 ${casosFoto.map((c) => '    ' + casoTarjeta(c)).join('\n')}
   </div>
 </section>
 ` : ''}
 <section class="seccion">
-  ${cab(casosFoto.length ? 4 : 3, 'Lo que se puede automatizar', 'Precios de lanzamiento para Cusco. Toca el nombre para ver qué incluye.')}
+  ${cab(casosFoto.length ? 5 : 4, 'Lo que se puede automatizar', 'Precios de lanzamiento para Cusco. Toca el nombre para ver qué incluye.')}
   <ul class="precios" role="list">
 ${S.SERVICIOS.map((s) => `    <li class="revelar"><a class="precios__nombre" href="${s.slug}.html">${esc(s.nombre)}</a><span class="precios__valor">${esc(precioTexto(s))}</span><span class="precios__nota">${esc(s.menu)}</span></li>`).join('\n')}
   </ul>
 </section>
 
 <section class="seccion">
-  ${cab(casosFoto.length ? 5 : 4, 'Preguntas')}
+  ${cab(casosFoto.length ? 6 : 5, 'Preguntas')}
   ${faq([
-    ['¿Es gratis de verdad?', `Sí. Los ${a.dias} días de asesoría no tienen costo durante el mes de lanzamiento. Después, la asesoría cuesta ${soles(a.precio)}.`],
+    ['¿Es gratis de verdad?', `Sí. Si la pides en ${a.mes}, los ${a.dias} días de asesoría no tienen costo. ${a.despues}.`],
     ['¿Me obliga a contratar algo?', 'No. Te quedas con el plan, lo hagas conmigo, con otra persona o más adelante.'],
     ['¿Tienen que venir a mi negocio?', 'No hace falta: la asesoría es por WhatsApp y videollamada, a tu ritmo.'],
     [`¿Qué pasa después de los ${a.dias} días?`, 'Si quieres construir algo del plan, te doy el presupuesto por escrito antes de empezar, con los precios de lanzamiento.'],
@@ -826,7 +889,7 @@ ${S.SERVICIOS.map((s) => `    <li class="revelar"><a class="precios__nombre" hre
   PAGINAS[a.pagina] = pagina({
     archivo: a.pagina, seccion: '', cabeceraMinima: true, chatEnPagina: true, chat: 'asesoria', clase: 'pagina--landing',
     titulo: `${a.titulo} — Yachai · Cusco`,
-    descripcion: `${a.titulo} para negocios de Cusco: qué automatizar, por dónde empezar y cuánto cuesta. Precio regular ${soles(a.precio)}. ${a.vigencia}`,
+    descripcion: `${a.titulo} para negocios de Cusco: qué automatizar, por dónde empezar y cuánto cuesta. Gratis todo ${a.mes}.`,
     origen: 'Asesoría gratis',
     cuerpo,
   });
@@ -838,7 +901,7 @@ function paginaPrecios() {
   PAGINAS['precios.html'] = pagina({
     archivo: 'precios.html', seccion: 'precios.html',
     titulo: 'Precios — Yachai · Automatización e IA en Cusco',
-    descripcion: `${S.ASESORIA.titulo} (precio regular ${soles(S.ASESORIA.precio)}). Bots de WhatsApp desde ${soles(porSlug['bot-de-whatsapp'].precio.desde)}, webs desde ${soles(porSlug['web-propia'].precio.desde)}. Precios de lanzamiento para Cusco.`,
+    descripcion: `${S.ASESORIA.titulo} todo ${S.ASESORIA.mes}. Bots de WhatsApp desde ${soles(porSlug['bot-de-whatsapp'].precio.desde)}, webs desde ${soles(porSlug['web-propia'].precio.desde)}. Precios de lanzamiento para Cusco.`,
     origen: 'Precios',
     migas: [['Precios']],
     cuerpo: `<header class="pcabeza">
@@ -1072,7 +1135,7 @@ function paginaContacto() {
   ${cab(1, 'Tres formas de empezar')}
   <ul class="tarjetas" role="list">
     <li><a class="tarjeta revelar" href="${S.wa('Hola Rodrigo, quiero conversar sobre mi negocio')}" ${EXTERNO}><span class="tarjeta__dato">Directo</span><b class="tarjeta__titulo">WhatsApp</b><span class="tarjeta__texto">${S.WA_VISIBLE}. Cuéntame qué te quita el tiempo en tu negocio.</span><span class="tarjeta__ir">Escribir →</span></a></li>
-    <li><a class="tarjeta tarjeta--qori revelar" data-retraso="80" href="${S.ASESORIA.whatsapp}" ${EXTERNO}><span class="tarjeta__dato">Lanzamiento</span><b class="tarjeta__titulo">${esc(S.ASESORIA.corto)}</b><span class="tarjeta__texto">Precio regular ${soles(S.ASESORIA.precio)}. ${esc(S.ASESORIA.texto)}</span><span class="tarjeta__ir">La quiero →</span></a></li>
+    <li><a class="tarjeta tarjeta--qori revelar" data-retraso="80" href="${S.ASESORIA.whatsapp}" ${EXTERNO}><span class="tarjeta__dato">Lanzamiento</span><b class="tarjeta__titulo">${esc(S.ASESORIA.corto)}</b><span class="tarjeta__texto">Gratis todo ${esc(S.ASESORIA.mes)}. ${esc(S.ASESORIA.texto)}</span><span class="tarjeta__ir">La quiero →</span></a></li>
     <li><button type="button" class="tarjeta revelar" data-retraso="160" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false"><span class="tarjeta__dato">En un minuto</span><b class="tarjeta__titulo">El asistente</b><span class="tarjeta__texto">Toca opciones y mira qué le sirve a tu negocio. Al final te arma el mensaje.</span><span class="tarjeta__ir">Abrir →</span></button></li>
   </ul>
 </section>
@@ -1093,7 +1156,7 @@ function inicioExplora() {
   return `<section class="seccion" id="explora" aria-labelledby="explora-titulo">
   ${cab(1, '¿Qué negocio tienes?', 'Elige el tuyo y mira qué automatizaría primero, con ejemplos de un día normal.', 'explora-titulo')}
   <ul class="tarjetas" role="list">
-${S.RUBROS.map((r, i) => `    <li><a class="tarjeta revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}><span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
+${S.RUBROS.map((r, i) => `    <li><a class="tarjeta tarjeta--img revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}>${tarjetaImg(mini(r.escena))}<span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
     <li><a class="tarjeta revelar" href="soluciones.html#otros" data-retraso="160"><span class="tarjeta__dato">Turismo, academias, agencias…</span><b class="tarjeta__titulo">Otro negocio</b><span class="tarjeta__texto">Casi siempre hay algo que se puede automatizar.</span><span class="tarjeta__ir">Ver más →</span></a></li>
   </ul>
 
@@ -1108,8 +1171,7 @@ ${S.RUBROS.map((r, i) => `    <li><a class="tarjeta revelar" href="${r.slug}.htm
 // La banda amarilla después de las escenas: la oferta de entrada.
 function inicioBanda() {
   return `<section class="banda">
-  <p class="banda__texto revelar">${esc(S.ASESORIA.titulo)}. Precio regular ${soles(S.ASESORIA.precio)}.</p>
-  <!-- REVISAR: fechas de la promoción -->
+  <p class="banda__texto revelar">${esc(S.ASESORIA.titulo)}. Todo ${esc(S.ASESORIA.mes)}.</p>
   <p class="acciones revelar" data-retraso="80" style="margin:0">
     <a class="boton boton--negro" href="${S.ASESORIA.pagina}">La quiero</a>
   </p>
@@ -1151,7 +1213,7 @@ function inyectar(html, nombre, contenido) {
 function datosJs() {
   const d = {
     whatsapp: S.WA_NUMERO,
-    asesoria: { precio: S.ASESORIA.precio, dias: S.ASESORIA.dias, texto: S.ASESORIA.texto, pagina: S.ASESORIA.pagina },
+    asesoria: { precioTexto: S.ASESORIA.precioTexto, dias: S.ASESORIA.dias, mes: S.ASESORIA.mes, despues: S.ASESORIA.despues, texto: S.ASESORIA.texto, pagina: S.ASESORIA.pagina },
     servicios: {},
     rubros: {},
     ideas: IDEAS.map((i) => ({ dolor: i.dolor.replace(/[«»]/g, '').replace(/\.\s*$/, ''), rubros: i.rubros })),
@@ -1213,7 +1275,7 @@ function construir() {
   inicio = inyectar(inicio, 'CASOS', inicioCasos());
   inicio = inyectar(inicio, 'APRENDE', inicioAprende());
   inicio = inyectar(inicio, 'PIE', pie());
-  inicio = inyectar(inicio, 'ACCESOS', accesos(false));
+  inicio = inyectar(inicio, 'ACCESOS', accesos(false, true));
   inicio = inicio
     .replace(/assets\/css\/style\.css\?v=[\w]+/, 'assets/css/style.css?v=' + V.css)
     .replace(/assets\/js\/datos\.js\?v=[\w]+/, 'assets/js/datos.js?v=' + V.datos)

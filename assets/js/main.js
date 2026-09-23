@@ -581,6 +581,8 @@
   // páginas que no tienen las escenas del inicio.
   var DATOS = window.YACHAI_DATOS || { servicios: {}, rubros: {}, ideas: [], precios: {}, asesoria: {} };
   var DIAS = DATOS.asesoria.dias || 15;
+  var MES = DATOS.asesoria.mes || 'octubre';
+  var DESPUES = DATOS.asesoria.despues ? ' ' + DATOS.asesoria.despues + '.' : '';
   // En la página de aterrizaje del QR (data-chat="asesoria") el asistente
   // arranca con el gancho de la asesoría gratis, no con el menú general.
   var MODO = document.body.getAttribute('data-chat') || '';
@@ -764,13 +766,13 @@
         decir([
           'Depende de lo que necesites. Como referencia: un bot de WhatsApp desde ' + soles(DATOS.precios['bot-de-whatsapp'] || 400) +
             ' y una web propia desde ' + soles(DATOS.precios['web-propia'] || 480) + '.',
-          'Y por lanzamiento, tienes ' + DIAS + ' días de asesoría gratis para armar tu plan (precio regular ' + soles(DATOS.asesoria.precio || 600) + ').'
+          'Y si la pides en ' + MES + ', tienes ' + DIAS + ' días de asesoría gratis para armar tu plan.'
         ], function () { ofrecer([['Quiero la asesoría gratis', 'asesoria'], ['Ver todos los precios', '>precios.html'], ['Volver al inicio', 'inicio']]); });
         break;
       case 'asesoria':
         datos.interes = 'los ' + DIAS + ' días de asesoría gratis';
         decir([
-          'Por lanzamiento, tienes ' + DIAS + ' días de asesoría gratis. Su precio regular es ' + soles(DATOS.asesoria.precio || 600) + '.',
+          'Si la pides en ' + MES + ', tienes ' + DIAS + ' días de asesoría gratis.' + DESPUES,
           DATOS.asesoria.texto || 'Entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos.'
         ], function () {
           var opciones = [['La quiero', 'datos']];
@@ -781,7 +783,7 @@
       case 'landing':   // la página del QR: el gancho va primero
         datos.interes = 'los ' + DIAS + ' días de asesoría gratis';
         decir([
-          'Por lanzamiento, tienes ' + DIAS + ' días de asesoría gratis para tu negocio. Su precio regular es ' + soles(DATOS.asesoria.precio || 600) + '.',
+          'Todo ' + MES + ', tienes ' + DIAS + ' días de asesoría gratis para tu negocio.' + DESPUES,
           'Para empezar, ¿qué negocio tienes?'
         ], function () { ofrecer(RUBROS.map(function (r) { return [r[1], 'es:' + r[0]]; })); });
         break;
@@ -987,6 +989,38 @@
     if (e.target.closest('.panel-asistente__cerrar')) cerrarPanel();
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') cerrarPanel(); });
+
+  /* --- El botón de contacto: uno solo, como el de WhatsApp ----------------
+     Pedido del usuario (2026-09-23): "uno solo, no lo partas en tres". Al
+     tocarlo pregunta con quién hablar: el asistente Yachai (abre la ventana
+     del chat) o Rodrigo directo por WhatsApp. Si el chat está abierto, el
+     mismo botón lo cierra. */
+  var contacto = document.querySelector('.contacto');
+  if (contacto) {
+    var contactoBoton = contacto.querySelector('.contacto__boton');
+    var globo = contacto.querySelector('.contacto__globo');
+    var mostrarGlobo = function (si) {
+      globo.hidden = !si;
+      contactoBoton.setAttribute('aria-expanded', String(si));
+      contacto.classList.toggle('contacto--abierto', si);
+    };
+    contactoBoton.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (panel && !panel.hidden) { cerrarPanel(); mostrarGlobo(false); return; }
+      mostrarGlobo(globo.hidden);
+    });
+    // Elegir una opción cierra el globo (la del asistente abre el chat solo,
+    // por su data-abrir-asistente).
+    globo.addEventListener('click', function (e) {
+      if (e.target.closest('a, [data-abrir-asistente]')) mostrarGlobo(false);
+    });
+    document.addEventListener('click', function (e) {
+      if (!globo.hidden && !contacto.contains(e.target)) mostrarGlobo(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !globo.hidden) { mostrarGlobo(false); contactoBoton.focus(); }
+    });
+  }
 
   /* ======================================================================
      4b. Describe tu web → WhatsApp

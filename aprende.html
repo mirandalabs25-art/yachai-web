@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/css/style.css?v=6c26a062">
+<link rel="stylesheet" href="assets/css/style.css?v=9853adf1">
 </head>
 <body class="pagina" data-origen="Aprende">
 <a class="saltar" href="#contenido">Saltar al contenido</a>
@@ -59,11 +59,10 @@
           <ul role="list"><li><a class="submenu__enlace" href="software-a-medida.html"><b>Software a medida</b><span>Cuando ninguna herramienta te sirve</span></a></li><li><a class="submenu__enlace" href="clases-de-ia.html"><b>Clases de IA</b><span>Claude, ChatGPT y Gemini en tu trabajo</span></a></li><li><a class="submenu__enlace" href="seguridad.html"><b>Seguridad de bots</b><span>Que un cliente tramposo no engañe a tu bot</span></a></li></ul>
         </div>
         <div class="oferta oferta--menu">
-        <p class="oferta__dato">Lanzamiento · válida por un mes</p>
+        <p class="oferta__dato">Lanzamiento · todo octubre</p>
         <p class="oferta__titulo">15 días de asesoría gratis</p>
         <p class="oferta__texto">15 días de asesoría: entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos. Después lo haces conmigo o con quien quieras.</p>
-        <p class="oferta__precio">Precio regular <s>S/600</s> · <b>gratis</b></p>
-        <!-- REVISAR: fechas de la promoción -->
+        <p class="oferta__precio"><b>Gratis todo octubre</b> · Desde noviembre, US$1,000</p>
         <p class="acciones"><a class="boton boton--negro" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20los%2015%20d%C3%ADas%20de%20asesor%C3%ADa%20gratis%20para%20mi%20negocio" target="_blank" rel="noopener">La quiero</a><a class="oferta__mas" href="asesoria-gratis.html">Qué incluye →</a></p>
       </div>
       </div>
@@ -215,17 +214,30 @@
   </div>
 
   <div class="pie__base">
-    <span>© <span id="anio">2026</span> Yachai · Cusco, Perú · <!-- REVISAR: RUC de 11 dígitos -->[RUC por confirmar]</span>
+    <span>© <span id="anio">2026</span> Yachai · Cusco, Perú · RUC 10705854543</span>
     <span>Automatización · IA aplicada · Seguridad</span>
   </div>
 </footer>
 
-<!-- ACCESOS FIJOS: siempre visibles (pedido del usuario, 2026-09-22). En el
-     celular son una barra abajo; en escritorio, un grupo en la esquina. -->
-<div class="accesos" role="group" aria-label="Contacto rápido">
-  <button type="button" class="accesos__boton accesos__boton--qori" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">Asistente</button>
-  <button type="button" class="accesos__boton" data-abrir-asistente="consulta" aria-controls="panel-asistente" aria-expanded="false">Consultar</button>
-  <a class="accesos__boton accesos__boton--wa" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20vi%20la%20web%20de%20Yachai%20y%20quiero%20conversar" target="_blank" rel="noopener">WhatsApp</a>
+
+<!-- CONTACTO: un solo botón flotante, como el de WhatsApp. -->
+<div class="contacto">
+  <div class="contacto__globo" id="contacto-globo" role="dialog" aria-label="¿Con quién quieres hablar?" hidden>
+    <p class="contacto__cabeza"><span class="contacto__avatar" aria-hidden="true"></span><span><b>Yachai</b><small>En línea · te respondemos ahora</small></span></p>
+    <p class="contacto__pregunta">¡Hola! ¿Con quién quieres hablar?</p>
+    <button type="button" class="contacto__opcion" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">
+      <span class="contacto__icono contacto__icono--yachai" aria-hidden="true"></span>
+      <span><b>Con el asistente Yachai</b><small>Responde al instante, a cualquier hora</small></span>
+    </button>
+    <a class="contacto__opcion contacto__opcion--wa" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20vi%20la%20web%20de%20Yachai%20y%20quiero%20conversar" target="_blank" rel="noopener">
+      <span class="contacto__icono contacto__icono--wa" aria-hidden="true"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5A12.5 12.5 0 0 0 5.2 22.3L3.5 28.5l6.4-1.7A12.5 12.5 0 1 0 16 3.5z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M12.2 10.2c.3-.1.6 0 .8.3l1.3 2.7c.1.3.1.6-.1.8l-.9 1c.8 1.6 2 2.8 3.6 3.6l1-.9c.2-.2.5-.3.8-.1l2.7 1.3c.3.2.4.5.3.8-.5 1.6-1.9 2.4-3.4 2.1-3.6-.8-6.3-3.5-7.1-7.1-.3-1.5.5-2.9 2.1-3.4z" fill="currentColor"/></svg></span>
+      <span><b>Directo con Rodrigo</b><small>Por WhatsApp · +51 969 322 677</small></span>
+    </a>
+  </div>
+  <button type="button" class="contacto__boton" aria-expanded="false" aria-controls="contacto-globo" aria-label="Hablemos: elige con quién">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5A12.5 12.5 0 0 0 5.2 22.3L3.5 28.5l6.4-1.7A12.5 12.5 0 1 0 16 3.5z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M12.2 10.2c.3-.1.6 0 .8.3l1.3 2.7c.1.3.1.6-.1.8l-.9 1c.8 1.6 2 2.8 3.6 3.6l1-.9c.2-.2.5-.3.8-.1l2.7 1.3c.3.2.4.5.3.8-.5 1.6-1.9 2.4-3.4 2.1-3.6-.8-6.3-3.5-7.1-7.1-.3-1.5.5-2.9 2.1-3.4z" fill="currentColor"/></svg>
+    <span class="contacto__punto" aria-hidden="true"></span>
+  </button>
 </div>
 
 <!-- Ventana flotante del asistente. En el inicio, el chat de la sección se
@@ -250,8 +262,8 @@
 </div>
 
 <script>document.getElementById('anio').textContent = new Date().getFullYear();</script>
-<script src="assets/js/datos.js?v=eb2bb609"></script>
-<script src="assets/js/main.js?v=6f9b7eb6" defer></script>
+<script src="assets/js/datos.js?v=d7c17152"></script>
+<script src="assets/js/main.js?v=bcd87b5d" defer></script>
 <script src="assets/js/menu.js?v=4f5db3fb" defer></script>
 </body>
 </html>
