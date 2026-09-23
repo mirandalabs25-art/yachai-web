@@ -1435,3 +1435,37 @@ a.tarjeta:hover .tarjeta__img img,a.tarjeta:focus-visible .tarjeta__img img{tran
 }
 .promo b{color:var(--qori)}
 .promo:hover,.promo:focus-visible{background:rgba(245,197,24,.12)}
+
+/* --- lo que te ahorras (página de venta, 2026-09-23) ------------------------
+   Precios reales de Yachai; nada tachado que no se haya cobrado (Indecopi). */
+.ahorro{max-width:860px;border:1px solid var(--filete-fuerte)}
+.ahorro__fila{
+  display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,.7fr);gap:12px;align-items:baseline;
+  margin:0;padding:14px clamp(14px,2.4vw,22px);border-bottom:1px solid var(--filete);font-size:.95rem;
+}
+.ahorro__fila:last-child{border-bottom:0}
+.ahorro__fila span:nth-child(2){color:var(--gris)}
+.ahorro__fila small{display:block;font-size:.78rem}
+.ahorro__fila b{font-size:1.25rem;font-weight:800;color:var(--qori);text-align:right}
+.ahorro__fila--cabeza{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gris);background:var(--carbon)}
+.ahorro__fila--cabeza span:last-child{text-align:right;color:var(--qori)}
+.ahorro__fila--tuyo{background:rgba(255,255,255,.03)}
+.ahorro__fila--tuyo span:last-child{text-align:right;color:var(--hueso)}
+@media (max-width:560px){
+  .ahorro__fila{grid-template-columns:minmax(0,1fr) auto}
+  .ahorro__fila span:nth-child(2){grid-column:1;grid-row:2;font-size:.85rem}
+  .ahorro__fila b,.ahorro__fila span:last-child{grid-column:2;grid-row:1 / span 2;align-self:center}
+}
+
+/* --- las webs hechas, dentro de una laptop -------------------------------- */
+.laptops{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(22px,4vw,48px)}
+@media (max-width:760px){.laptops{grid-template-columns:minmax(0,1fr)}}
+.laptop{margin:0}
+.laptop__pantalla{padding:3.2% 3.2% 2.4%;background:#161616;border:1px solid #333;border-bottom:0;border-radius:12px 12px 0 0}
+.laptop__pantalla img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-radius:2px}
+.laptop__base{height:14px;margin:0 -6%;background:linear-gradient(180deg,#3b3b3b,#1d1d1d);border-radius:0 0 14px 14px;box-shadow:0 16px 30px rgba(0,0,0,.55)}
+.laptop figcaption{display:grid;gap:4px;margin-top:18px}
+.laptop figcaption b{font-size:1.05rem;text-transform:uppercase;letter-spacing:-.01em}
+
+.insignias--chicas{margin-top:10px;gap:6px}
+.insignias--chicas li{padding:6px 9px;font-size:10px}

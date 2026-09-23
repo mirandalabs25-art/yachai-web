@@ -58,11 +58,12 @@ const ASESORIA = {
 //   datos, seguridad): "lo necesario para que su empresa escale".
 // - La web gratis (solo octubre): el cliente da la web de referencia que le
 //   gusta y paga su propio servidor (VPS). "No es tanto como canje."
-//   REVISAR: si el dominio también lo paga el cliente (no lo dijo).
+//   El dominio también lo paga el cliente (confirmado el 2026-09-23). El
+//   diseño y la construcción son lo gratis.
 const REGALO = [
   { titulo: '15 días de asesoría', mini: '03', texto: 'Entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos, por escrito.' },
   { titulo: 'Asesoría complementaria', mini: '06', texto: 'Te acompaño en lo que tu negocio necesita para crecer: marketing y anuncios, contenido y marca, ventas, bases de datos, automatización con n8n, agentes de IA y la seguridad de tus bots.' },
-  { titulo: 'Tu web, gratis', mini: '04', texto: 'Me pasas una web que te guste como referencia y armamos la tuya sin costo. Lo único que pagas es tu servidor (VPS), a tu nombre, para que la web sea tuya.' },
+  { titulo: 'Tu web, gratis', mini: '04', texto: 'Me pasas una web que te guste como referencia y armamos la tuya sin costo. Lo único que pagas es tu servidor (VPS) y tu dominio, a tu nombre, para que la web sea tuya.' },
 ];
 
 // Cupos de la promoción (aceptado por el usuario el 2026-09-23: "ponle eso de

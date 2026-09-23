@@ -606,7 +606,7 @@ ${rubros.map((r) => `    <li><a class="chip" href="${r.slug}.html">${esc(r.nombr
     <h1 class="pcabeza__titulo">${esc(s.h1)}</h1>
     <p class="pcabeza__bajada">${esc(s.entrega)}</p>
     ${estadoHtml(s.estado)}
-    ${s.promo ? `<a class="promo" href="${S.ASESORIA.pagina}"><b>Solo en ${esc(S.ASESORIA.mes)}:</b> tu web gratis con la asesoría. Solo pagas tu servidor. Ver cómo →</a>` : ''}
+    ${s.promo ? `<a class="promo" href="${S.ASESORIA.pagina}"><b>Solo en ${esc(S.ASESORIA.mes)}:</b> tu web gratis con la asesoría. Solo pagas servidor y dominio. Ver cómo →</a>` : ''}
     <p class="precio-chip">${s.precio.desde == null ? 'Precio: <b>a cotizar</b>' : `Desde <b>${soles(s.precio.desde)}</b>${s.precio.unidad ? ' ' + esc(s.precio.unidad) : ''}`}</p>
     <div class="acciones">
       <a class="boton boton--qori" href="${S.wa(s.mensaje)}" ${EXTERNO}>${esc(s.cta)}</a>
@@ -857,8 +857,19 @@ ${CHAT}
   <ul class="tarjetas" role="list">
 ${S.REGALO.map((r, i) => `    <li><div class="tarjeta tarjeta--img revelar"${i ? ` data-retraso="${i * 80}"` : ''}>${tarjetaImg(mini(r.mini))}<span class="tarjeta__dato">Regalo ${String(i + 1).padStart(2, '0')}</span><b class="tarjeta__titulo">${esc(r.titulo)}</b><span class="tarjeta__texto">${esc(r.texto)}</span></div></li>`).join('\n')}
   </ul>
-  <!-- REVISAR: si el dominio de la web gratis también lo paga el cliente. -->
   ${ctaMedio(`Son solo ${S.CUPOS} cupos en ${esc(a.mes)}.`)}
+</section>
+
+<section class="seccion">
+  ${cab(++n, 'Lo que te ahorras en ' + esc(a.mes), 'Con los precios de Yachai. El servidor y el dominio siempre quedan a tu nombre.')}
+  <div class="ahorro revelar">
+    <p class="ahorro__fila ahorro__fila--cabeza"><span>Qué</span><span>Fuera de la promoción</span><span>En ${esc(a.mes)}</span></p>
+    <p class="ahorro__fila"><span>${a.dias} días de asesoría</span><span>${esc(a.precioTexto)} <small>desde noviembre</small></span><b>S/0</b></p>
+    <p class="ahorro__fila"><span>Asesoría complementaria</span><span>Se cotiza aparte</span><b>S/0</b></p>
+    <p class="ahorro__fila"><span>Diseño y construcción de tu web</span><span>${precioDe('web-propia')}</span><b>S/0</b></p>
+    <p class="ahorro__fila ahorro__fila--tuyo"><span>Servidor (VPS) y dominio</span><span>A tu nombre</span><span>Los pagas tú</span></p>
+  </div>
+  ${ctaMedio('Solo ' + S.CUPOS + ' cupos en ' + esc(a.mes) + '.')}
 </section>
 
 <section class="seccion">
@@ -910,14 +921,16 @@ ${S.REGALO.map((r, i) => `    <li><div class="tarjeta tarjeta--img revelar"${i ?
     <div class="quien__texto revelar" data-retraso="100">
       <p class="parrafo"><b>Rodrigo Vicente Miranda Vargas</b>, fundador de Yachai. Tres años automatizando negocios y más de cinco en marketing, trabajando con CRM.</p>
       <p class="parrafo">La asesoría la doy yo. Yachai, nuestro asistente, te atiende al instante, y después sigues conmigo por WhatsApp.</p>
+      <p class="dato" style="margin-top:18px">Con qué trabajo</p>
+      <ul class="insignias insignias--chicas" role="list"><li>n8n</li><li>Claude</li><li>ChatGPT</li><li>Gemini</li><li>WhatsApp Business</li><li>Meta Ads</li><li>Go High Level</li><li>HubSpot</li><li>Python</li></ul>
     </div>
   </div>
 </section>
 ${testimonios}${casosFoto.length ? `
 <section class="seccion">
   ${cab(++n, 'Webs que hemos hecho', 'Así se ve el trabajo. La tuya puede ser la siguiente, gratis en ' + esc(a.mes) + '.')}
-  <div class="trabajos trabajos--fotos">
-${casosFoto.map((c) => '    ' + casoTarjeta(c)).join('\n')}
+  <div class="laptops">
+${casosFoto.map((c) => `    <figure class="laptop revelar"><div class="laptop__pantalla"><img src="${esc(c.imagen)}" alt="${esc(c.imagen_alt || '')}" loading="lazy" width="1000" height="626"></div><div class="laptop__base" aria-hidden="true"></div><figcaption><span class="caso__estado${c.estado === 'vivo' ? ' caso__estado--vivo' : ''}">${(S.ESTADOS[c.estado] || S.ESTADOS.prepara).marca} ${esc(c.etiqueta || '')}</span><b>${esc(c.titulo)}</b></figcaption></figure>`).join('\n')}
   </div>
   ${ctaMedio('Me pasas una web de referencia y armamos la tuya.')}
 </section>
@@ -941,7 +954,7 @@ ${S.SERVICIOS.map((s) => `    <li class="revelar"><span class="precios__nombre">
   ${cab(++n, 'Preguntas')}
   ${faq([
     ['¿Por qué dicen que me regalan US$1,000?', `Porque es el precio de la asesoría desde noviembre. Si la pides en ${a.mes}, no la pagas. No es dinero en efectivo: es la asesoría.`],
-    ['¿La web es gratis de verdad?', `Sí, en ${a.mes}. Me pasas una web que te guste como referencia y armamos la tuya sin costo. Lo único que pagas es tu servidor (VPS), a tu nombre, para que la web sea tuya.`],
+    ['¿La web es gratis de verdad?', `Sí, en ${a.mes}. Me pasas una web que te guste como referencia y armamos la tuya sin costo. Lo único que pagas es tu servidor (VPS) y tu dominio, a tu nombre, para que la web sea tuya.`],
     ['¿Qué es la asesoría complementaria?', 'Después del plan, te acompaño en lo que tu negocio necesita para crecer: marketing y anuncios, contenido y marca, ventas, bases de datos, automatización con n8n, agentes de IA y la seguridad de tus bots.'],
     ['¿Por qué solo ' + S.CUPOS + ' cupos?', 'Porque la asesoría la doy yo, uno por uno. Es lo que puedo atender bien en un mes.'],
     ['¿Me obliga a contratar algo?', 'No. Sin tarjeta y sin contrato. Te quedas con el plan, lo hagas conmigo, con otra persona o más adelante.'],
