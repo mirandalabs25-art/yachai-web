@@ -1401,3 +1401,37 @@ a.tarjeta:hover .tarjeta__img img,a.tarjeta:focus-visible .tarjeta__img img{tran
 .plan__lista b{font-weight:700}
 .plan__lista span{display:inline-block;margin-left:8px;padding:1px 8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;background:#1a1a1a;color:var(--qori)}
 @media (max-width:560px){.plan{transform:none}.plan__lista span{margin:4px 0 0}}
+
+/* --- página de venta (2026-09-23, noche) ------------------------------------
+   Arriba, la cara real y la prueba; el mismo botón repetido; menos salidas. */
+.landing__confianza{
+  display:flex;align-items:center;gap:12px;margin-top:6px;padding-top:16px;border-top:1px solid var(--filete);
+}
+.landing__confianza img{flex:0 0 auto;width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--qori)}
+.landing__confianza p{margin:0;font-size:.82rem;line-height:1.45;color:var(--gris)}
+.landing__confianza b{display:block;font-size:.95rem;color:var(--hueso)}
+.landing__cta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin:clamp(28px,4vw,44px) 0 0}
+.landing__cta span{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris)}
+
+.insignias{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.insignias li{
+  padding:10px 14px;border:1px solid var(--filete-fuerte);
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--hueso);
+}
+.precios--plano .precios__nombre{cursor:default}
+.precios--plano .precios__nombre:hover{color:inherit}
+
+.testimonios{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(14px,2vw,22px)}
+.testimonio{padding:clamp(18px,2.6vw,26px);border:1px solid var(--filete-fuerte)}
+.testimonio img{width:56px;height:56px;border-radius:50%;object-fit:cover;margin-bottom:12px}
+.testimonio blockquote{margin:0 0 12px;font-size:1.02rem;line-height:1.55;color:var(--hueso)}
+.testimonio p{margin:0;font-size:.85rem;color:var(--gris)}
+
+/* Aviso de la promoción en «Web propia» (el precio sigue siendo ese; la
+   promoción de octubre se muestra como contexto). */
+.promo{
+  display:block;padding:10px 14px;border:1px dashed var(--qori);
+  font-size:.9rem;line-height:1.45;color:var(--hueso);background:rgba(245,197,24,.06);transition:background .2s;
+}
+.promo b{color:var(--qori)}
+.promo:hover,.promo:focus-visible{background:rgba(245,197,24,.12)}

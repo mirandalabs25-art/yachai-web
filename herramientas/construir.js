@@ -166,7 +166,7 @@ const SIGNO = `<svg class="marca__signo" viewBox="0 0 60 60" aria-hidden="true">
 
 function oferta(clase = '') {
   return `<div class="oferta ${clase}">
-        <p class="oferta__dato">Lanzamiento · todo ${esc(S.ASESORIA.mes)}</p>
+        <p class="oferta__dato">Lanzamiento · todo ${esc(S.ASESORIA.mes)} · ${S.CUPOS} cupos</p>
         <p class="oferta__titulo">${esc(S.ASESORIA.titulo)}</p>
         <p class="oferta__texto">${esc(S.ASESORIA.texto)}</p>
         <p class="oferta__precio"><b>Gratis todo ${esc(S.ASESORIA.mes)}</b> · ${esc(S.ASESORIA.despues)}</p>
@@ -222,6 +222,7 @@ function cabecera(seccion, archivo) {
 <div class="anuncio" aria-hidden="true">
   <div class="anuncio__pista">
     <span>${esc(S.ASESORIA.regalo)} en asesoría</span><span>—</span>
+    <span>Solo ${S.CUPOS} cupos en ${esc(S.ASESORIA.mes)}</span><span>—</span>
     <span>Cusco · Perú</span><span>—</span>
     <span>Bots y agentes</span><span>—</span>
     <span>Bases de clientes</span><span>—</span>
@@ -258,7 +259,7 @@ function cabeceraMinima() {
   <div class="anuncio__pista">
     <span>${esc(S.ASESORIA.regalo)} en asesoría</span><span>—</span>
     <span>${esc(S.ASESORIA.titulo)}</span><span>—</span>
-    <span>Todo ${esc(S.ASESORIA.mes)}</span><span>—</span>
+    <span>Solo ${S.CUPOS} cupos en ${esc(S.ASESORIA.mes)}</span><span>—</span>
     <span>${esc(S.ASESORIA.despues)}</span><span>—</span>
     <span>Cusco · Perú</span><span>—</span>
   </div>
@@ -354,7 +355,7 @@ function accesos(conChat, conRegalo = false) {
     <p class="contacto__pregunta">¡Hola! ¿Con quién quieres hablar?</p>
     <button type="button" class="contacto__opcion" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">
       <span class="contacto__icono contacto__icono--yachai" aria-hidden="true"></span>
-      <span><b>Con el asistente Yachai</b><small>Responde al instante, a cualquier hora</small></span>
+      <span><b>Con Yachai, nuestro asistente</b><small>Responde al instante, a cualquier hora</small></span>
     </button>
     <a class="contacto__opcion contacto__opcion--wa" href="${S.wa('Hola Rodrigo, vi la web de Yachai y quiero conversar')}" ${EXTERNO}>
       <span class="contacto__icono contacto__icono--wa" aria-hidden="true">${ICONO_CHAT}</span>
@@ -369,7 +370,7 @@ function accesos(conChat, conRegalo = false) {
 
 <!-- Ventana flotante del asistente. En el inicio, el chat de la sección se
      muda acá al abrirla y vuelve al cerrarla; en las demás páginas vive acá. -->
-<div class="panel-asistente" id="panel-asistente" role="dialog" aria-label="Asistente de Yachai" hidden>
+<div class="panel-asistente" id="panel-asistente" role="dialog" aria-label="Yachai, el asistente" hidden>
   <div class="panel-asistente__barra"><button type="button" class="panel-asistente__cerrar">Cerrar ✕</button></div>
   <div class="panel-asistente__cuerpo">${conChat ? '\n' + CHAT + '\n' : ''}</div>
 </div>`;
@@ -605,6 +606,7 @@ ${rubros.map((r) => `    <li><a class="chip" href="${r.slug}.html">${esc(r.nombr
     <h1 class="pcabeza__titulo">${esc(s.h1)}</h1>
     <p class="pcabeza__bajada">${esc(s.entrega)}</p>
     ${estadoHtml(s.estado)}
+    ${s.promo ? `<a class="promo" href="${S.ASESORIA.pagina}"><b>Solo en ${esc(S.ASESORIA.mes)}:</b> tu web gratis con la asesoría. Solo pagas tu servidor. Ver cómo →</a>` : ''}
     <p class="precio-chip">${s.precio.desde == null ? 'Precio: <b>a cotizar</b>' : `Desde <b>${soles(s.precio.desde)}</b>${s.precio.unidad ? ' ' + esc(s.precio.unidad) : ''}`}</p>
     <div class="acciones">
       <a class="boton boton--qori" href="${S.wa(s.mensaje)}" ${EXTERNO}>${esc(s.cta)}</a>
@@ -798,27 +800,52 @@ ${bandaCta('Por lanzamiento, la asesoría para armar tu plan es gratis.', 'Quier
 // gancho de los 15 días de asesoría gratis, y el asistente lo atiende en el
 // momento. El QR apunta a asesoria-gratis.html?origen=qr.
 
+// Página de venta (asesoria-gratis.html), armada con lo que la investigación
+// de conversión recomienda (estudio del 2026-09-23, sección 3.7):
+// - Arriba: titular, bajada, UN botón, la cara real de quien atiende y la
+//   prueba (cifras, RUC). Se decide en los primeros segundos.
+// - Palabras simples: las páginas escritas simple convierten el doble
+//   (Unbounce, 41 mil páginas).
+// - Un solo objetivo: el mismo botón («Quiero mi regalo») repetido después de
+//   cada bloque que genera ganas, y casi ninguna salida a otras páginas.
+// - Quitar el riesgo: gratis, sin tarjeta, sin contrato, el plan es tuyo.
+// - Urgencia real: fecha de fin y cupos verdaderos, nunca inventados.
+// - Testimonios solo reales (TESTIMONIOS en sitio.js): vacía, no aparece.
 function paginaLanding() {
   const a = S.ASESORIA;
   const casosFoto = CASOS.filter((c) => c.imagen);
   let n = 0;
   const precioDe = (slug) => esc(precioTexto(porSlug[slug]));
+  const ctaMedio = (texto) => `<p class="landing__cta revelar"><a class="boton boton--qori" href="#asistente">Quiero mi regalo</a><span>${texto}</span></p>`;
+
+  const testimonios = S.TESTIMONIOS.length ? `
+<section class="seccion">
+  ${cab(++n, 'Lo que dicen')}
+  <ul class="testimonios" role="list">
+${S.TESTIMONIOS.map((t) => `    <li class="testimonio revelar">${t.foto ? `<img src="${esc(t.foto)}" alt="" loading="lazy" width="96" height="96">` : ''}<blockquote>«${esc(t.texto)}»</blockquote><p><b>${esc(t.quien)}</b>${t.rubro ? ' · ' + esc(t.rubro) : ''}</p></li>`).join('\n')}
+  </ul>
+</section>
+` : '';
 
   const cuerpo = `<section class="landing">
   <div class="landing__texto">
-    <p class="dato dato--qori">Todo ${esc(a.mes)} · Cusco</p>
+    <p class="dato dato--qori">Todo ${esc(a.mes)} · Solo ${S.CUPOS} cupos · Cusco</p>
     <h1 class="pcabeza__titulo">${esc(a.regalo)} <span class="landing__detalle">${esc(a.regaloDetalle)}</span></h1>
-    <p class="pcabeza__bajada">${a.dias} días de asesoría gratis y el inicio de tu web, también gratis. Te digo qué automatizar, por dónde empezar y cuánto cuesta cada paso.</p>
+    <p class="pcabeza__bajada">${a.dias} días de asesoría y tu web, gratis. Te digo qué automatizar, por dónde empezar y cuánto cuesta.</p>
     <ul class="landing__puntos" role="list">
       <li><b>Gratis todo ${esc(a.mes)}:</b> US$1,000 es el precio de la asesoría desde noviembre.</li>
-      <li><b>Sin compromiso:</b> el plan es tuyo, lo hagas conmigo o no.</li>
+      <li><b>Sin tarjeta y sin contrato:</b> el plan es tuyo, lo hagas conmigo o no.</li>
       <li><b>A distancia:</b> por WhatsApp y videollamada.</li>
     </ul>
-    <p class="landing__vigencia">Promoción válida ${esc(a.vigencia.charAt(0).toLowerCase() + a.vigencia.slice(1))} <span class="landing__cuenta" data-cuenta-inicio="${a.inicioISO}" data-cuenta-fin="${a.finISO}"></span></p>
+    <p class="landing__vigencia">Válido ${esc(a.vigencia.charAt(0).toLowerCase() + a.vigencia.slice(1).replace(/\.$/, ''))} · ${S.CUPOS} cupos <span class="landing__cuenta" data-cuenta-inicio="${a.inicioISO}" data-cuenta-fin="${a.finISO}"></span></p>
     <p class="acciones">
       <a class="boton boton--qori" href="#asistente">Quiero mi regalo</a>
-      <a class="boton" href="${a.whatsapp}" ${EXTERNO}>Escribir por WhatsApp</a>
+      <a class="enlace-flecha" href="${a.whatsapp}" ${EXTERNO}>O escríbeme por WhatsApp →</a>
     </p>
+    <div class="landing__confianza">
+      <img src="assets/img/rodrigo.jpg" alt="Rodrigo Miranda" width="800" height="948">
+      <p><b>Te asesora Rodrigo Miranda</b>3 años automatizando negocios · 5+ en marketing y CRM · RUC ${esc(S.RUC)}</p>
+    </div>
   </div>
   <div class="landing__chat" id="asistente">
 ${CHAT}
@@ -826,11 +853,12 @@ ${CHAT}
 </section>
 
 <section class="seccion">
-  ${cab(++n, 'Qué te regalamos', 'Tres cosas, para que empieces a ordenar tu negocio este mes.')}
+  ${cab(++n, 'Qué te regalamos', 'Tres cosas, para que tu negocio empiece a ordenarse este mes.')}
   <ul class="tarjetas" role="list">
-${S.REGALO.map((r, i) => `    <li><div class="tarjeta tarjeta--img revelar"${i ? ` data-retraso="${i * 80}"` : ''}>${tarjetaImg(mini(r.mini))}<span class="tarjeta__dato">Regalo ${String(i + 1).padStart(2, '0')}</span><b class="tarjeta__titulo">${esc(r.titulo)}</b><span class="tarjeta__texto">${r.texto ? esc(r.texto) : '<!-- REVISAR: qué incluye la asesoría complementaria -->[Qué incluye: por definir]'}</span></div></li>`).join('\n')}
+${S.REGALO.map((r, i) => `    <li><div class="tarjeta tarjeta--img revelar"${i ? ` data-retraso="${i * 80}"` : ''}>${tarjetaImg(mini(r.mini))}<span class="tarjeta__dato">Regalo ${String(i + 1).padStart(2, '0')}</span><b class="tarjeta__titulo">${esc(r.titulo)}</b><span class="tarjeta__texto">${esc(r.texto)}</span></div></li>`).join('\n')}
   </ul>
-  <!-- REVISAR: condiciones de la web gratis (se tomó el modelo del canje del vault: el cliente paga dominio y hosting). -->
+  <!-- REVISAR: si el dominio de la web gratis también lo paga el cliente. -->
+  ${ctaMedio(`Son solo ${S.CUPOS} cupos en ${esc(a.mes)}.`)}
 </section>
 
 <section class="seccion">
@@ -869,6 +897,7 @@ ${S.REGALO.map((r, i) => `    <li><div class="tarjeta tarjeta--img revelar"${i ?
       <p>Por el 1: es lo más rápido de ver funcionando, y deja los datos listos para el 3.</p>
     </div>
   </div>
+  ${ctaMedio('Tu plan, gratis, si lo pides en ' + esc(a.mes) + '.')}
 </section>
 
 <section class="seccion">
@@ -880,31 +909,31 @@ ${S.REGALO.map((r, i) => `    <li><div class="tarjeta tarjeta--img revelar"${i ?
     </div>
     <div class="quien__texto revelar" data-retraso="100">
       <p class="parrafo"><b>Rodrigo Vicente Miranda Vargas</b>, fundador de Yachai. Tres años automatizando negocios y más de cinco en marketing, trabajando con CRM.</p>
-      <p class="parrafo">La asesoría la doy yo, no un robot: el asistente te atiende al instante, y después sigues conmigo por WhatsApp.</p>
-      <p><a class="enlace-flecha" href="nosotros.html">Más sobre mí →</a></p>
+      <p class="parrafo">La asesoría la doy yo. Yachai, nuestro asistente, te atiende al instante, y después sigues conmigo por WhatsApp.</p>
     </div>
   </div>
 </section>
-${casosFoto.length ? `
+${testimonios}${casosFoto.length ? `
 <section class="seccion">
-  ${cab(++n, 'Webs que hemos hecho', 'Así se ve el trabajo. La tuya puede ser la siguiente.')}
+  ${cab(++n, 'Webs que hemos hecho', 'Así se ve el trabajo. La tuya puede ser la siguiente, gratis en ' + esc(a.mes) + '.')}
   <div class="trabajos trabajos--fotos">
 ${casosFoto.map((c) => '    ' + casoTarjeta(c)).join('\n')}
   </div>
+  ${ctaMedio('Me pasas una web de referencia y armamos la tuya.')}
 </section>
 ` : ''}
 <section class="seccion">
-  ${cab(++n, '¿Qué negocio tienes?', 'Mira qué automatizaría primero en el tuyo.')}
-  <ul class="chips" role="list">
-${S.RUBROS.map((r) => `    <li><a class="chip" href="${r.slug}.html">${esc(r.nombre)} →</a></li>`).join('\n')}
-    <li><a class="chip" href="soluciones.html#otros">Otro negocio →</a></li>
+  ${cab(++n, 'Para quién es', 'Negocios de Cusco donde todo pasa por una sola persona.')}
+  <ul class="insignias" role="list">
+${S.RUBROS.map((r) => `    <li>${esc(r.nombre)}</li>`).join('\n')}
+    <li>Turismo, academias, agencias</li>
   </ul>
 </section>
 
 <section class="seccion">
-  ${cab(++n, 'Lo que se puede automatizar', 'Precios de lanzamiento para Cusco. Toca el nombre para ver qué incluye.')}
-  <ul class="precios" role="list">
-${S.SERVICIOS.map((s) => `    <li class="revelar"><a class="precios__nombre" href="${s.slug}.html">${esc(s.nombre)}</a><span class="precios__valor">${esc(precioTexto(s))}</span><span class="precios__nota">${esc(s.menu)}</span></li>`).join('\n')}
+  ${cab(++n, 'Y después, si quieres seguir', 'Precios de lanzamiento para Cusco. Nada de esto es obligatorio.')}
+  <ul class="precios precios--plano" role="list">
+${S.SERVICIOS.map((s) => `    <li class="revelar"><span class="precios__nombre">${esc(s.nombre)}</span><span class="precios__valor">${esc(precioTexto(s))}</span><span class="precios__nota">${esc(s.menu)}</span></li>`).join('\n')}
   </ul>
 </section>
 
@@ -912,25 +941,26 @@ ${S.SERVICIOS.map((s) => `    <li class="revelar"><a class="precios__nombre" hre
   ${cab(++n, 'Preguntas')}
   ${faq([
     ['¿Por qué dicen que me regalan US$1,000?', `Porque es el precio de la asesoría desde noviembre. Si la pides en ${a.mes}, no la pagas. No es dinero en efectivo: es la asesoría.`],
-    ['¿La web es gratis de verdad?', 'El diseño y la construcción no se cobran. Pagas solo el dominio, a tu nombre y al costo, y el hosting: S/50 al mes.'],
-    ['¿Me obliga a contratar algo?', 'No. Te quedas con el plan, lo hagas conmigo, con otra persona o más adelante.'],
-    ['¿Tienen que venir a mi negocio?', 'No hace falta: la asesoría es por WhatsApp y videollamada, a tu ritmo.'],
-    [`¿Qué pasa después de los ${a.dias} días?`, 'Si quieres construir algo del plan, te doy el presupuesto por escrito antes de empezar, con los precios de lanzamiento.'],
+    ['¿La web es gratis de verdad?', `Sí, en ${a.mes}. Me pasas una web que te guste como referencia y armamos la tuya sin costo. Lo único que pagas es tu servidor (VPS), a tu nombre, para que la web sea tuya.`],
+    ['¿Qué es la asesoría complementaria?', 'Después del plan, te acompaño en lo que tu negocio necesita para crecer: marketing y anuncios, contenido y marca, ventas, bases de datos, automatización con n8n, agentes de IA y la seguridad de tus bots.'],
+    ['¿Por qué solo ' + S.CUPOS + ' cupos?', 'Porque la asesoría la doy yo, uno por uno. Es lo que puedo atender bien en un mes.'],
+    ['¿Me obliga a contratar algo?', 'No. Sin tarjeta y sin contrato. Te quedas con el plan, lo hagas conmigo, con otra persona o más adelante.'],
+    ['¿Tienen que venir a mi negocio?', 'No hace falta: todo es por WhatsApp y videollamada, a tu ritmo.'],
   ])}
 </section>
 
 <section class="banda banda--cta">
-  <p class="banda__texto revelar">${esc(a.regalo)} ${esc(a.regaloDetalle)}. Todo ${esc(a.mes)}.</p>
+  <p class="banda__texto revelar">${esc(a.regalo)} ${esc(a.regaloDetalle)}. Solo ${S.CUPOS} cupos en ${esc(a.mes)}.</p>
   <p class="acciones revelar" data-retraso="80" style="margin:0">
-    <a class="boton boton--negro" href="${a.whatsapp}" ${EXTERNO}>Escribir por WhatsApp</a>
-    <a class="boton boton--negro-borde" href="#asistente">Hablar con el asistente</a>
+    <a class="boton boton--negro" href="#asistente">Quiero mi regalo</a>
+    <a class="boton boton--negro-borde" href="${a.whatsapp}" ${EXTERNO}>Escribir por WhatsApp</a>
   </p>
 </section>`;
 
   PAGINAS[a.pagina] = pagina({
     archivo: a.pagina, seccion: '', cabeceraMinima: true, chatEnPagina: true, chat: 'asesoria', clase: 'pagina--landing',
     titulo: `${a.regalo} ${a.regaloDetalle} — Yachai · Cusco`,
-    descripcion: `${a.regalo} ${a.regaloDetalle}: ${a.dias} días de asesoría y el inicio de tu web, gratis todo ${a.mes}. Qué automatizar, por dónde empezar y cuánto cuesta.`,
+    descripcion: `${a.regalo} ${a.regaloDetalle}: ${a.dias} días de asesoría y tu web, gratis todo ${a.mes}. Solo ${S.CUPOS} cupos. Qué automatizar, por dónde empezar y cuánto cuesta.`,
     origen: 'Asesoría gratis',
     cuerpo,
   });
@@ -1254,6 +1284,7 @@ function inyectar(html, nombre, contenido) {
 function datosJs() {
   const d = {
     whatsapp: S.WA_NUMERO,
+    cupos: S.CUPOS,
     asesoria: { regalo: S.ASESORIA.regalo, regaloDetalle: S.ASESORIA.regaloDetalle, precioTexto: S.ASESORIA.precioTexto, dias: S.ASESORIA.dias, mes: S.ASESORIA.mes, despues: S.ASESORIA.despues, texto: S.ASESORIA.texto, pagina: S.ASESORIA.pagina },
     servicios: {},
     rubros: {},

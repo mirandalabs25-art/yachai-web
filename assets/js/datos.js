@@ -1,6 +1,7 @@
 /* Generado por herramientas/construir.js desde contenido/sitio.js: no editar a mano. */
 window.YACHAI_DATOS = {
  "whatsapp": "51969322677",
+ "cupos": 10,
  "asesoria": {
   "regalo": "Te regalamos US$1,000",
   "regaloDetalle": "en asesoría para tu negocio",

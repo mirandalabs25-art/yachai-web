@@ -52,16 +52,26 @@ const ASESORIA = {
 };
 
 // Lo que incluye el regalo (dictado 2026-09-23): la asesoría gratuita, una
-// asesoría complementaria y el inicio de la web gratis ("recuerda que vamos a
-// hacer webs gratis… puede ser el gancho principal para adelante").
-// REVISAR: qué incluye la asesoría complementaria; y las condiciones de la web
-// gratis. Se escribió con el modelo del vault (el canje de agencia-aima: la
-// web se hace gratis y el cliente paga dominio y hosting), sin confirmar.
+// asesoría complementaria y el inicio de la web gratis.
+// - La complementaria cubre lo que se aprende en las mentorías (Marketing y
+//   ADS, marca y contenido, ventas, IA en Acción: n8n, agentes, bases de
+//   datos, seguridad): "lo necesario para que su empresa escale".
+// - La web gratis (solo octubre): el cliente da la web de referencia que le
+//   gusta y paga su propio servidor (VPS). "No es tanto como canje."
+//   REVISAR: si el dominio también lo paga el cliente (no lo dijo).
 const REGALO = [
   { titulo: '15 días de asesoría', mini: '03', texto: 'Entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos, por escrito.' },
-  { titulo: 'Asesoría complementaria', mini: '06', texto: null },
-  { titulo: 'Tu web, gratis', mini: '04', texto: 'Empezamos la creación de tu web sin costo de diseño ni de construcción. Solo pagas el dominio, a tu nombre y al costo, y el hosting (S/50 al mes).' },
+  { titulo: 'Asesoría complementaria', mini: '06', texto: 'Te acompaño en lo que tu negocio necesita para crecer: marketing y anuncios, contenido y marca, ventas, bases de datos, automatización con n8n, agentes de IA y la seguridad de tus bots.' },
+  { titulo: 'Tu web, gratis', mini: '04', texto: 'Me pasas una web que te guste como referencia y armamos la tuya sin costo. Lo único que pagas es tu servidor (VPS), a tu nombre, para que la web sea tuya.' },
 ];
+
+// Cupos de la promoción (aceptado por el usuario el 2026-09-23: "ponle eso de
+// cupos limitados… está bien"). Es un límite real: lo que se puede atender.
+const CUPOS = 10;
+
+// Testimonios reales, cuando lleguen: { texto, quien, rubro, foto? }. Con la
+// lista vacía, la sección no aparece. Nunca inventar uno.
+const TESTIMONIOS = [];
 
 /* --------------------------------------------------------------------------
    Estados: qué tan hecho está cada servicio. Se muestra tal cual.
@@ -163,7 +173,7 @@ const SERVICIOS = [
     cta: 'Automatizar mi tarea',
   },
   {
-    slug: 'web-propia', cara: '04', grupo: 'atender',
+    slug: 'web-propia', cara: '04', grupo: 'atender', promo: true,
     nombre: 'Web propia',
     menu: 'Tu web, tu dominio y tu servidor',
     h1: 'Tu web propia: que te encuentren cuando te buscan',
@@ -486,6 +496,6 @@ const PROHIBIDAS = [
 ];
 
 module.exports = {
-  WA_NUMERO, WA_VISIBLE, wa, RUC, ASESORIA, REGALO, ESTADOS, SERVICIOS, GRUPOS, RUBROS,
+  WA_NUMERO, WA_VISIBLE, wa, RUC, ASESORIA, REGALO, CUPOS, TESTIMONIOS, ESTADOS, SERVICIOS, GRUPOS, RUBROS,
   OTROS_RUBROS, CIFRAS, MENU, PROHIBIDAS,
 };

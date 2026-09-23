@@ -642,7 +642,23 @@
   var formulario = chat && chat.querySelector('.chat__formulario');
   var campo = chat && chat.querySelector('.chat__campo');
   var etiqueta = chat && chat.querySelector('.chat__etiqueta');
-  var datos = { nombre: '', negocio: '', interes: '', consulta: '' };
+  var datos = { nombre: '', negocio: '', interes: '', consulta: '', tiempo: '', web: '' };
+
+  // Los dos pasos previos de la página del QR (aceptados por el usuario el
+  // 2026-09-23): antes de WhatsApp, dos preguntas que dejan el diagnóstico
+  // empezado. Lo que responde viaja en el mensaje.
+  var TIEMPO = [
+    ['Responder mensajes', 'responder mensajes'],
+    ['Llevar a mis clientes', 'llevar el registro de mis clientes'],
+    ['Publicar en redes', 'publicar en redes'],
+    ['Tareas que repito', 'tareas que repito todos los días'],
+    ['Otra cosa', 'otra cosa, te cuento']
+  ];
+  var WEB = [
+    ['No tengo web', 'no tengo'],
+    ['Tengo, pero no me sirve', 'tengo, pero no me sirve'],
+    ['Sí, y me sirve', 'tengo y me sirve']
+  ];
   var ocupado = false;
   var pidiendo = '';
 
@@ -783,7 +799,7 @@
       case 'landing':   // la página del QR: el gancho va primero
         datos.interes = 'los ' + DIAS + ' días de asesoría gratis';
         decir([
-          (DATOS.asesoria.regalo ? DATOS.asesoria.regalo + ' ' + (DATOS.asesoria.regaloDetalle || '') + ': ' : '') + DIAS + ' días de asesoría gratis todo ' + MES + ', y el inicio de tu web, también gratis.',
+          (DATOS.asesoria.regalo ? DATOS.asesoria.regalo + ' ' + (DATOS.asesoria.regaloDetalle || '') + ': ' : '') + DIAS + ' días de asesoría y tu web, gratis todo ' + MES + '.' + (DATOS.cupos ? ' Son solo ' + DATOS.cupos + ' cupos.' : ''),
           'Para empezar, ¿qué negocio tienes?'
         ], function () { ofrecer(RUBROS.map(function (r) { return [r[1], 'es:' + r[0]]; })); });
         break;
@@ -835,12 +851,29 @@
         decir(['Para ' + datos.negocio + ', esto es lo que más sirve:', lista(sugerencias)].concat(
           MODO === 'asesoria' ? ['En la asesoría vemos cuál conviene primero en tu caso, y cuánto costaría.'] : []
         ), function () {
-          var opciones = [[MODO === 'asesoria' ? 'Quiero mi asesoría gratis' : 'Lo quiero', 'datos']];
+          var opciones = [[MODO === 'asesoria' ? 'Quiero mi regalo' : 'Lo quiero', MODO === 'asesoria' ? 'p1' : 'datos']];
           var pagina = DATOS.rubros[partes[1]];
           if (pagina) opciones.push(['Ver soluciones para ' + pagina.nombre.toLowerCase(), '>' + pagina.url]);
           else opciones.push(['Ver cómo se ve', '@cara-' + (PRIMERO[partes[1]][0] || '01')]);
           ofrecer(opciones.concat([['Ver otro negocio', 'rubro'], ['Volver al inicio', 'inicio']]));
         });
+        break;
+      case 'p1':
+        decir(['Te hago dos preguntas rápidas para preparar tu asesoría.', '1 de 2 · ¿Qué te quita más tiempo hoy?'], function () {
+          ofrecer(TIEMPO.map(function (t, k) { return [t[0], 'r1:' + k]; }));
+        });
+        break;
+      case 'r1':
+        datos.tiempo = (TIEMPO[+partes[1]] || TIEMPO[4])[1];
+        decir(['2 de 2 · ¿Tu negocio ya tiene web?'], function () {
+          ofrecer(WEB.map(function (w, k) { return [w[0], 'r2:' + k]; }));
+        });
+        break;
+      case 'r2':
+        datos.web = (WEB[+partes[1]] || WEB[0])[1];
+        decir([datos.web === 'tengo y me sirve'
+          ? 'Bien. Entonces vamos directo a lo que se puede automatizar.'
+          : 'Perfecto: en octubre la web también va de regalo.'], function () { ir('datos'); });
         break;
       case 'consulta':
         decir(['Cuéntame tu consulta y te respondo por WhatsApp.'], function () {
@@ -882,6 +915,8 @@
     var texto = 'Hola Rodrigo, soy ' + datos.nombre + '.' +
       (datos.negocio ? ' Tengo ' + datos.negocio + '.' : '') +
       (datos.consulta ? ' Mi consulta: ' + datos.consulta : ' Me interesa: ' + (datos.interes || 'conocer más de Yachai') + '.') +
+      (datos.tiempo ? ' Lo que más tiempo me quita: ' + datos.tiempo + '.' : '') +
+      (datos.web ? ' Web: ' + datos.web + '.' : '') +
       ' (Te escribo desde la web de Yachai' + origen() + ')';
     var a = document.createElement('a');
     a.className = 'boton boton--qori chat__enviar';
@@ -925,10 +960,10 @@
     if (arrancado || !registro) return;
     arrancado = true;
     if (MODO === 'asesoria' && !despues) {
-      decir(['¡Hola! Soy el asistente de Yachai.'], function () { ir('landing'); });
+      decir(['¡Hola! Soy Yachai, el asistente de esta web.'], function () { ir('landing'); });
       return;
     }
-    decir(['¡Hola! Soy el asistente de Yachai.', despues ? '' : '¿Qué te gustaría saber?'].filter(Boolean), function () {
+    decir(['¡Hola! Soy Yachai, el asistente de esta web.', despues ? '' : '¿Qué te gustaría saber?'].filter(Boolean), function () {
       if (despues) despues(); else ofrecer(INICIO);
     });
   }
