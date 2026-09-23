@@ -10,7 +10,7 @@
   document.documentElement.classList.add('js');
 
   // Si GSAP cargó, movimiento.js arma la chakana del hero, hace entrar la
-  // cámara por su hueco al bajar y agrega el imán de la chakana de obsidiana.
+  // cámara por su hueco al bajar y agrega el imán que frena en cada escena.
   // Si no cargó, este archivo hace todo solo.
   var usaGsap = !!(window.gsap && window.ScrollTrigger) && !sinMovimiento;
 
@@ -196,17 +196,13 @@
   var giro      = document.querySelector('.giro');
   var escena    = document.querySelector('.giro__escena');
   var contCaras = document.querySelector('.giro__caras');
-  var chakana   = document.querySelector('.giro__chakana');
-  var pieza     = document.querySelector('.giro__pieza');
+  var aro       = document.querySelector('.giro__aro');
   var cabecera  = document.querySelector('.cabecera');
   var caras     = [];
-  var giroVivo  = !!(giro && escena && contCaras && chakana && pieza) && !sinMovimiento;
+  var giroVivo  = !!(giro && escena && contCaras) && !sinMovimiento;
 
-  // Medidas del hueco central de la imagen de la chakana (medidas en el
-  // PNG de 1254 px: radio 164 px = 13,1 %; centro 0,8 % arriba del medio).
-  // Se usa un poco menos de radio para que el borde quede bajo el aro dorado.
-  var HUECO = 0.128, HUECO_Y = -0.0084, INTRO = 0;
-  var m = { tramo: 1, tam: 0, hueco: 0, maxR: 0, hy: 0 };
+  var INTRO = 0;
+  var m = { tramo: 1, maxR: 0 };
 
   function leerCaras() {
     caras = contCaras ? Array.prototype.slice.call(contCaras.querySelectorAll('.cara')) : [];
@@ -216,12 +212,9 @@
     if (!giroVivo) return;
     var W = escena.clientWidth, H = escena.clientHeight || window.innerHeight;
     m.tramo = Math.max(1, (giro.offsetHeight - H) / (caras.length + INTRO));
-    m.tam = chakana.offsetWidth;
-    m.hueco = m.tam * HUECO;
     m.maxR = Math.sqrt(W * W + H * H) / 2 + 40;
     if (cabecera) escena.style.setProperty('--alto-cabecera', cabecera.offsetHeight + 'px');
     escena.style.setProperty('--hx', (W / 2) + 'px');
-    m.hy = chakana.offsetTop + m.tam * HUECO_Y;
   }
 
   function suave(x) { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); }
@@ -365,56 +358,34 @@
 
   function pintarGiro() {
     if (!giroVivo) return;
-    var W = escena.clientWidth, H = escena.clientHeight || window.innerHeight;
-    var y = window.scrollY - giro.offsetTop;   // la sección arranca pegada al hero
+    var H = escena.clientHeight || window.innerHeight;
+    var y = window.scrollY - giro.offsetTop;
     var P = Math.max(0, y / m.tramo);          // 0 … número de caras
     var i = Math.min(caras.length - 1, Math.floor(P));
     var t = Math.min(1, P - i);
-    var angulo, escala = 1, op = 1, abierto, activa, hy = null;
 
-    if (i === 0) {
-      // Cara 1: se abre desde el hueco de la chakana del hero, sin que
-      // aparezca antes la de obsidiana. Esa entra recién al cerrar la cara,
-      // para girar hacia la 2.
-      angulo = 0;
-      activa = caras[0];
-      abierto = suave(t / 0.35) * (1 - suave((t - 0.82) / 0.18));
-      if (t < 0.5) {
-        op = 0;
-        hy = H / 2;                            // el centro de la chakana del hero
-      } else {
-        escala = 1 + abierto * 2.6;
-        op = 1 - Math.min(1, abierto * 1.5);
-      }
-    } else {
-      var f = suave(t / 0.25);                 // media vuelta desde la cara anterior
-      angulo = (i - 1 + f) * 180;
-      activa = f < 0.5 ? caras[i - 1] : caras[i];
-      abierto = suave((t - 0.25) / 0.25) * (1 - suave((t - 0.82) / 0.18));
-      escala = 1 + abierto * 2.6;              // la cámara entra por el hueco
-      op = 1 - Math.min(1, abierto * 1.5);
+    // Transición en iris (2026-09-22: se sacó la chakana de imagen que
+    // giraba entre escenas). Cada escena se abre desde un punto en el centro
+    // hasta llenar la pantalla, se lee, y se cierra otra vez en el centro.
+    // La última no se cierra: la sección termina con ella abierta.
+    var abre = suave((t - 0.04) / 0.3);
+    var cierra = i === caras.length - 1 ? 0 : suave((t - 0.84) / 0.16);
+    var abierto = abre * (1 - cierra);
+    var r = abierto * m.maxR;
+
+    escena.style.setProperty('--fondo', '1');
+    escena.style.setProperty('--rx', r.toFixed(1) + 'px');
+    escena.style.setProperty('--ry', r.toFixed(1) + 'px');
+    escena.style.setProperty('--hy', (H / 2) + 'px');
+    escena.style.setProperty('--velo', abierto.toFixed(3));
+    if (aro) {
+      // Un aro dorado fino marca el borde del círculo mientras se abre o se cierra.
+      aro.style.width = aro.style.height = (r * 2).toFixed(1) + 'px';
+      aro.style.opacity = abierto > 0.002 && abierto < 0.97 ? '1' : '0';
     }
 
-    var cosA = Math.abs(Math.cos(angulo * Math.PI / 180));
-    var ry = (i === 0 && t < 0.5)
-      ? abierto * m.maxR
-      : m.hueco * escala + abierto * (m.maxR - m.hueco * escala);
-
-    // El fondo negro de la escena entra cuando la cara 1 ya cubre todo: antes
-    // se tiene que ver el hero detrás.
-    escena.style.setProperty('--fondo', suave((P - 0.25) / 0.1).toFixed(3));
-    escena.style.setProperty('--rx', (ry * cosA).toFixed(1) + 'px');
-    escena.style.setProperty('--ry', ry.toFixed(1) + 'px');
-    escena.style.setProperty('--hy', (hy !== null ? hy : m.hy) + 'px');
-    escena.style.setProperty('--velo', abierto.toFixed(3));
-    chakana.style.setProperty('--escala', escala.toFixed(3));
-    chakana.style.opacity = op.toFixed(3);
-    pieza.style.transform = 'rotateY(' + angulo.toFixed(2) + 'deg)';
-    // El canto dorado solo existe cuando la pieza está casi de perfil.
-    pieza.style.setProperty('--canto', Math.max(0, (0.35 - cosA) / 0.35).toFixed(3));
-
-    mostrar(abierto > 0.001 || i > 0 ? activa : null);
-    abrir(abierto > 0.55 ? activa : null);
+    mostrar(abierto > 0.002 ? caras[i] : null);
+    abrir(abierto > 0.55 ? caras[i] : null);
   }
 
   if (giroVivo) {

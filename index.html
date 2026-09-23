@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/css/style.css?v=10">
+<link rel="stylesheet" href="assets/css/style.css?v=11">
 </head>
 <body>
 
@@ -47,11 +47,11 @@
 
   <ul class="nav__links" role="list">
     <li><a href="#asistente">Asistente</a></li>
+    <li><a href="#quien">Quién soy</a></li>
+    <li><a href="#trabajos">Trabajos</a></li>
     <li><a href="#servicios">Qué resuelvo</a></li>
     <li><a href="#describe">Tu web</a></li>
-    <li><a href="#trabajos">Trabajos</a></li>
     <li><a href="#seguro">Seguridad</a></li>
-    <li><a href="#quien">Quién soy</a></li>
     <li><a href="#agenda">Agenda</a></li>
   </ul>
 
@@ -87,8 +87,248 @@
   </div>
 </section>
 
+<main class="contenido">
+
+<!-- ASISTENTE ============================================================ -->
+<!-- La acción principal de la landing del QR: quien escanea no sabe qué es
+     Yachai. Bot con botones, sin IA (decisión del 2026-09-22); lo que deja
+     la persona llega a WhatsApp con el mensaje armado. Guion en main.js. -->
+<section class="seccion asistente" id="asistente" aria-labelledby="asistente-titulo">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">Hola —</span>
+    <div>
+      <h2 class="titulo" id="asistente-titulo">¿En qué te ayudo?</h2>
+      <p class="parrafo" style="margin-top:16px">
+        Toca una opción. En un minuto sabes qué puede hacer Yachai por tu
+        negocio y, si quieres, me dejas tus datos y te escribo.
+      </p>
+    </div>
+  </div>
+
+  <div class="chat">
+    <p class="chat__cabeza"><span class="chat__signo" aria-hidden="true"></span><span>Asistente de Yachai</span><span class="chat__estado">en línea</span></p>
+    <div class="chat__registro" role="log" aria-live="polite"></div>
+    <div class="chat__opciones" role="group" aria-label="Opciones"></div>
+    <form class="chat__formulario" hidden>
+      <label class="chat__etiqueta" for="chat-dato">Tu nombre</label>
+      <div class="chat__fila">
+        <input id="chat-dato" class="chat__campo" type="text" maxlength="120" enterkeyhint="send">
+        <button class="boton boton--qori" type="submit">Enviar</button>
+      </div>
+    </form>
+    <noscript><p class="parrafo" style="padding:16px">Escríbeme directo por WhatsApp: <a href="https://wa.me/51969322677">+51 969 322 677</a></p></noscript>
+  </div>
+
+  <div class="mas-ideas revelar">
+    <p class="dato dato--qori">Y muchas más</p>
+    <ul class="ideas__lista" role="list">
+        <li data-rubros="academia oficina agencia consultorio turismo tienda restaurante hotel otro">
+          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20aprender%20a%20usar%20IA%20en%20mi%20trabajo" target="_blank" rel="noopener">
+            <span class="idea__dolor">«Quiero aprender a usar IA.»</span>
+            <span class="idea__entrega">Clases prácticas para ti o tu equipo: Claude, ChatGPT y Gemini aplicados a tu trabajo de todos los días.</span>
+          </a>
+        </li>
+        <li data-rubros="consultorio oficina academia hotel">
+          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20recordatorios%20autom%C3%A1ticos%20de%20citas" target="_blank" rel="noopener">
+            <span class="idea__dolor">«Me dejan plantado.»</span>
+            <span class="idea__entrega">Recordatorios y confirmación de citas por WhatsApp, un día antes y el mismo día.</span>
+          </a>
+        </li>
+        <li data-rubros="tienda restaurante consultorio hotel academia">
+          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20que%20mis%20clientes%20vuelvan" target="_blank" rel="noopener">
+            <span class="idea__dolor">«Mis clientes no vuelven.»</span>
+            <span class="idea__entrega">Mensajes que se envían solos a quien no compra o no viene hace tiempo, con tu tono.</span>
+          </a>
+        </li>
+        <li data-rubros="tienda agencia turismo restaurante hotel">
+          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20invierto%20en%20anuncios%20y%20quiero%20saber%20si%20funcionan" target="_blank" rel="noopener">
+            <span class="idea__dolor">«Invierto en anuncios y no sé si funcionan.»</span>
+            <span class="idea__entrega">Campañas en Facebook e Instagram con un reporte que te llega solo, en palabras simples.</span>
+          </a>
+        </li>
+        <li data-rubros="restaurante hotel tienda turismo">
+          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20un%20QR%20en%20mi%20local%20que%20atienda" target="_blank" rel="noopener">
+            <span class="idea__dolor">«Quiero un QR en mi local que atienda.»</span>
+            <span class="idea__entrega">El cliente escanea y un asistente le responde la carta, los precios o los horarios.</span>
+          </a>
+        </li>
+        <li data-rubros="hotel turismo restaurante">
+          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20recibo%20turistas%20y%20quiero%20atenderlos%20mejor" target="_blank" rel="noopener">
+            <span class="idea__dolor">«Recibo turistas y no me da el tiempo.»</span>
+            <span class="idea__entrega">Atención en varios idiomas y reservas que se confirman solas.</span>
+          </a>
+        </li>
+        <li data-rubros="tienda restaurante">
+          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20vender%20por%20internet" target="_blank" rel="noopener">
+            <span class="idea__dolor">«Quiero vender por internet.»</span>
+            <span class="idea__entrega">Tu catálogo en línea, con los pedidos llegando directo a tu WhatsApp.</span>
+          </a>
+        </li>
+        <li data-rubros="academia oficina otro">
+          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20tengo%20un%20proyecto%20grande%20que%20quiero%20ordenar%20con%20IA" target="_blank" rel="noopener">
+            <span class="idea__dolor">«Tengo un proyecto enorme y no sé por dónde empezar.»</span>
+            <span class="idea__entrega">Lo ordenamos con IA: un libro, una tesis, un archivo de años.</span>
+          </a>
+        </li>
+        <li data-rubros="agencia oficina consultorio">
+          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20revisar%20la%20seguridad%20de%20mis%20bots" target="_blank" rel="noopener">
+            <span class="idea__dolor">«Me da miedo que engañen a mi bot.»</span>
+            <span class="idea__entrega">Revisión de tus bots y automatizaciones antes de que un cliente tramposo lo intente.</span>
+          </a>
+        </li>
+        <li data-rubros="agencia oficina academia">
+          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20mis%20sistemas%20en%20un%20servidor%20propio" target="_blank" rel="noopener">
+            <span class="idea__dolor">«Pago muchas apps al mes.»</span>
+            <span class="idea__entrega">Tus sistemas en un servidor a tu nombre, sin pagar una suscripción por cada herramienta.</span>
+          </a>
+        </li>
+      </ul>
+  </div>
+</section>
+
+<!-- QUIÉN SOY ============================================================ -->
+<section class="seccion" id="quien">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">01 —</span>
+    <div>
+      <h2 class="titulo">Quién está detrás</h2>
+    </div>
+  </div>
+
+  <div class="quien">
+    <div class="quien__foto revelar">
+      <img src="assets/img/rodrigo.jpg" alt="Rodrigo Vicente Miranda Vargas" loading="lazy" width="800" height="948">
+      <span class="quien__firma">Rodrigo Miranda · Cusco</span>
+    </div>
+        <div class="quien__texto revelar" data-retraso="100">
+      <p class="parrafo"><b>Rodrigo Vicente Miranda Vargas.</b> Fundé Yachai en
+      Cusco: <i>yachay</i> es conocimiento en quechua. Llevo tres años
+      automatizando negocios y más de cinco en marketing, trabajando con CRM.</p>
+      <p class="parrafo">Empecé con negocios de gente que conozco: una tienda,
+      un estudio jurídico, un estudio de tatuajes, una agencia de marketing.
+      Cada uno con un problema distinto y la misma raíz: <b>todo dependía de
+      una sola persona.</b></p>
+      <p class="parrafo">Yachai nació para Cusco y va a crecer a otras
+      ciudades, paso a paso. Lo que construyo queda a tu nombre, y si algo no
+      lo sé hacer todavía, te lo digo antes de empezar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CON QUÉ TRABAJO ====================================================== -->
+<section class="seccion" id="stack" aria-labelledby="stack-titulo">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">02 —</span>
+    <div>
+      <h2 class="titulo" id="stack-titulo">Con qué trabajo</h2>
+      <p class="parrafo" style="margin-top:16px">
+        Para quien quiere saber qué hay debajo. <b>La herramienta se elige
+        después del problema</b>, no al revés.
+      </p>
+    </div>
+  </div>
+  <div class="stack">
+    <div class="stack__grupo revelar">
+      <p class="dato dato--qori">Automatización y CRM</p>
+      <ul role="list"><li>Go High Level</li><li>HubSpot</li><li>n8n</li></ul>
+    </div>
+    <div class="stack__grupo revelar" data-retraso="60">
+      <p class="dato dato--qori">Código</p>
+      <ul role="list"><li>Python</li><li>Git</li><li>Claude Code</li><li>Codex</li></ul>
+    </div>
+    <div class="stack__grupo revelar" data-retraso="120">
+      <p class="dato dato--qori">Datos e infraestructura</p>
+      <ul role="list"><li>Bases de datos</li><li>Servidor propio</li><li>Dominios y HTTPS</li></ul>
+    </div>
+    <div class="stack__grupo revelar">
+      <p class="dato dato--qori">Inteligencia artificial</p>
+      <ul role="list"><li>Agentes y bots</li><li>Transcripción local</li><li>Imagen y video con IA</li></ul>
+    </div>
+    <div class="stack__grupo revelar" data-retraso="60">
+      <p class="dato dato--qori">Marketing</p>
+      <ul role="list"><li>Meta Ads</li><li>CRM</li><li>Software a medida</li></ul>
+    </div>
+    <div class="stack__grupo revelar" data-retraso="120">
+      <p class="dato dato--qori">Conocimiento</p>
+      <ul role="list"><li>Segundo cerebro</li><li>Ciberseguridad de IA</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- TRABAJOS ============================================================= -->
+<!-- Sin nombres de marca a propósito (2026-09-22): si se nombra, la gente
+     va a buscarla y todavía no está lista. Referencias amplias por rubro,
+     con el estado real de cada una. -->
+<section class="seccion" id="trabajos" aria-labelledby="trabajos-titulo">
+  <div class="seccion__cabecera revelar">
+    <span class="seccion__num">03 —</span>
+    <div>
+      <h2 class="titulo" id="trabajos-titulo">En qué estamos trabajando</h2>
+      <p class="parrafo" style="margin-top:16px">
+        Yachai nació en Cusco y empezó con negocios de aquí. Cada uno con un
+        problema distinto y la misma raíz: <b>todo dependía de una sola
+        persona.</b>
+      </p>
+    </div>
+  </div>
+
+  <div class="cifras trabajos__cifras">
+    <div class="revelar">
+      <div class="cifra__valor" data-cifra="3" data-sufijo="+">3+</div>
+      <p class="cifra__texto">Años automatizando</p>
+    </div>
+    <div class="revelar" data-retraso="80">
+      <div class="cifra__valor" data-cifra="5" data-sufijo="+">5+</div>
+      <p class="cifra__texto">Años en marketing y CRM</p>
+    </div>
+    <div class="revelar" data-retraso="160">
+      <div class="cifra__valor" data-cifra="6" data-sufijo="+">6+</div>
+      <p class="cifra__texto">Rubros atendidos</p>
+    </div>
+    <div class="revelar" data-retraso="240">
+      <div class="cifra__valor" data-cifra="491">491</div>
+      <p class="cifra__texto">Productos en un catálogo en línea</p>
+    </div>
+  </div>
+
+  <div class="trabajos">
+    <article class="trabajo revelar">
+      <span class="caso__estado caso__estado--vivo">● En producción</span>
+      <h3 class="caso__nombre">Tiendas de productos</h3>
+      <p class="caso__texto">Web propia con catálogo de 491 productos, dominio, servidor propio y pedidos directo a WhatsApp.</p>
+    </article>
+    <article class="trabajo revelar" data-retraso="80">
+      <span class="caso__estado">◐ En marcha</span>
+      <h3 class="caso__nombre">Estudios jurídicos</h3>
+      <p class="caso__texto">Introducción a la IA para el equipo, y un asistente que vigila los plazos para que nadie los revise a mano.</p>
+    </article>
+    <article class="trabajo revelar" data-retraso="160">
+      <span class="caso__estado">◐ En construcción</span>
+      <h3 class="caso__nombre">Webs para negocios de servicios</h3>
+      <p class="caso__texto">Web con agendamiento: cada cita arma la base de clientes que hoy vive en un cuaderno.</p>
+    </article>
+    <article class="trabajo revelar">
+      <span class="caso__estado caso__estado--vivo">● Entregado</span>
+      <h3 class="caso__nombre">Libros y proyectos largos</h3>
+      <p class="caso__texto">Años de material ordenados con IA para convertirlos en un libro.</p>
+    </article>
+    <article class="trabajo revelar" data-retraso="80">
+      <span class="caso__estado">○ En preparación</span>
+      <h3 class="caso__nombre">Agencias de marketing</h3>
+      <p class="caso__texto">Automatizaciones y agentes para reportes de campañas y tareas que se repiten.</p>
+    </article>
+    <article class="trabajo trabajo--grafo revelar" data-retraso="160">
+      <img src="assets/img/grafo-vault.svg" alt="Grafo de notas conectadas del segundo cerebro" loading="lazy" width="1000" height="1000">
+      <span class="caso__estado caso__estado--vivo">● En producción</span>
+      <h3 class="caso__nombre">Mi propio sistema</h3>
+      <p class="caso__texto">Un segundo cerebro con todo lo que estudio y construyo, conectado. Agentes que me reportan a horario fijo y reglas de seguridad impuestas por código.</p>
+    </article>
+  </div>
+</section>
+
 <!-- GIRO: la chakana cibernética y los siete dolores ===================== -->
-<!-- Cada vuelta de la chakana abre una cara: la escena (imagen hoy, video de
+<!-- Las escenas se abren y se cierran en iris, desde el centro (la chakana
+     de imagen que giraba entre ellas se sacó el 2026-09-22). Cada una trae: la escena (imagen hoy, video de
      Kling después: basta con agregar data-video="assets/video/NN.mp4" al
      <article>), la frase del dolor, una demostración en HTML y el botón.
      El texto nunca va dentro de la imagen ni del video: la IA lo deforma.
@@ -255,20 +495,11 @@
 
     </div>
 
-    <!-- La chakana: dos caras de la misma pieza. Gira con el scroll. -->
-    <div class="giro__chakana" aria-hidden="true">
-      <div class="giro__pieza">
-        <img class="giro__lado giro__lado--frente" src="assets/img/giro/08-chakana.webp" alt="" width="900" height="900">
-        <img class="giro__lado giro__lado--reverso" src="assets/img/giro/09-chakana-reverso.webp" alt="" width="900" height="900" loading="lazy">
-      </div>
-    </div>
+    <!-- El borde del iris: un aro dorado fino que acompaña la apertura. -->
+    <div class="giro__aro" aria-hidden="true"></div>
 
   </div>
 </section>
-
-<main class="contenido">
-
-
 
 <!-- BANDA ================================================================ -->
 <section class="banda">
@@ -278,110 +509,13 @@
   </p>
 </section>
 
-<!-- ASISTENTE ============================================================ -->
-<!-- La acción principal de la landing del QR: quien escanea no sabe qué es
-     Yachai. Bot con botones, sin IA (decisión del 2026-09-22); lo que deja
-     la persona llega a WhatsApp con el mensaje armado. Guion en main.js. -->
-<section class="seccion asistente" id="asistente" aria-labelledby="asistente-titulo">
-  <div class="seccion__cabecera revelar">
-    <span class="seccion__num">Hola —</span>
-    <div>
-      <h2 class="titulo" id="asistente-titulo">¿En qué te ayudo?</h2>
-      <p class="parrafo" style="margin-top:16px">
-        Toca una opción. En un minuto sabes qué puede hacer Yachai por tu
-        negocio y, si quieres, me dejas tus datos y te escribo.
-      </p>
-    </div>
-  </div>
-
-  <div class="chat">
-    <p class="chat__cabeza"><span class="chat__signo" aria-hidden="true"></span><span>Asistente de Yachai</span><span class="chat__estado">en línea</span></p>
-    <div class="chat__registro" role="log" aria-live="polite"></div>
-    <div class="chat__opciones" role="group" aria-label="Opciones"></div>
-    <form class="chat__formulario" hidden>
-      <label class="chat__etiqueta" for="chat-dato">Tu nombre</label>
-      <div class="chat__fila">
-        <input id="chat-dato" class="chat__campo" type="text" maxlength="120" enterkeyhint="send">
-        <button class="boton boton--qori" type="submit">Enviar</button>
-      </div>
-    </form>
-    <noscript><p class="parrafo" style="padding:16px">Escríbeme directo por WhatsApp: <a href="https://wa.me/51969322677">+51 969 322 677</a></p></noscript>
-  </div>
-
-  <div class="mas-ideas revelar">
-    <p class="dato dato--qori">Y muchas más</p>
-    <ul class="ideas__lista" role="list">
-        <li data-rubros="academia oficina agencia consultorio turismo tienda restaurante hotel otro">
-          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20aprender%20a%20usar%20IA%20en%20mi%20trabajo" target="_blank" rel="noopener">
-            <span class="idea__dolor">«Quiero aprender a usar IA.»</span>
-            <span class="idea__entrega">Clases prácticas para ti o tu equipo: Claude, ChatGPT y Gemini aplicados a tu trabajo de todos los días.</span>
-          </a>
-        </li>
-        <li data-rubros="consultorio oficina academia hotel">
-          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20recordatorios%20autom%C3%A1ticos%20de%20citas" target="_blank" rel="noopener">
-            <span class="idea__dolor">«Me dejan plantado.»</span>
-            <span class="idea__entrega">Recordatorios y confirmación de citas por WhatsApp, un día antes y el mismo día.</span>
-          </a>
-        </li>
-        <li data-rubros="tienda restaurante consultorio hotel academia">
-          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20que%20mis%20clientes%20vuelvan" target="_blank" rel="noopener">
-            <span class="idea__dolor">«Mis clientes no vuelven.»</span>
-            <span class="idea__entrega">Mensajes que se envían solos a quien no compra o no viene hace tiempo, con tu tono.</span>
-          </a>
-        </li>
-        <li data-rubros="tienda agencia turismo restaurante hotel">
-          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20invierto%20en%20anuncios%20y%20quiero%20saber%20si%20funcionan" target="_blank" rel="noopener">
-            <span class="idea__dolor">«Invierto en anuncios y no sé si funcionan.»</span>
-            <span class="idea__entrega">Campañas en Facebook e Instagram con un reporte que te llega solo, en palabras simples.</span>
-          </a>
-        </li>
-        <li data-rubros="restaurante hotel tienda turismo">
-          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20un%20QR%20en%20mi%20local%20que%20atienda" target="_blank" rel="noopener">
-            <span class="idea__dolor">«Quiero un QR en mi local que atienda.»</span>
-            <span class="idea__entrega">El cliente escanea y un asistente le responde la carta, los precios o los horarios.</span>
-          </a>
-        </li>
-        <li data-rubros="hotel turismo restaurante">
-          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20recibo%20turistas%20y%20quiero%20atenderlos%20mejor" target="_blank" rel="noopener">
-            <span class="idea__dolor">«Recibo turistas y no me da el tiempo.»</span>
-            <span class="idea__entrega">Atención en varios idiomas y reservas que se confirman solas.</span>
-          </a>
-        </li>
-        <li data-rubros="tienda restaurante">
-          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20vender%20por%20internet" target="_blank" rel="noopener">
-            <span class="idea__dolor">«Quiero vender por internet.»</span>
-            <span class="idea__entrega">Tu catálogo en línea, con los pedidos llegando directo a tu WhatsApp.</span>
-          </a>
-        </li>
-        <li data-rubros="academia oficina otro">
-          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20tengo%20un%20proyecto%20grande%20que%20quiero%20ordenar%20con%20IA" target="_blank" rel="noopener">
-            <span class="idea__dolor">«Tengo un proyecto enorme y no sé por dónde empezar.»</span>
-            <span class="idea__entrega">Lo ordenamos con IA: un libro, una tesis, un archivo de años.</span>
-          </a>
-        </li>
-        <li data-rubros="agencia oficina consultorio">
-          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20revisar%20la%20seguridad%20de%20mis%20bots" target="_blank" rel="noopener">
-            <span class="idea__dolor">«Me da miedo que engañen a mi bot.»</span>
-            <span class="idea__entrega">Revisión de tus bots y automatizaciones antes de que un cliente tramposo lo intente.</span>
-          </a>
-        </li>
-        <li data-rubros="agencia oficina academia">
-          <a class="idea" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20mis%20sistemas%20en%20un%20servidor%20propio" target="_blank" rel="noopener">
-            <span class="idea__dolor">«Pago muchas apps al mes.»</span>
-            <span class="idea__entrega">Tus sistemas en un servidor a tu nombre, sin pagar una suscripción por cada herramienta.</span>
-          </a>
-        </li>
-      </ul>
-  </div>
-</section>
-
 <!-- DESCRIBE TU WEB ====================================================== -->
 <!-- REVISAR: hoy la imagen se hace a mano (ChatGPT) y se envía por
      WhatsApp. Cuando la automatización esté lista, este formulario la va a
      disparar sola. También confirmar si la vista previa es gratis. -->
 <section class="seccion" id="describe" aria-labelledby="describe-titulo">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">01 —</span>
+    <span class="seccion__num">04 —</span>
     <div>
       <h2 class="titulo" id="describe-titulo">Describe tu web</h2>
       <p class="parrafo" style="margin-top:16px">
@@ -417,81 +551,10 @@
   </form>
 </section>
 
-<!-- TRABAJOS ============================================================= -->
-<!-- Sin nombres de marca a propósito (2026-09-22): si se nombra, la gente
-     va a buscarla y todavía no está lista. Referencias amplias por rubro,
-     con el estado real de cada una. -->
-<section class="seccion" id="trabajos" aria-labelledby="trabajos-titulo">
-  <div class="seccion__cabecera revelar">
-    <span class="seccion__num">02 —</span>
-    <div>
-      <h2 class="titulo" id="trabajos-titulo">En qué estamos trabajando</h2>
-      <p class="parrafo" style="margin-top:16px">
-        Yachai nació en Cusco y empezó con negocios de aquí. Cada uno con un
-        problema distinto y la misma raíz: <b>todo dependía de una sola
-        persona.</b>
-      </p>
-    </div>
-  </div>
-
-  <div class="cifras trabajos__cifras">
-    <div class="revelar">
-      <div class="cifra__valor" data-cifra="3" data-sufijo="+">3+</div>
-      <p class="cifra__texto">Años automatizando</p>
-    </div>
-    <div class="revelar" data-retraso="80">
-      <div class="cifra__valor" data-cifra="5" data-sufijo="+">5+</div>
-      <p class="cifra__texto">Años en marketing y CRM</p>
-    </div>
-    <div class="revelar" data-retraso="160">
-      <div class="cifra__valor" data-cifra="6" data-sufijo="+">6+</div>
-      <p class="cifra__texto">Rubros atendidos</p>
-    </div>
-    <div class="revelar" data-retraso="240">
-      <div class="cifra__valor" data-cifra="491">491</div>
-      <p class="cifra__texto">Productos en un catálogo en línea</p>
-    </div>
-  </div>
-
-  <div class="trabajos">
-    <article class="trabajo revelar">
-      <span class="caso__estado caso__estado--vivo">● En producción</span>
-      <h3 class="caso__nombre">Tiendas de productos</h3>
-      <p class="caso__texto">Web propia con catálogo de 491 productos, dominio, servidor propio y pedidos directo a WhatsApp.</p>
-    </article>
-    <article class="trabajo revelar" data-retraso="80">
-      <span class="caso__estado">◐ En marcha</span>
-      <h3 class="caso__nombre">Estudios jurídicos</h3>
-      <p class="caso__texto">Introducción a la IA para el equipo, y un asistente que vigila los plazos para que nadie los revise a mano.</p>
-    </article>
-    <article class="trabajo revelar" data-retraso="160">
-      <span class="caso__estado">◐ En construcción</span>
-      <h3 class="caso__nombre">Webs para negocios de servicios</h3>
-      <p class="caso__texto">Web con agendamiento: cada cita arma la base de clientes que hoy vive en un cuaderno.</p>
-    </article>
-    <article class="trabajo revelar">
-      <span class="caso__estado caso__estado--vivo">● Entregado</span>
-      <h3 class="caso__nombre">Libros y proyectos largos</h3>
-      <p class="caso__texto">Años de material ordenados con IA para convertirlos en un libro.</p>
-    </article>
-    <article class="trabajo revelar" data-retraso="80">
-      <span class="caso__estado">○ En preparación</span>
-      <h3 class="caso__nombre">Agencias de marketing</h3>
-      <p class="caso__texto">Automatizaciones y agentes para reportes de campañas y tareas que se repiten.</p>
-    </article>
-    <article class="trabajo trabajo--grafo revelar" data-retraso="160">
-      <img src="assets/img/grafo-vault.svg" alt="Grafo de notas conectadas del segundo cerebro" loading="lazy" width="1000" height="1000">
-      <span class="caso__estado caso__estado--vivo">● En producción</span>
-      <h3 class="caso__nombre">Mi propio sistema</h3>
-      <p class="caso__texto">Un segundo cerebro con todo lo que estudio y construyo, conectado. Agentes que me reportan a horario fijo y reglas de seguridad impuestas por código.</p>
-    </article>
-  </div>
-</section>
-
 <!-- CÓMO TRABAJO ========================================================= -->
 <section class="seccion" id="como">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">03 —</span>
+    <span class="seccion__num">05 —</span>
     <div>
       <h2 class="titulo">Cómo trabajo</h2>
       <p class="parrafo" style="margin-top:16px">
@@ -531,7 +594,7 @@
      estándar de agentes del hub: el agente propone, el código valida. -->
 <section class="seccion" id="seguro">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">04 —</span>
+    <span class="seccion__num">06 —</span>
     <div>
       <h2 class="titulo">Seguro por diseño</h2>
       <p class="parrafo" style="margin-top:16px">
@@ -582,75 +645,6 @@
     </ul>
   </div>
 
-</section>
-
-<!-- CON QUÉ TRABAJO ====================================================== -->
-<section class="seccion" id="stack" aria-labelledby="stack-titulo">
-  <div class="seccion__cabecera revelar">
-    <span class="seccion__num">05 —</span>
-    <div>
-      <h2 class="titulo" id="stack-titulo">Con qué trabajo</h2>
-      <p class="parrafo" style="margin-top:16px">
-        Para quien quiere saber qué hay debajo. <b>La herramienta se elige
-        después del problema</b>, no al revés.
-      </p>
-    </div>
-  </div>
-  <div class="stack">
-    <div class="stack__grupo revelar">
-      <p class="dato dato--qori">Automatización y CRM</p>
-      <ul role="list"><li>Go High Level</li><li>HubSpot</li><li>n8n</li></ul>
-    </div>
-    <div class="stack__grupo revelar" data-retraso="60">
-      <p class="dato dato--qori">Código</p>
-      <ul role="list"><li>Python</li><li>Git</li><li>Claude Code</li><li>Codex</li></ul>
-    </div>
-    <div class="stack__grupo revelar" data-retraso="120">
-      <p class="dato dato--qori">Datos e infraestructura</p>
-      <ul role="list"><li>Bases de datos</li><li>Servidor propio</li><li>Dominios y HTTPS</li></ul>
-    </div>
-    <div class="stack__grupo revelar">
-      <p class="dato dato--qori">Inteligencia artificial</p>
-      <ul role="list"><li>Agentes y bots</li><li>Transcripción local</li><li>Imagen y video con IA</li></ul>
-    </div>
-    <div class="stack__grupo revelar" data-retraso="60">
-      <p class="dato dato--qori">Marketing</p>
-      <ul role="list"><li>Meta Ads</li><li>CRM</li><li>Software a medida</li></ul>
-    </div>
-    <div class="stack__grupo revelar" data-retraso="120">
-      <p class="dato dato--qori">Conocimiento</p>
-      <ul role="list"><li>Segundo cerebro</li><li>Ciberseguridad de IA</li></ul>
-    </div>
-  </div>
-</section>
-
-<!-- QUIÉN SOY ============================================================ -->
-<section class="seccion" id="quien">
-  <div class="seccion__cabecera revelar">
-    <span class="seccion__num">06 —</span>
-    <div>
-      <h2 class="titulo">Quién está detrás</h2>
-    </div>
-  </div>
-
-  <div class="quien">
-    <div class="quien__foto revelar">
-      <img src="assets/img/rodrigo.jpg" alt="Rodrigo Vicente Miranda Vargas" loading="lazy" width="800" height="948">
-      <span class="quien__firma">Rodrigo Miranda · Cusco</span>
-    </div>
-        <div class="quien__texto revelar" data-retraso="100">
-      <p class="parrafo"><b>Rodrigo Vicente Miranda Vargas.</b> Fundé Yachai en
-      Cusco: <i>yachay</i> es conocimiento en quechua. Llevo tres años
-      automatizando negocios y más de cinco en marketing, trabajando con CRM.</p>
-      <p class="parrafo">Empecé con negocios de gente que conozco: una tienda,
-      un estudio jurídico, un estudio de tatuajes, una agencia de marketing.
-      Cada uno con un problema distinto y la misma raíz: <b>todo dependía de
-      una sola persona.</b></p>
-      <p class="parrafo">Yachai nació para Cusco y va a crecer a otras
-      ciudades, paso a paso. Lo que construyo queda a tu nombre, y si algo no
-      lo sé hacer todavía, te lo digo antes de empezar.</p>
-    </div>
-  </div>
 </section>
 
 <!-- AGENDA =============================================================== -->
@@ -765,7 +759,7 @@
 <!-- GSAP 3.15 (gratis, incluidos los plugins). Si no carga, main.js hace todo solo. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=13" defer></script>
+<script src="assets/js/main.js?v=14" defer></script>
 <script src="assets/js/movimiento.js?v=7" defer></script>
 </body>
 </html>

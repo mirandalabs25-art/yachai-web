@@ -238,10 +238,10 @@ a{color:inherit;text-decoration:none}
 .cara__caso b{color:var(--qori);font-weight:500}
 
 /* --- la escena fija ------------------------------------------------------ */
-/* Arranca montada sobre el hero (margen negativo): la cara 1 se abre desde
-   el hueco de la chakana de nodos. 7 caras × 100svh + la pantalla fija. */
-.giro--vivo{height:800vh;margin-top:-100vh}
-@supports (height:100svh){.giro--vivo{height:800svh;margin-top:-100svh}}
+/* 7 escenas × 100svh + la pantalla fija. (Hasta el 2026-09-22 arrancaba
+   montada sobre el hero; ahora va después de la información.) */
+.giro--vivo{height:800vh}
+@supports (height:100svh){.giro--vivo{height:800svh}}
 .giro--vivo .giro__escena{position:sticky;top:0;height:100vh;overflow:hidden;isolation:isolate}
 @supports (height:100svh){.giro--vivo .giro__escena{height:100svh}}
 .giro--vivo{background:transparent}
@@ -808,3 +808,11 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
 /* Las ideas extra, dentro de la sección del asistente */
 .mas-ideas{margin-top:clamp(48px,7vw,88px)}
 .mas-ideas > .dato{margin-bottom:14px}
+
+/* --- iris de las escenas: el aro dorado que marca el borde al abrir y cerrar */
+.giro__aro{display:none}
+.giro--vivo .giro__aro{
+  display:block;position:absolute;z-index:3;left:50%;top:50%;width:0;height:0;
+  transform:translate(-50%,-50%);border:1px solid var(--qori);border-radius:50%;
+  box-shadow:0 0 18px rgba(245,197,24,.35);pointer-events:none;opacity:0;transition:opacity .25s;
+}
