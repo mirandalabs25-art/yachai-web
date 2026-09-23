@@ -9,6 +9,39 @@
   var sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.documentElement.classList.add('js');
 
+  /* ======================================================================
+     0. Cada página abre desde arriba
+     ----------------------------------------------------------------------
+     Pedido del 2026-09-23: al tocar una sección del menú, la página nueva
+     aparecía más abajo, a la altura en que había quedado la anterior. Pasa
+     dentro del visor del artifact (en un navegador normal ya abría arriba).
+     Si la dirección no trae un #ancla y no se llegó con «atrás», se sube al
+     inicio de golpe (sin la animación de scroll-behavior), y se insiste
+     hasta que carga todo, salvo que la persona ya haya tocado la pantalla.
+     ====================================================================== */
+  (function () {
+    if (location.hash) return;
+    var llegada = null;
+    try { llegada = performance.getEntriesByType('navigation')[0]; } catch (e) {}
+    if (llegada && llegada.type === 'back_forward') return;
+    var tocada = false;
+    ['touchstart', 'wheel', 'keydown', 'mousedown'].forEach(function (t) {
+      window.addEventListener(t, function () { tocada = true; }, { passive: true, once: true });
+    });
+    function arriba() {
+      if (tocada || window.scrollY === 0) return;
+      try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }
+      catch (e) { window.scrollTo(0, 0); }
+    }
+    arriba();
+    document.addEventListener('DOMContentLoaded', arriba);
+    window.addEventListener('load', function () {
+      arriba();
+      window.requestAnimationFrame(arriba);
+      setTimeout(arriba, 300);
+    });
+  })();
+
   // Si GSAP cargó, movimiento.js arma la chakana del hero, hace entrar la
   // cámara por su hueco al bajar y agrega el imán que frena en cada escena.
   // Si no cargó, este archivo hace todo solo.

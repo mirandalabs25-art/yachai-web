@@ -1277,6 +1277,8 @@ a.tarjeta--qori:hover,a.tarjeta--qori:focus-visible{background:#ffd43a}
 
 /* --- artículos ----------------------------------------------------------------- */
 .articulo{max-width:72ch;padding:0 var(--gutter) clamp(52px,7vw,100px)}
+.articulo__portada{max-width:72ch;padding:0 var(--gutter);margin:0 0 clamp(24px,4vw,40px)}
+.articulo__portada img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--filete);background:var(--carbon)}
 .articulo > :first-child{margin-top:0}
 .articulo h2,.articulo h3{
   font-size:clamp(1.15rem,2.2vw,1.55rem);font-weight:700;line-height:1.2;letter-spacing:-.015em;

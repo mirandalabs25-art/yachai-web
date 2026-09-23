@@ -552,6 +552,7 @@ function pagina(o) {
 <title>${esc(o.titulo)}</title>
 <meta name="description" content="${esc(o.descripcion)}">
 <meta name="theme-color" content="#000000">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="${o.og || 'website'}">
 <meta property="og:title" content="${esc(o.titulo)}">
 <meta property="og:description" content="${esc(o.descripcion)}">
@@ -1206,8 +1207,9 @@ function fechaLarga(f) {
 }
 
 function tarjetaArticulo(a) {
+  const mini = miniPagina(a.pagina.replace(/\.html$/, ''));
   return `<li><a class="tarjeta revelar" href="${a.pagina}">
-      <span class="tarjeta__dato">${esc(a.categoria || 'Aprende')} · ${esc(fechaLarga(a.fecha))}</span>
+      ${mini ? tarjetaImg(mini) : ''}<span class="tarjeta__dato">${esc(a.categoria || 'Aprende')} · ${esc(fechaLarga(a.fecha))}</span>
       <b class="tarjeta__titulo">${esc(a.titulo)}</b>
       <span class="tarjeta__texto">${esc(a.resumen)}</span>
       <span class="tarjeta__ir">Leer →</span>
@@ -1252,6 +1254,7 @@ ${bandaCta('¿Tienes una pregunta sobre tu negocio? Escríbeme.', 'Hacer una pre
   <h1 class="pcabeza__titulo pcabeza__titulo--articulo">${esc(a.titulo)}</h1>
   <p class="pcabeza__bajada">${esc(a.resumen)}</p>
 </header>
+${imagenPagina(a.pagina.replace(/\.html$/, '')) ? `<figure class="articulo__portada"><img src="${imagenPagina(a.pagina.replace(/\.html$/, ''))}" alt="" width="1024" height="576" decoding="async"></figure>` : ''}
 <div class="articulo">
 ${a.html}
 </div>
