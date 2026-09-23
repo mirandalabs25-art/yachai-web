@@ -40,9 +40,28 @@ const ASESORIA = {
   vigencia: 'Del 1 al 31 de octubre de 2026.',
   mes: 'octubre',
   despues: 'Desde noviembre, US$1,000',
+  // El gancho (dictado 2026-09-23): "que diga te regalamos mil dólares". Va
+  // siempre con "en asesoría": sin eso se lee como plata regalada, y eso sí
+  // sería engañoso. Vale porque US$1,000 es el precio desde noviembre.
+  regalo: 'Te regalamos US$1,000',
+  regaloDetalle: 'en asesoría para tu negocio',
+  inicioISO: '2026-10-01T00:00:00-05:00',
+  finISO: '2026-10-31T23:59:59-05:00',
   pagina: 'asesoria-gratis.html',
   whatsapp: wa('Hola Rodrigo, quiero los 15 días de asesoría gratis para mi negocio'),
 };
+
+// Lo que incluye el regalo (dictado 2026-09-23): la asesoría gratuita, una
+// asesoría complementaria y el inicio de la web gratis ("recuerda que vamos a
+// hacer webs gratis… puede ser el gancho principal para adelante").
+// REVISAR: qué incluye la asesoría complementaria; y las condiciones de la web
+// gratis. Se escribió con el modelo del vault (el canje de agencia-aima: la
+// web se hace gratis y el cliente paga dominio y hosting), sin confirmar.
+const REGALO = [
+  { titulo: '15 días de asesoría', mini: '03', texto: 'Entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos, por escrito.' },
+  { titulo: 'Asesoría complementaria', mini: '06', texto: null },
+  { titulo: 'Tu web, gratis', mini: '04', texto: 'Empezamos la creación de tu web sin costo de diseño ni de construcción. Solo pagas el dominio, a tu nombre y al costo, y el hosting (S/50 al mes).' },
+];
 
 /* --------------------------------------------------------------------------
    Estados: qué tan hecho está cada servicio. Se muestra tal cual.
@@ -467,6 +486,6 @@ const PROHIBIDAS = [
 ];
 
 module.exports = {
-  WA_NUMERO, WA_VISIBLE, wa, RUC, ASESORIA, ESTADOS, SERVICIOS, GRUPOS, RUBROS,
+  WA_NUMERO, WA_VISIBLE, wa, RUC, ASESORIA, REGALO, ESTADOS, SERVICIOS, GRUPOS, RUBROS,
   OTROS_RUBROS, CIFRAS, MENU, PROHIBIDAS,
 };

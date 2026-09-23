@@ -909,25 +909,25 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
   display:flex;flex-direction:column;align-items:flex-end;gap:12px;
 }
 .contacto__boton{
-  position:relative;width:62px;height:62px;border-radius:50%;cursor:pointer;
+  position:relative;width:52px;height:52px;border-radius:50%;cursor:pointer;
   display:grid;place-items:center;padding:0;
-  background:var(--qori);color:#0b6b3a;border:3px solid #25d366;
-  box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 0 rgba(37,211,102,.55);
+  background:var(--negro);color:#fff;border:2px solid #fff;
+  box-shadow:0 8px 22px rgba(0,0,0,.6),0 0 0 0 rgba(255,255,255,.45);
   animation:contacto-latido 2.8s ease-out 1.5s 3;
-  transition:transform .2s;
+  transition:transform .2s,background .2s,color .2s;
 }
-.contacto__boton svg{width:32px;height:32px}
+.contacto__boton svg{width:26px;height:26px}
 .contacto__boton:hover,.contacto__boton:focus-visible{transform:scale(1.06)}
 .contacto__boton:focus-visible{outline:2px solid var(--hueso);outline-offset:3px}
-.contacto--abierto .contacto__boton{background:var(--hueso)}
+.contacto--abierto .contacto__boton{background:#fff;color:var(--negro)}
 .contacto__punto{
-  position:absolute;top:2px;right:2px;width:13px;height:13px;border-radius:50%;
+  position:absolute;top:0;right:0;width:11px;height:11px;border-radius:50%;
   background:#25d366;border:2px solid var(--negro);
 }
 @keyframes contacto-latido{
-  0%{box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 0 rgba(37,211,102,.55)}
-  70%{box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 16px rgba(37,211,102,0)}
-  100%{box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 0 rgba(37,211,102,0)}
+  0%{box-shadow:0 8px 22px rgba(0,0,0,.6),0 0 0 0 rgba(255,255,255,.45)}
+  70%{box-shadow:0 8px 22px rgba(0,0,0,.6),0 0 0 14px rgba(255,255,255,0)}
+  100%{box-shadow:0 8px 22px rgba(0,0,0,.6),0 0 0 0 rgba(255,255,255,0)}
 }
 
 .contacto__globo{
@@ -936,17 +936,28 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
   box-shadow:0 18px 50px rgba(0,0,0,.6);
 }
 .contacto__globo[hidden]{display:none}
+/* Al tocar el botón, el globo sale de él estirándose y se acomoda
+   ("que se distorsione cuando aparezca", pedido del 2026-09-23). */
+.contacto__globo:not([hidden]){transform-origin:100% 100%;animation:globo-aparece .55s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes globo-aparece{
+  0%{opacity:0;transform:scale(.15,.3) skewX(14deg);filter:blur(6px);border-radius:50%}
+  45%{opacity:1;transform:scale(1.06,.9) skewX(-4deg);filter:blur(0);border-radius:24px}
+  70%{transform:scale(.97,1.04) skewX(1deg)}
+  100%{transform:none;border-radius:14px}
+}
 .contacto__cabeza{
   display:flex;align-items:center;gap:12px;margin:0;padding:14px 16px;
-  background:#0b3d24;border-bottom:1px solid rgba(37,211,102,.35);
+  background:var(--negro);border-bottom:1px solid var(--filete-fuerte);
 }
 .contacto__cabeza b{display:block;font-size:1rem;color:var(--hueso)}
-.contacto__cabeza small{display:block;font-size:.78rem;color:#7ee2a4}
+.contacto__cabeza small{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--gris)}
+.contacto__cabeza small::before{content:'';width:7px;height:7px;border-radius:50%;background:#25d366}
 .contacto__avatar,.contacto__icono--yachai{
   flex:0 0 auto;width:38px;height:38px;border-radius:50%;background:var(--negro);position:relative;
+  border:1.5px solid #fff;
 }
 .contacto__avatar::after,.contacto__icono--yachai::after{
-  content:'';position:absolute;inset:10px;background:var(--qori);
+  content:'';position:absolute;inset:10px;background:#fff;
   clip-path:polygon(33% 0,67% 0,67% 33%,100% 33%,100% 67%,67% 67%,67% 100%,33% 100%,33% 67%,0 67%,0 33%,33% 33%);
 }
 .contacto__pregunta{
@@ -961,7 +972,7 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
 .contacto__opcion:last-child{margin-bottom:14px}
 .contacto__opcion b{display:block;font-size:.95rem}
 .contacto__opcion small{display:block;font-size:.8rem;color:var(--gris);margin-top:2px}
-.contacto__opcion:hover,.contacto__opcion:focus-visible{border-color:var(--qori);background:rgba(245,197,24,.06)}
+.contacto__opcion:hover,.contacto__opcion:focus-visible{border-color:#fff;background:rgba(255,255,255,.05)}
 .contacto__opcion--wa:hover,.contacto__opcion--wa:focus-visible{border-color:#25d366;background:rgba(37,211,102,.08)}
 .contacto__icono--wa{
   flex:0 0 auto;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
@@ -987,11 +998,11 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
 .regalo__cinta{fill:#000;opacity:.85}
 .regalo__sombra{fill:rgba(0,0,0,.25)}
 .regalo__texto{
-  margin-bottom:6px;padding:6px 10px;
+  display:grid;margin-bottom:4px;padding:6px 10px 7px;
   background:var(--negro);border:1px solid var(--qori);
-  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;line-height:1.25;color:var(--hueso);
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;line-height:1.3;color:var(--hueso);
 }
-.regalo__texto b{color:var(--qori);font-weight:700}
+.regalo__texto b{font-family:var(--display);font-size:1.15rem;letter-spacing:-.01em;line-height:1.05;color:var(--qori);font-weight:800}
 .regalo:hover .regalo__texto,.regalo:focus-visible .regalo__texto{background:var(--qori);color:var(--negro)}
 .regalo:hover .regalo__texto b,.regalo:focus-visible .regalo__texto b{color:var(--negro)}
 .regalo:focus-visible{outline:2px solid var(--hueso);outline-offset:4px}
@@ -1004,7 +1015,7 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
   70%{transform:translateY(0) scale(1,1)}
 }
 @media (prefers-reduced-motion:reduce){
-  .regalo__caja,.contacto__boton{animation:none}
+  .regalo__caja,.contacto__boton,.contacto__globo:not([hidden]){animation:none}
 }
 
 /* En el celular, la franja de abajo queda libre para el regalo y el contacto. */
@@ -1016,7 +1027,7 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
 /* --- ventana flotante del asistente -------------------------------------- */
 .panel-asistente{
   position:fixed;z-index:70;display:flex;flex-direction:column;
-  right:max(14px,env(safe-area-inset-right));bottom:calc(max(14px,env(safe-area-inset-bottom)) + 76px);
+  right:max(14px,env(safe-area-inset-right));bottom:calc(max(14px,env(safe-area-inset-bottom)) + 66px);
   width:min(400px,calc(100vw - 28px));height:min(600px,calc(100vh - 140px));
   background:var(--carbon);border:1px solid var(--filete-fuerte);
 }
@@ -1033,7 +1044,7 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
 .panel-asistente .chat__registro{flex:1;min-height:0;max-height:none}
 @media (max-width:640px){
   /* Entre la cabecera y el botón de contacto, sin taparlos. */
-  .panel-asistente{left:0;right:0;width:auto;top:calc(var(--cabecera,90px) + 8px);bottom:88px;height:auto;border-left:0;border-right:0}
+  .panel-asistente{left:0;right:0;width:auto;top:calc(var(--cabecera,90px) + 8px);bottom:78px;height:auto;border-left:0;border-right:0}
   @supports (height:100svh){.panel-asistente{height:auto}}
 }
 
@@ -1362,3 +1373,31 @@ a.tarjeta:hover .tarjeta__img img,a.tarjeta:focus-visible .tarjeta__img img{tran
 
 /* Quién te asesora, en la página del QR: la foto real pesa más que el texto. */
 .quien--landing{max-width:980px}
+
+/* --- página del QR: «Te regalamos US$1,000 en asesoría» (2026-09-23) ------- */
+.landing__detalle{display:block;margin-top:.25em;font-size:.48em;line-height:1.1;letter-spacing:-.01em;color:var(--qori)}
+.landing__cuenta{color:var(--hueso)}
+
+/* El plan que se entrega, de ejemplo: un documento dibujado en HTML, con un
+   negocio inventado y marcado como tal. Muestra el entregable sin foto. */
+.plan{
+  max-width:760px;padding:clamp(20px,3vw,34px);
+  background:#f4f1ea;color:#1a1a1a;border-radius:4px;
+  box-shadow:0 30px 60px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08);
+  transform:rotate(-.6deg);
+}
+.plan__cabeza{
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 6px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#6b6b66;
+}
+.plan__cabeza span:last-child{color:#a4161a}
+.plan__negocio{margin:0 0 18px;font-size:clamp(1.2rem,2.4vw,1.6rem);font-weight:800;letter-spacing:-.02em;text-transform:uppercase}
+.plan__bloque{padding:14px 0;border-top:1px solid rgba(0,0,0,.14)}
+.plan__titulo{margin:0 0 8px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1a1a1a}
+.plan__bloque ul{margin:0;padding-left:1.15em;display:grid;gap:4px;font-size:.95rem;line-height:1.55}
+.plan__bloque p{margin:0;font-size:.95rem;line-height:1.55}
+.plan__lista{margin:0;padding-left:1.3em;display:grid;gap:8px}
+.plan__lista li{font-size:.95rem;line-height:1.4}
+.plan__lista b{font-weight:700}
+.plan__lista span{display:inline-block;margin-left:8px;padding:1px 8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;background:#1a1a1a;color:var(--qori)}
+@media (max-width:560px){.plan{transform:none}.plan__lista span{margin:4px 0 0}}

@@ -2,6 +2,8 @@
 window.YACHAI_DATOS = {
  "whatsapp": "51969322677",
  "asesoria": {
+  "regalo": "Te regalamos US$1,000",
+  "regaloDetalle": "en asesoría para tu negocio",
   "precioTexto": "US$1,000",
   "dias": 15,
   "mes": "octubre",

@@ -783,7 +783,7 @@
       case 'landing':   // la página del QR: el gancho va primero
         datos.interes = 'los ' + DIAS + ' días de asesoría gratis';
         decir([
-          'Todo ' + MES + ', tienes ' + DIAS + ' días de asesoría gratis para tu negocio.' + DESPUES,
+          (DATOS.asesoria.regalo ? DATOS.asesoria.regalo + ' ' + (DATOS.asesoria.regaloDetalle || '') + ': ' : '') + DIAS + ' días de asesoría gratis todo ' + MES + ', y el inicio de tu web, también gratis.',
           'Para empezar, ¿qué negocio tienes?'
         ], function () { ofrecer(RUBROS.map(function (r) { return [r[1], 'es:' + r[0]]; })); });
         break;
@@ -1130,6 +1130,25 @@
         });
       }, { threshold: 0.35 });
       Array.prototype.forEach.call(demosPagina, function (d) { vigiaDemo.observe(d); });
+    }
+  }
+
+  /* --- cuenta regresiva de la promoción (página del QR) -------------------
+     Plazo real: la promoción de verdad termina el 31 de octubre. Antes de
+     empezar dice cuánto falta; después, que terminó. */
+  var cuenta = document.querySelector('[data-cuenta-fin]');
+  if (cuenta) {
+    var ini = new Date(cuenta.getAttribute('data-cuenta-inicio'));
+    var fin = new Date(cuenta.getAttribute('data-cuenta-fin'));
+    var ahora = new Date(), unDia = 864e5, quedan;
+    if (ahora < ini) {
+      quedan = Math.ceil((ini - ahora) / unDia);
+      cuenta.textContent = '· empieza en ' + quedan + (quedan === 1 ? ' día' : ' días');
+    } else if (ahora <= fin) {
+      quedan = Math.ceil((fin - ahora) / unDia);
+      cuenta.textContent = quedan <= 1 ? '· hoy es el último día' : '· quedan ' + quedan + ' días';
+    } else {
+      cuenta.textContent = '· la promoción terminó';
     }
   }
 
