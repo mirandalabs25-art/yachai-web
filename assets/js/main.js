@@ -226,9 +226,9 @@
   function suave(x) { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); }
 
   /* --- video de cada cara: solo si el <article> trae data-video --------- */
-  function prepararVideo(cara) {
+  function crearVideo(cara) {
     var src = cara && cara.dataset.video;
-    if (!src) return;
+    if (!src) return null;
     var v = cara.querySelector('video');
     if (!v) {
       v = document.createElement('video');
@@ -240,6 +240,11 @@
       v.src = src;
       cara.querySelector('.cara__medio').appendChild(v);
     }
+    return v;
+  }
+  function prepararVideo(cara) {
+    var v = crearVideo(cara);
+    if (!v) return;
     var p = v.play();
     if (p && p.catch) p.catch(function () {});   // sin autoplay: queda el póster
   }
@@ -278,6 +283,7 @@
     if (cara) {
       cara.classList.add('es-visible');
       prepararVideo(cara);
+      crearVideo(caras[caras.indexOf(cara) + 1]);   // la siguiente se va bajando
     }
   }
   function abrir(cara) {
