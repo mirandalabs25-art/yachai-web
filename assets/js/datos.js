@@ -3,7 +3,9 @@ window.YACHAI_DATOS = {
  "whatsapp": "51969322677",
  "asesoria": {
   "precio": 600,
-  "texto": "Una semana de asesoría: entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos. Después la usas conmigo o con quien quieras."
+  "dias": 15,
+  "texto": "15 días de asesoría: entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos. Después lo haces conmigo o con quien quieras.",
+  "pagina": "asesoria-gratis.html"
  },
  "servicios": {
   "01": {
@@ -165,14 +167,14 @@ window.YACHAI_DATOS = {
   }
  ],
  "precios": {
-  "bot-de-whatsapp": 800,
-  "base-de-clientes": 1500,
-  "asistentes-automaticos": 1500,
-  "web-propia": 950,
-  "publicaciones-automaticas": 2500,
-  "transcripcion-de-audios": 60,
-  "software-a-medida": 5000,
-  "clases-de-ia": 600,
+  "bot-de-whatsapp": 400,
+  "base-de-clientes": 750,
+  "asistentes-automaticos": 750,
+  "web-propia": 480,
+  "publicaciones-automaticas": 1250,
+  "transcripcion-de-audios": 30,
+  "software-a-medida": 2500,
+  "clases-de-ia": 300,
   "seguridad": null
  }
 };

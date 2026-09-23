@@ -10,8 +10,9 @@
    - Sin nombres de clientes ni de familiares: referencias amplias por rubro.
    - El estado de cada servicio es el real, con los niveles del vault
      (herramientas-y-conocimiento/README.md). Nada 🔵 o ⚪ se vende como hecho.
-   - Precios: referencia de mercado del 2026-09-22, "desde". El usuario los
-     pidió así; se confirman con él (ver REVISAR en precios).
+   - Precios "desde": la mitad de la referencia del mercado peruano de 2026,
+     para Cusco (decisión del usuario, 2026-09-23: "para Cusco… la mitad,
+     para ir mejorando"). Sin IGV.
    ========================================================================== */
 
 // REVISAR: cambiar al número nuevo de Yachai cuando exista el chip.
@@ -19,16 +20,24 @@ const WA_NUMERO = '51969322677';
 const WA_VISIBLE = '+51 969 322 677';
 const wa = (texto) => `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(texto)}`;
 
-// La oferta de entrada (dictada por el usuario, 2026-09-22): asesoría de una
-// semana, gratis por lanzamiento; después cuesta S/600.
+// RUC de persona natural. REVISAR: el usuario lo dictó como "70 58 54 54 10";
+// un RUC tiene 11 dígitos. Mientras no esté confirmado, el pie muestra
+// [RUC por confirmar] en vez de un número que podría estar mal.
+const RUC = null;
+
+// La oferta de entrada (dictada por el usuario, 2026-09-23): 15 días de
+// asesoría gratis, el primer gancho del QR. La promoción corre un mes;
+// después la asesoría cuesta S/600.
 const ASESORIA = {
   precio: 600,
-  titulo: 'Asesoría gratis por lanzamiento',
+  dias: 15,
+  titulo: '15 días de asesoría gratis',
   corto: 'Asesoría gratis',
-  texto: 'Una semana de asesoría: entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos. Después la usas conmigo o con quien quieras.',
-  // REVISAR: fechas exactas de la promoción (del __ al __).
-  vigencia: 'Promoción de lanzamiento, por tiempo limitado.',
-  whatsapp: wa('Hola Rodrigo, quiero la asesoría gratis de lanzamiento para mi negocio'),
+  texto: '15 días de asesoría: entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos. Después lo haces conmigo o con quien quieras.',
+  // REVISAR: fechas exactas del mes de promoción (del __ al __).
+  vigencia: 'Promoción de lanzamiento, válida por un mes.',
+  pagina: 'asesoria-gratis.html',
+  whatsapp: wa('Hola Rodrigo, quiero los 15 días de asesoría gratis para mi negocio'),
 };
 
 /* --------------------------------------------------------------------------
@@ -52,7 +61,7 @@ const SERVICIOS = [
     h1: 'Un WhatsApp que atiende solo, las 24 horas',
     dolor: 'Me paso el día contestando mensajes.',
     entrega: 'Responde lo que siempre te preguntan, cotiza, agenda y te pasa la conversación cuando hay que cerrar. Tú entras solo cuando hace falta.',
-    precio: { desde: 800, nota: 'Bot con botones: respuestas, horarios y agenda simple. Con inteligencia artificial para entender texto libre, desde S/1,500.' },
+    precio: { desde: 400, nota: 'Bot con botones: respuestas, horarios y agenda simple. Con inteligencia artificial para entender texto libre, desde S/750.' },
     estado: ['listo', 'Listo para construir. El asistente de esta misma web es un bot con botones como el que te armaría.'],
     incluye: [
       ['Las preguntas de siempre, respondidas', 'Precios, horarios, dirección, formas de pago. Lo que hoy contestas veinte veces al día.'],
@@ -81,7 +90,7 @@ const SERVICIOS = [
     h1: 'Tus clientes, del cuaderno a una base ordenada',
     dolor: 'Tengo todo en un cuaderno y en la cabeza.',
     entrega: 'Quién te compró, cuándo, qué y cuánto. Una base con el historial de cada cliente, tuya y no de una app que te la alquila.',
-    precio: { desde: 1500, nota: 'Incluye pasar tus datos actuales. Un CRM grande con licencias por usuario se cotiza aparte.' },
+    precio: { desde: 750, nota: 'Incluye pasar tus datos actuales. Un CRM grande con licencias por usuario se cotiza aparte.' },
     estado: ['listo', 'Listo para construir. Más de cinco años trabajando con CRM (HubSpot, Go High Level).'],
     incluye: [
       ['Tu historial, pasado en limpio', 'Del cuaderno, del Excel o de los chats a una sola base.'],
@@ -109,7 +118,7 @@ const SERVICIOS = [
     h1: 'La tarea que haces todos los días, hecha sola',
     dolor: 'Hago lo mismo todos los días.',
     entrega: 'Un asistente que hace esa tarea a la hora que toca y te avisa solo cuando algo necesita tu decisión: plazos, reportes, recordatorios, avisos.',
-    precio: { desde: 1500, nota: 'Por tarea automatizada. Varias tareas conectadas entre sí se cotizan como proyecto.' },
+    precio: { desde: 750, nota: 'Por tarea automatizada. Varias tareas conectadas entre sí se cotizan como proyecto.' },
     estado: ['vivo', 'Funcionando en mi propio sistema: tres asistentes me reportan todos los días a hora fija.'],
     incluye: [
       ['La tarea, a su hora', 'Revisar plazos, armar un reporte, mandar recordatorios: sin que nadie lo dispare.'],
@@ -137,7 +146,7 @@ const SERVICIOS = [
     h1: 'Tu web propia: que te encuentren cuando te buscan',
     dolor: 'No existo en internet.',
     entrega: 'Una web a tu nombre, con tu dominio, rápida en el celular y con los pedidos llegando directo a tu WhatsApp.',
-    precio: { desde: 950, nota: 'Web de una página. Con catálogo de productos, desde S/1,950. Hosting en servidor propio: S/50 al mes. Dominio a tu nombre, al costo.' },
+    precio: { desde: 480, nota: 'Web de una página. Con catálogo de productos, desde S/980. Hosting en servidor propio: S/50 al mes. Dominio a tu nombre, al costo.' },
     estado: ['vivo', 'En producción: una tienda con catálogo de 491 productos en web propia, dominio y servidor propio.'],
     incluye: [
       ['Diseño para tu negocio', 'Partimos de una web que te guste y la adaptamos. Te mando una imagen antes de empezar.'],
@@ -166,7 +175,7 @@ const SERVICIOS = [
     h1: 'Publicaciones que salen solas, con tu aprobación',
     dolor: 'Publico poco, o publico sin orden.',
     entrega: 'Tu catálogo en una base, y las publicaciones armadas solas. Te llegan por WhatsApp para que las apruebes antes de que salga nada.',
-    precio: { desde: 2500, nota: 'Incluye ordenar el catálogo. El costo mensual depende de dónde se publique.' },
+    precio: { desde: 1250, nota: 'Incluye ordenar el catálogo. El costo mensual depende de dónde se publique.' },
     estado: ['listo', 'Diseñado y listo para construir, sobre un catálogo real de 491 productos con foto.'],
     incluye: [
       ['Catálogo ordenado', 'Tus productos con foto, precio y categoría en una base.'],
@@ -194,7 +203,7 @@ const SERVICIOS = [
     h1: 'Tus audios y reuniones, en texto que se puede buscar',
     dolor: 'Tengo horas de audio y papeles sin procesar.',
     entrega: 'Reuniones, clases y audios convertidos en texto ordenado y buscable. Se procesa en tu propia computadora: tus grabaciones no se suben a ningún servicio ajeno.',
-    precio: { desde: 60, unidad: 'por hora de audio', nota: 'Si prefieres hacerlo tú, instalo la transcripción en tu computadora y se cotiza aparte.' },
+    precio: { desde: 30, unidad: 'por hora de audio', nota: 'Si prefieres hacerlo tú, instalo la transcripción en tu computadora y se cotiza aparte.' },
     estado: ['vivo', 'Funcionando: así proceso mis propias clases y reuniones.'],
     incluye: [
       ['Texto completo', 'Todo lo que se dijo, no un resumen que corta lo importante.'],
@@ -222,7 +231,7 @@ const SERVICIOS = [
     h1: 'Software a medida, cuando ninguna herramienta te sirve',
     dolor: 'Necesito algo que no existe.',
     entrega: 'Sistemas y aplicaciones hechos para tu negocio, conectados con lo que ya usas. La herramienta se elige después del problema, no al revés.',
-    precio: { desde: 5000, nota: 'Depende del alcance. Primero una prueba chica para ver si sirve, después el resto por partes.' },
+    precio: { desde: 2500, nota: 'Depende del alcance. Primero una prueba chica para ver si sirve, después el resto por partes.' },
     estado: ['vivo', 'Funcionando: mi propio sistema de trabajo, con reglas de seguridad impuestas por código.'],
     incluye: [
       ['Hecho para tu proceso', 'Se adapta a cómo trabajas, no al revés.'],
@@ -250,7 +259,7 @@ const SERVICIOS = [
     h1: 'Clases de inteligencia artificial para tu trabajo',
     dolor: 'Quiero aprender a usar IA.',
     entrega: 'Clases prácticas para ti o tu equipo: Claude, ChatGPT y Gemini aplicados a las tareas de todos los días. Sales usándolos, no con apuntes.',
-    precio: { desde: 600, nota: 'Por persona, taller práctico. Para equipos, precio por grupo.' },
+    precio: { desde: 300, nota: 'Por persona, taller práctico. Para equipos, precio por grupo.' },
     estado: ['listo', 'En marcha: introducción a la IA para el equipo de un estudio jurídico.'],
     incluye: [
       ['Con tus tareas reales', 'Traes lo que haces todos los días y lo resolvemos con IA en la clase.'],
@@ -454,6 +463,6 @@ const PROHIBIDAS = [
 ];
 
 module.exports = {
-  WA_NUMERO, WA_VISIBLE, wa, ASESORIA, ESTADOS, SERVICIOS, GRUPOS, RUBROS,
+  WA_NUMERO, WA_VISIBLE, wa, RUC, ASESORIA, ESTADOS, SERVICIOS, GRUPOS, RUBROS,
   OTROS_RUBROS, CIFRAS, MENU, PROHIBIDAS,
 };

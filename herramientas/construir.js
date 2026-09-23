@@ -121,7 +121,7 @@ function markdownPublico(md) {
     .replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, '$2')
     .replace(/\[\[([^\]]+)\]\]/g, (_, n) => n.split('/').pop().replace(/-/g, ' '))
     .replace(/^> \[!(\w+)\][+-]? ?(.*)$/gm, (_, t, titulo) => (titulo ? '> **' + titulo + '**' : '>'))
-    .replace(/^#\s.*\n/, '');
+    .replace(/^\s*#\s.*\n/, '');   // el título de la nota ya va en la cabecera de la página
   return marked.parse(limpio);
 }
 
@@ -166,12 +166,12 @@ const SIGNO = `<svg class="marca__signo" viewBox="0 0 60 60" aria-hidden="true">
 
 function oferta(clase = '') {
   return `<div class="oferta ${clase}">
-        <p class="oferta__dato">Lanzamiento</p>
-        <p class="oferta__titulo">${esc(S.ASESORIA.corto)}</p>
+        <p class="oferta__dato">Lanzamiento · ${esc(S.ASESORIA.vigencia.replace(/^Promoción de lanzamiento, /, '').replace(/\.$/, ''))}</p>
+        <p class="oferta__titulo">${esc(S.ASESORIA.titulo)}</p>
         <p class="oferta__texto">${esc(S.ASESORIA.texto)}</p>
         <p class="oferta__precio">Precio regular <s>${soles(S.ASESORIA.precio)}</s> · <b>gratis</b></p>
         <!-- REVISAR: fechas de la promoción -->
-        <a class="boton boton--negro" href="${S.ASESORIA.whatsapp}" ${EXTERNO}>La quiero</a>
+        <p class="acciones"><a class="boton boton--negro" href="${S.ASESORIA.whatsapp}" ${EXTERNO}>La quiero</a><a class="oferta__mas" href="${S.ASESORIA.pagina}">Qué incluye →</a></p>
       </div>`;
 }
 
@@ -239,12 +239,40 @@ function cabecera(seccion, archivo) {
 
   <ul class="nav__links" id="nav-links" role="list">
 ${items}
-    <li class="nav__item nav__item--cta"><a class="boton boton--qori" href="${S.ASESORIA.whatsapp}" ${EXTERNO}>${esc(S.ASESORIA.corto)}</a></li>
+    <li class="nav__item nav__item--cta"><a class="boton boton--qori" href="${S.ASESORIA.pagina}">${esc(S.ASESORIA.titulo)}</a></li>
   </ul>
 
   <div class="nav__derecha">
-    <a class="boton boton--qori nav__cta" href="${S.ASESORIA.whatsapp}" ${EXTERNO}>${esc(S.ASESORIA.corto)}</a>
+    <a class="boton boton--qori nav__cta" href="${S.ASESORIA.pagina}"${archivo === S.ASESORIA.pagina ? ' aria-current="page"' : ''}>${esc(S.ASESORIA.corto)}</a>
     <button type="button" class="nav__menu" aria-expanded="false" aria-controls="nav-links"><span class="nav__hamburguesa" aria-hidden="true"><i></i><i></i></span><span class="nav__menu-texto">Menú</span></button>
+  </div>
+</nav>
+</header>`;
+}
+
+// Cabecera de la página de aterrizaje del QR: sin menú, a propósito. Quien
+// escanea viene a una sola cosa; cada enlace de más es una salida. Queda el
+// logo, «Ver la web» y WhatsApp (la barra fija de abajo sigue en su lugar).
+function cabeceraMinima() {
+  return `<header class="cabecera">
+<div class="anuncio" aria-hidden="true">
+  <div class="anuncio__pista">
+    <span>${esc(S.ASESORIA.titulo)}</span><span>—</span>
+    <span>${esc(S.ASESORIA.vigencia)}</span><span>—</span>
+    <span>Precio regular ${soles(S.ASESORIA.precio)}</span><span>—</span>
+    <span>Cusco · Perú</span><span>—</span>
+  </div>
+</div>
+
+<nav class="nav nav--minima" aria-label="Principal">
+  <a class="marca" href="index.html" aria-label="Yachai, inicio">
+    ${SIGNO}
+    <span class="marca__texto">Yachai</span>
+  </a>
+  <span></span>
+  <div class="nav__derecha">
+    <a class="enlace-flecha" href="index.html">Ver la web →</a>
+    <a class="boton boton--qori nav__cta" href="${S.ASESORIA.whatsapp}" ${EXTERNO}>WhatsApp</a>
   </div>
 </nav>
 </header>`;
@@ -294,7 +322,7 @@ ${S.RUBROS.map((r) => `        <li><a href="${r.slug}.html">${esc(r.nombre)}</a>
   </div>
 
   <div class="pie__base">
-    <span>© <span id="anio">2026</span> Yachai · Cusco, Perú</span>
+    <span>© <span id="anio">2026</span> Yachai · Cusco, Perú · ${S.RUC ? 'RUC ' + esc(S.RUC) : '<!-- REVISAR: RUC de 11 dígitos -->[RUC por confirmar]'}</span>
     <span>Automatización · IA aplicada · Seguridad</span>
   </div>
 </footer>`;
@@ -376,11 +404,20 @@ function estadoHtml([tipo, texto]) {
   return `<p class="estado estado--${e.clase}"><b>${e.marca} Estado real</b>${esc(texto)}</p>`;
 }
 
+// Imagen de un caso: el grafo (svg) se ve entero; una captura de web (jpg),
+// recortada como foto. Las capturas van con el nombre del cliente difuminado.
+function casoImagen(c) {
+  if (!c.imagen) return '';
+  const grafo = /\.svg$/.test(c.imagen);
+  return `<img class="${grafo ? 'caso__grafo' : 'caso__captura'}" src="${esc(c.imagen)}" alt="${esc(c.imagen_alt || '')}" loading="lazy" width="1000" height="${grafo ? 1000 : 626}">`;
+}
+
 function casoTarjeta(c) {
   const clase = c.estado === 'vivo' ? ' caso__estado--vivo' : '';
   const marca = (S.ESTADOS[c.estado] || S.ESTADOS.prepara).marca;
-  const img = c.imagen ? `<img src="${esc(c.imagen)}" alt="${esc(c.imagen_alt || '')}" loading="lazy" width="1000" height="1000">` : '';
-  return `<article class="trabajo${c.imagen ? ' trabajo--grafo' : ''} revelar">
+  const img = casoImagen(c);
+  const tipo = !c.imagen ? '' : /\.svg$/.test(c.imagen) ? ' trabajo--grafo' : ' trabajo--foto';
+  return `<article class="trabajo${tipo} revelar">
       ${img}
       <span class="caso__estado${clase}">${marca} ${esc(c.etiqueta || '')}</span>
       <h3 class="caso__nombre">${esc(c.titulo)}</h3>
@@ -418,11 +455,11 @@ function pagina(o) {
 ${FUENTES}
 <link rel="stylesheet" href="assets/css/style.css?v=${V.css}">
 </head>
-<body class="pagina" data-origen="${esc(o.origen || o.titulo.split(' — ')[0])}">
+<body class="pagina${o.clase ? ' ' + o.clase : ''}" data-origen="${esc(o.origen || o.titulo.split(' — ')[0])}"${o.chat ? ` data-chat="${o.chat}"` : ''}>
 <a class="saltar" href="#contenido">Saltar al contenido</a>
 <div class="progreso" aria-hidden="true"></div>
 
-${cabecera(o.seccion, o.archivo)}
+${o.cabeceraMinima ? cabeceraMinima() : cabecera(o.seccion, o.archivo)}
 
 <main class="contenido pagina__contenido" id="contenido">
 ${migas(o.migas)}
@@ -431,7 +468,7 @@ ${o.cuerpo}
 
 ${pie()}
 
-${accesos(true)}
+${accesos(!o.chatEnPagina)}
 
 <script>document.getElementById('anio').textContent = new Date().getFullYear();</script>
 <script src="assets/js/datos.js?v=${V.datos}"></script>
@@ -536,7 +573,7 @@ ${rubros.map((r) => `    <li><a class="chip" href="${r.slug}.html">${esc(r.nombr
 
 ${secciones.join('\n\n')}
 
-${bandaCta('¿Lo vemos para tu negocio? La asesoría es gratis por lanzamiento.', esc(s.cta), S.wa(s.mensaje))}
+${bandaCta(`¿Lo vemos para tu negocio? ${S.ASESORIA.titulo} por lanzamiento.`, esc(s.cta), S.wa(s.mensaje))}
 
 <section class="seccion">
   ${cab(++n, 'Otros servicios')}
@@ -662,7 +699,7 @@ ${casos.map((c) => '    ' + casoTarjeta(c)).join('\n')}
   ${faq(r.faq)}
 </section>
 
-${bandaCta('Primero conversamos. Por lanzamiento, la asesoría es gratis.', 'Conversarlo por WhatsApp', S.wa(r.mensaje))}`;
+${bandaCta(`Primero conversamos. ${S.ASESORIA.titulo} por lanzamiento.`, 'Conversarlo por WhatsApp', S.wa(r.mensaje))}`;
 
   PAGINAS[r.slug + '.html'] = pagina({
     archivo: r.slug + '.html', seccion: 'soluciones.html',
@@ -706,19 +743,108 @@ ${bandaCta('Por lanzamiento, la asesoría para armar tu plan es gratis.', 'Quier
   });
 }
 
+// --- Página de aterrizaje del QR: el embudo principal ----------------------
+// Decisión del usuario (2026-09-23): quien escanea el QR llega acá, con el
+// gancho de los 15 días de asesoría gratis, y el asistente lo atiende en el
+// momento. El QR apunta a asesoria-gratis.html?origen=qr.
+
+function paginaLanding() {
+  const a = S.ASESORIA;
+  const casosFoto = CASOS.filter((c) => c.imagen);
+  const cuerpo = `<section class="landing">
+  <div class="landing__texto">
+    <p class="dato dato--qori">Lanzamiento · Cusco</p>
+    <h1 class="pcabeza__titulo">${esc(a.titulo)} para tu negocio</h1>
+    <p class="pcabeza__bajada">Te digo qué se puede automatizar en tu negocio, por dónde empezar y cuánto cuesta cada paso. Por escrito y sin compromiso.</p>
+    <ul class="landing__puntos" role="list">
+      <li><b>Gratis:</b> su precio regular es ${soles(a.precio)}.</li>
+      <li><b>Sin compromiso:</b> el plan es tuyo, lo hagas conmigo o no.</li>
+      <li><b>A distancia:</b> por WhatsApp y videollamada.</li>
+    </ul>
+    <!-- REVISAR: fechas exactas del mes de promoción -->
+    <p class="landing__vigencia">${esc(a.vigencia)} [del __ al __]</p>
+    <p class="acciones">
+      <a class="boton boton--qori" href="#asistente">Empezar ahora</a>
+      <a class="boton" href="${a.whatsapp}" ${EXTERNO}>Escribir por WhatsApp</a>
+    </p>
+  </div>
+  <div class="landing__chat" id="asistente">
+${CHAT}
+  </div>
+</section>
+
+<section class="seccion">
+  ${cab(1, `Qué pasa en los ${a.dias} días`, 'En ningún paso trabajas a ciegas, y al final decides tú.')}
+  <ol class="pasos" role="list">
+    <li class="paso revelar"><span class="paso__num">01</span><h3 class="paso__titulo">Conversamos</h3><p class="paso__texto">Me cuentas qué te quita el tiempo: los mensajes, el cuaderno, las tareas que repites.</p></li>
+    <li class="paso revelar" data-retraso="80"><span class="paso__num">02</span><h3 class="paso__titulo">Reviso tu negocio</h3><p class="paso__texto">Cómo atiendes, qué se repite y dónde se pierden clientes. Contigo, por WhatsApp y videollamada.</p></li>
+    <li class="paso revelar" data-retraso="160"><span class="paso__num">03</span><h3 class="paso__titulo">Te entrego el plan</h3><p class="paso__texto">Qué automatizar primero, en orden, y cuánto cuesta cada paso. Por escrito.</p></li>
+    <li class="paso revelar" data-retraso="240"><span class="paso__num">04</span><h3 class="paso__titulo">Decides tú</h3><p class="paso__texto">Lo hacemos juntos, lo haces con otra persona o lo dejas para más adelante.</p></li>
+  </ol>
+</section>
+
+<section class="seccion">
+  ${cab(2, '¿Qué negocio tienes?', 'Mira qué automatizaría primero en el tuyo.')}
+  <ul class="chips" role="list">
+${S.RUBROS.map((r) => `    <li><a class="chip" href="${r.slug}.html">${esc(r.nombre)} →</a></li>`).join('\n')}
+    <li><a class="chip" href="soluciones.html#otros">Otro negocio →</a></li>
+  </ul>
+</section>
+${casosFoto.length ? `
+<section class="seccion">
+  ${cab(3, 'Webs que hemos hecho', 'Como referencia: así se ve el trabajo.')}
+  <div class="trabajos trabajos--fotos">
+${casosFoto.map((c) => '    ' + casoTarjeta(c)).join('\n')}
+  </div>
+</section>
+` : ''}
+<section class="seccion">
+  ${cab(casosFoto.length ? 4 : 3, 'Lo que se puede automatizar', 'Precios de lanzamiento para Cusco. Toca el nombre para ver qué incluye.')}
+  <ul class="precios" role="list">
+${S.SERVICIOS.map((s) => `    <li class="revelar"><a class="precios__nombre" href="${s.slug}.html">${esc(s.nombre)}</a><span class="precios__valor">${esc(precioTexto(s))}</span><span class="precios__nota">${esc(s.menu)}</span></li>`).join('\n')}
+  </ul>
+</section>
+
+<section class="seccion">
+  ${cab(casosFoto.length ? 5 : 4, 'Preguntas')}
+  ${faq([
+    ['¿Es gratis de verdad?', `Sí. Los ${a.dias} días de asesoría no tienen costo durante el mes de lanzamiento. Después, la asesoría cuesta ${soles(a.precio)}.`],
+    ['¿Me obliga a contratar algo?', 'No. Te quedas con el plan, lo hagas conmigo, con otra persona o más adelante.'],
+    ['¿Tienen que venir a mi negocio?', 'No hace falta: la asesoría es por WhatsApp y videollamada, a tu ritmo.'],
+    [`¿Qué pasa después de los ${a.dias} días?`, 'Si quieres construir algo del plan, te doy el presupuesto por escrito antes de empezar, con los precios de lanzamiento.'],
+  ])}
+</section>
+
+<section class="banda banda--cta">
+  <p class="banda__texto revelar">${esc(a.titulo)}. Empieza ahora.</p>
+  <p class="acciones revelar" data-retraso="80" style="margin:0">
+    <a class="boton boton--negro" href="${a.whatsapp}" ${EXTERNO}>Escribir por WhatsApp</a>
+    <a class="boton boton--negro-borde" href="#asistente">Hablar con el asistente</a>
+  </p>
+</section>`;
+
+  PAGINAS[a.pagina] = pagina({
+    archivo: a.pagina, seccion: '', cabeceraMinima: true, chatEnPagina: true, chat: 'asesoria', clase: 'pagina--landing',
+    titulo: `${a.titulo} — Yachai · Cusco`,
+    descripcion: `${a.titulo} para negocios de Cusco: qué automatizar, por dónde empezar y cuánto cuesta. Precio regular ${soles(a.precio)}. ${a.vigencia}`,
+    origen: 'Asesoría gratis',
+    cuerpo,
+  });
+}
+
 // --- Precios ---------------------------------------------------------------
 
 function paginaPrecios() {
   PAGINAS['precios.html'] = pagina({
     archivo: 'precios.html', seccion: 'precios.html',
     titulo: 'Precios — Yachai · Automatización e IA en Cusco',
-    descripcion: `Asesoría gratis por lanzamiento (precio regular ${soles(S.ASESORIA.precio)}). Bots de WhatsApp desde S/800, webs desde S/950. Precios de referencia en soles.`,
+    descripcion: `${S.ASESORIA.titulo} (precio regular ${soles(S.ASESORIA.precio)}). Bots de WhatsApp desde ${soles(porSlug['bot-de-whatsapp'].precio.desde)}, webs desde ${soles(porSlug['web-propia'].precio.desde)}. Precios de lanzamiento para Cusco.`,
     origen: 'Precios',
     migas: [['Precios']],
     cuerpo: `<header class="pcabeza">
   <p class="dato dato--qori">Precios</p>
   <h1 class="pcabeza__titulo">Precios claros, antes de empezar</h1>
-  <p class="pcabeza__bajada">Precios de referencia en soles. Cada negocio es distinto: el presupuesto exacto te lo doy por escrito después de la asesoría, antes de que pagues nada.</p>
+  <p class="pcabeza__bajada">Precios de lanzamiento para Cusco, en soles. Cada negocio es distinto: el presupuesto exacto te lo doy por escrito después de la asesoría, antes de que pagues nada.</p>
 </header>
 
 <section class="seccion">
@@ -752,7 +878,6 @@ ${S.SERVICIOS.map((s) => `    <li class="revelar"><a class="precios__nombre" hre
     <li class="revelar"><h3>WhatsApp</h3><p>La app de WhatsApp Business es gratis. Si tu volumen pide la versión de pago, Meta cobra por mensaje aparte, y te lo explico antes.</p></li>
     <li class="revelar"><h3>Inteligencia artificial</h3><p>Solo si tu bot o asistente la usa: se paga por uso, normalmente unos pocos soles al mes en un negocio pequeño.</p></li>
   </ul>
-  <!-- REVISAR: ¿los precios incluyen IGV? Depende de si se emite factura o boleta. -->
 </section>
 
 <section class="seccion">
@@ -761,7 +886,7 @@ ${S.SERVICIOS.map((s) => `    <li class="revelar"><a class="precios__nombre" hre
     ['¿Por qué dice «desde»?', 'Porque el precio depende de cuánto hay que construir. Un bot que responde cinco preguntas no cuesta lo mismo que uno que agenda, cotiza y se conecta a tu base de clientes.'],
     ['¿La asesoría gratis me obliga a algo?', 'No. Te llevas el plan y decides tú si lo hacemos juntos, con otra persona o más adelante.'],
     ['¿Se puede pagar por partes?', 'Sí: se construye por partes y se paga por partes. Ves cada avance antes de pagar el siguiente.'],
-    ['¿Cómo se comparan con el mercado?', 'Están en el rango de lo que cobran en Perú por servicios parecidos en 2026, del lado accesible, pensados para negocios pequeños.'],
+    ['¿Cómo se comparan con el mercado?', 'Son precios de lanzamiento para Cusco: más o menos la mitad de lo que se cobra en Perú por servicios parecidos en 2026. Se irán ajustando a medida que haya más casos.'],
   ])}
 </section>
 
@@ -797,6 +922,7 @@ ${CASOS.map((c) => {
     const rubro = c.rubro && porClave[c.rubro];
     return `    <article class="caso-detalle revelar">
       <header class="caso-detalle__cabeza">
+        ${casoImagen(c)}
         <span class="caso__estado${c.estado === 'vivo' ? ' caso__estado--vivo' : ''}">${e.marca} ${esc(c.etiqueta || '')}</span>
         <h3 class="caso__nombre">${esc(c.titulo)}</h3>
         <p class="caso__texto">${esc(c.resumen)}</p>
@@ -885,7 +1011,7 @@ ${mas.map((x) => '    ' + tarjetaArticulo(x)).join('\n')}
   </ul>
 </section>
 ` : ''}
-${bandaCta('¿Te pasa en tu negocio? Lo conversamos, y la asesoría es gratis por lanzamiento.', 'Conversarlo', S.wa('Hola Rodrigo, leí «' + a.titulo + '» y quiero conversarlo para mi negocio'))}`,
+${bandaCta(`¿Te pasa en tu negocio? Lo conversamos: ${S.ASESORIA.titulo.toLowerCase()} por lanzamiento.`, 'Conversarlo', S.wa('Hola Rodrigo, leí «' + a.titulo + '» y quiero conversarlo para mi negocio'))}`,
     });
   });
 }
@@ -925,7 +1051,7 @@ ${como}
 
 ${renumerar(BLOQUE('stack'), 4)}
 
-${bandaCta('¿Conversamos? La asesoría es gratis por lanzamiento.', 'Escribirme', S.wa('Hola Rodrigo, vi quién está detrás de Yachai y quiero conversar'))}`,
+${bandaCta(`¿Conversamos? ${S.ASESORIA.titulo} por lanzamiento.`, 'Escribirme', S.wa('Hola Rodrigo, vi quién está detrás de Yachai y quiero conversar'))}`,
   });
 }
 
@@ -933,7 +1059,7 @@ function paginaContacto() {
   PAGINAS['contacto.html'] = pagina({
     archivo: 'contacto.html', seccion: 'contacto.html',
     titulo: 'Contacto — Yachai · Cusco',
-    descripcion: `Escríbeme por WhatsApp al ${S.WA_VISIBLE}, agenda una llamada o describe tu web. Asesoría gratis por lanzamiento.`,
+    descripcion: `Escríbeme por WhatsApp al ${S.WA_VISIBLE}, agenda una llamada o describe tu web. ${S.ASESORIA.titulo} por lanzamiento.`,
     origen: 'Contacto',
     migas: [['Contacto']],
     cuerpo: `<header class="pcabeza">
@@ -979,6 +1105,17 @@ ${S.RUBROS.map((r, i) => `    <li><a class="tarjeta revelar" href="${r.slug}.htm
 </section>`;
 }
 
+// La banda amarilla después de las escenas: la oferta de entrada.
+function inicioBanda() {
+  return `<section class="banda">
+  <p class="banda__texto revelar">${esc(S.ASESORIA.titulo)}. Precio regular ${soles(S.ASESORIA.precio)}.</p>
+  <!-- REVISAR: fechas de la promoción -->
+  <p class="acciones revelar" data-retraso="80" style="margin:0">
+    <a class="boton boton--negro" href="${S.ASESORIA.pagina}">La quiero</a>
+  </p>
+</section>`;
+}
+
 function inicioCasos() {
   return `<section class="seccion" id="trabajos" aria-labelledby="trabajos-titulo">
   ${cab(2, 'En qué estamos trabajando', 'Yachai nació en Cusco y empezó con negocios de aquí. Cada uno con un problema distinto y la misma raíz: <b>todo dependía de una sola persona.</b>', 'trabajos-titulo')}
@@ -1014,7 +1151,7 @@ function inyectar(html, nombre, contenido) {
 function datosJs() {
   const d = {
     whatsapp: S.WA_NUMERO,
-    asesoria: { precio: S.ASESORIA.precio, texto: S.ASESORIA.texto },
+    asesoria: { precio: S.ASESORIA.precio, dias: S.ASESORIA.dias, texto: S.ASESORIA.texto, pagina: S.ASESORIA.pagina },
     servicios: {},
     rubros: {},
     ideas: IDEAS.map((i) => ({ dolor: i.dolor.replace(/[«»]/g, '').replace(/\.\s*$/, ''), rubros: i.rubros })),
@@ -1067,9 +1204,11 @@ function construir() {
   paginasAprende();
   paginaNosotros();
   paginaContacto();
+  paginaLanding();
 
   let inicio = indexHtml;
   inicio = inyectar(inicio, 'CABECERA', cabecera('', 'index.html'));
+  inicio = inyectar(inicio, 'BANDA', inicioBanda());
   inicio = inyectar(inicio, 'EXPLORA', inicioExplora());
   inicio = inyectar(inicio, 'CASOS', inicioCasos());
   inicio = inyectar(inicio, 'APRENDE', inicioAprende());

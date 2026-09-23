@@ -1210,3 +1210,38 @@ a.tarjeta--qori:hover,a.tarjeta--qori:focus-visible{background:#ffd43a}
   border-bottom:1px solid var(--filete-fuerte);padding-bottom:3px;transition:color .2s,border-color .2s;
 }
 .cara__mas:hover,.cara__mas:focus-visible{color:var(--qori);border-color:var(--qori)}
+
+/* --- página de aterrizaje del QR (asesoria-gratis.html, 2026-09-23) --------
+   El embudo principal: el gancho de la asesoría a la izquierda y el
+   asistente ya hablando a la derecha. En el celular, uno debajo del otro. */
+.landing{
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:start;
+  gap:clamp(28px,4vw,56px);padding:clamp(26px,4.4vw,56px) var(--gutter) clamp(52px,7vw,96px);
+}
+@media (max-width:900px){.landing{grid-template-columns:minmax(0,1fr)}}
+.landing__texto{display:grid;gap:18px;justify-items:start;min-width:0}
+.landing__puntos{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.landing__puntos li{position:relative;padding-left:22px;line-height:1.55;color:var(--gris)}
+.landing__puntos li::before{
+  content:'';position:absolute;left:0;top:.45em;width:11px;height:11px;background:var(--qori);
+  clip-path:polygon(33% 0,67% 0,67% 33%,100% 33%,100% 67%,67% 67%,67% 100%,33% 100%,33% 67%,0 67%,0 33%,33% 33%);
+}
+.landing__puntos b{color:var(--hueso);font-weight:600}
+.landing__vigencia{margin:0;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--qori)}
+.landing__chat{min-width:0;scroll-margin-top:calc(var(--cabecera,104px) + 12px)}
+.landing__chat .chat{max-width:none}
+.landing__chat .chat__registro{min-height:260px}
+.nav.nav--minima{grid-template-columns:auto 1fr auto}
+.nav--minima .nav__derecha{gap:16px}
+@media (max-width:640px){.nav--minima .nav__cta{display:none}}
+
+/* --- fotos de los casos: capturas de webs hechas, con el nombre difuminado */
+.caso__captura{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top center;border:1px solid var(--filete);background:var(--carbon)}
+.trabajo--foto .caso__captura{margin-bottom:6px}
+.caso-detalle__cabeza .caso__grafo{width:100%;max-height:220px;object-fit:contain}
+.trabajos--fotos{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:560px){.trabajos--fotos{grid-template-columns:minmax(0,1fr)}}
+
+.oferta .acciones{margin:0;gap:12px 18px}
+.oferta__mas{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid rgba(0,0,0,.35);padding-bottom:2px}
+.oferta__mas:hover,.oferta__mas:focus-visible{border-color:var(--negro)}

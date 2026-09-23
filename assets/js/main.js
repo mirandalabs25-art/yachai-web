@@ -580,6 +580,10 @@
   // desde contenido/sitio.js): así el asistente funciona igual en las
   // páginas que no tienen las escenas del inicio.
   var DATOS = window.YACHAI_DATOS || { servicios: {}, rubros: {}, ideas: [], precios: {}, asesoria: {} };
+  var DIAS = DATOS.asesoria.dias || 15;
+  // En la página de aterrizaje del QR (data-chat="asesoria") el asistente
+  // arranca con el gancho de la asesoría gratis, no con el menú general.
+  var MODO = document.body.getAttribute('data-chat') || '';
   var WHATSAPP = 'https://wa.me/' + (DATOS.whatsapp || '51969322677') + '?text=';
   function soles(n) { return 'S/' + Number(n).toLocaleString('en-US'); }
 
@@ -758,17 +762,28 @@
       case 'precio':
         datos.interes = datos.interes || 'un presupuesto';
         decir([
-          'Depende de lo que necesites. Como referencia: un bot de WhatsApp desde ' + soles(DATOS.precios['bot-de-whatsapp'] || 800) +
-            ' y una web propia desde ' + soles(DATOS.precios['web-propia'] || 950) + '.',
-          'Y por lanzamiento, la asesoría para armar tu plan es gratis (precio regular ' + soles(DATOS.asesoria.precio || 600) + ').'
+          'Depende de lo que necesites. Como referencia: un bot de WhatsApp desde ' + soles(DATOS.precios['bot-de-whatsapp'] || 400) +
+            ' y una web propia desde ' + soles(DATOS.precios['web-propia'] || 480) + '.',
+          'Y por lanzamiento, tienes ' + DIAS + ' días de asesoría gratis para armar tu plan (precio regular ' + soles(DATOS.asesoria.precio || 600) + ').'
         ], function () { ofrecer([['Quiero la asesoría gratis', 'asesoria'], ['Ver todos los precios', '>precios.html'], ['Volver al inicio', 'inicio']]); });
         break;
       case 'asesoria':
-        datos.interes = 'la asesoría gratis de lanzamiento';
+        datos.interes = 'los ' + DIAS + ' días de asesoría gratis';
         decir([
-          'Por lanzamiento, la asesoría es gratis. Su precio regular es ' + soles(DATOS.asesoria.precio || 600) + '.',
+          'Por lanzamiento, tienes ' + DIAS + ' días de asesoría gratis. Su precio regular es ' + soles(DATOS.asesoria.precio || 600) + '.',
           DATOS.asesoria.texto || 'Entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos.'
-        ], function () { ofrecer([['La quiero', 'datos'], ['Ver precios', '>precios.html'], ['Volver al inicio', 'inicio']]); });
+        ], function () {
+          var opciones = [['La quiero', 'datos']];
+          if (MODO !== 'asesoria' && DATOS.asesoria.pagina) opciones.push(['Ver qué incluye', '>' + DATOS.asesoria.pagina]);
+          ofrecer(opciones.concat([['Ver precios', '>precios.html'], ['Volver al inicio', 'inicio']]));
+        });
+        break;
+      case 'landing':   // la página del QR: el gancho va primero
+        datos.interes = 'los ' + DIAS + ' días de asesoría gratis';
+        decir([
+          'Por lanzamiento, tienes ' + DIAS + ' días de asesoría gratis para tu negocio. Su precio regular es ' + soles(DATOS.asesoria.precio || 600) + '.',
+          'Para empezar, ¿qué negocio tienes?'
+        ], function () { ofrecer(RUBROS.map(function (r) { return [r[1], 'es:' + r[0]]; })); });
         break;
       case 'web':
         datos.interes = 'una web para mi negocio';
@@ -814,9 +829,11 @@
         }
         var sugerencias = (PRIMERO[partes[1]] || []).slice(0, 3).map(tituloDolor)
           .concat(ideasDe(partes[1]).slice(0, 2));
-        datos.interes = 'soluciones para ' + datos.negocio;
-        decir(['Para ' + datos.negocio + ', esto es lo que más sirve:', lista(sugerencias)], function () {
-          var opciones = [['Lo quiero', 'datos']];
+        if (MODO !== 'asesoria') datos.interes = 'soluciones para ' + datos.negocio;
+        decir(['Para ' + datos.negocio + ', esto es lo que más sirve:', lista(sugerencias)].concat(
+          MODO === 'asesoria' ? ['En la asesoría vemos cuál conviene primero en tu caso, y cuánto costaría.'] : []
+        ), function () {
+          var opciones = [[MODO === 'asesoria' ? 'Quiero mi asesoría gratis' : 'Lo quiero', 'datos']];
           var pagina = DATOS.rubros[partes[1]];
           if (pagina) opciones.push(['Ver soluciones para ' + pagina.nombre.toLowerCase(), '>' + pagina.url]);
           else opciones.push(['Ver cómo se ve', '@cara-' + (PRIMERO[partes[1]][0] || '01')]);
@@ -905,6 +922,10 @@
   function arrancar(despues) {
     if (arrancado || !registro) return;
     arrancado = true;
+    if (MODO === 'asesoria' && !despues) {
+      decir(['¡Hola! Soy el asistente de Yachai.'], function () { ir('landing'); });
+      return;
+    }
     decir(['¡Hola! Soy el asistente de Yachai.', despues ? '' : '¿Qué te gustaría saber?'].filter(Boolean), function () {
       if (despues) despues(); else ofrecer(INICIO);
     });
