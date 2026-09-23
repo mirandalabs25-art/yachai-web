@@ -681,3 +681,18 @@ a{color:inherit;text-decoration:none}
 }
 .cara__play small{font-size:9px;letter-spacing:.06em;text-transform:none;color:var(--gris)}
 .cara__play small:empty{display:none}
+
+/* --- móvil: que el video se vea (pedido del usuario, 2026-09-22) ----------
+   Al abrirse una escena se ve primero el video solo, y el texto entra
+   después, escalonado. El velo oscurece solo arriba y abajo (donde está el
+   texto) y deja el centro limpio; la tarjeta de la demo es más transparente.
+   Al cerrar, todo se va sin demora (la demora solo vive en .abierta). */
+@media (max-width:899px){
+  .giro--vivo .cara__medio::after{
+    background:linear-gradient(to bottom,rgba(0,0,0,.8) 0%,rgba(0,0,0,.3) 24%,transparent 38%,transparent 60%,rgba(0,0,0,.5) 74%,rgba(0,0,0,.92) 100%);
+  }
+  .giro--vivo .cara.abierta .cara__cabeza{transition-delay:1.1s}
+  .giro--vivo .cara.abierta .demo{transition-delay:1.5s}
+  .giro--vivo .cara.abierta .cara__pie{transition-delay:1.8s}
+  .giro--vivo .demo{background:rgba(8,8,8,.58)}
+}

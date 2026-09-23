@@ -324,7 +324,8 @@
   /* --- la demostración de cada cara, paso por paso ---------------------- */
   function correrDemo(cara) {
     var pasos = cara.querySelectorAll('.demo [data-paso]');
-    var t = 300;
+    // En el celular la demo arranca después de que se vio el video solo.
+    var t = window.matchMedia('(max-width: 899px)').matches ? 1800 : 300;
     cara._relojes = [];
     Array.prototype.forEach.call(pasos, function (p, k) {
       cara._relojes.push(setTimeout(function () {
