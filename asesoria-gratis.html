@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/css/style.css?v=f5099b24">
+<link rel="stylesheet" href="assets/css/style.css?v=d343caec">
 </head>
 <body class="pagina pagina--landing" data-origen="Asesoría gratis" data-chat="asesoria">
 <a class="saltar" href="#contenido">Saltar al contenido</a>
@@ -61,7 +61,7 @@
     <ul class="landing__puntos" role="list">
       <li><b>Gratis todo octubre:</b> US$1,000 es el precio de la asesoría desde noviembre.</li>
       <li><b>Sin tarjeta y sin contrato:</b> el plan es tuyo, lo hagas conmigo o no.</li>
-      <li><b>A distancia:</b> por WhatsApp y videollamada.</li>
+      <li><b>Presencial o por Meet:</b> en Cusco, o donde estés.</li>
     </ul>
     <p class="landing__vigencia">Válido del 1 al 31 de octubre de 2026 · 10 cupos <span class="landing__cuenta" data-cuenta-inicio="2026-10-01T00:00:00-05:00" data-cuenta-fin="2026-10-31T23:59:59-05:00"></span></p>
     <p class="acciones">
@@ -75,7 +75,7 @@
   </div>
   <div class="landing__chat" id="asistente">
 <div class="chat">
-    <p class="chat__cabeza"><span class="chat__signo" aria-hidden="true"></span><span>Yachai · asistente</span><span class="chat__estado">en línea</span></p>
+    <p class="chat__cabeza"><span class="chat__yachai"><svg class="yachai" viewBox="0 0 60 60" aria-hidden="true"><path class="yachai__cuerpo" d="M24 3 H36 V14 H46 V24 H57 V36 H46 V46 H36 V57 H24 V46 H14 V36 H3 V24 H14 V14 H24 Z"/><g class="yachai__ojos"><circle cx="24.5" cy="28" r="2.9"/><circle cx="35.5" cy="28" r="2.9"/></g><path class="yachai__boca" d="M25.5 34.5 Q30 38.2 34.5 34.5"/><circle class="yachai__mejilla" cx="19.5" cy="33" r="2"/><circle class="yachai__mejilla" cx="40.5" cy="33" r="2"/></svg></span><span>Yachai · asistente</span><span class="chat__estado">en línea</span></p>
     <div class="chat__registro" role="log" aria-live="polite"></div>
     <div class="chat__opciones" role="group" aria-label="Opciones"></div>
     <form class="chat__formulario" hidden>
@@ -134,7 +134,7 @@
   </div>
   <ol class="pasos" role="list">
     <li class="paso revelar"><span class="paso__num">01</span><h3 class="paso__titulo">Conversamos</h3><p class="paso__texto">Me cuentas qué te quita el tiempo: los mensajes, el cuaderno, las tareas que repites.</p></li>
-    <li class="paso revelar" data-retraso="80"><span class="paso__num">02</span><h3 class="paso__titulo">Reviso tu negocio</h3><p class="paso__texto">Cómo atiendes, qué se repite y dónde se pierden clientes. Contigo, por WhatsApp y videollamada.</p></li>
+    <li class="paso revelar" data-retraso="80"><span class="paso__num">02</span><h3 class="paso__titulo">Reviso tu negocio</h3><p class="paso__texto">Cómo atiendes, qué se repite y dónde se pierden clientes. Contigo, presencial o por Meet.</p></li>
     <li class="paso revelar" data-retraso="160"><span class="paso__num">03</span><h3 class="paso__titulo">Te entrego el plan</h3><p class="paso__texto">Qué automatizar primero, en orden, y cuánto cuesta cada paso. Por escrito.</p></li>
     <li class="paso revelar" data-retraso="240"><span class="paso__num">04</span><h3 class="paso__titulo">Decides tú</h3><p class="paso__texto">Lo hacemos juntos, lo haces con otra persona o lo dejas para más adelante.</p></li>
   </ol>
@@ -192,7 +192,7 @@
       <p class="parrafo"><b>Rodrigo Vicente Miranda Vargas</b>, fundador de Yachai. Tres años automatizando negocios y más de cinco en marketing, trabajando con CRM.</p>
       <p class="parrafo">La asesoría la doy yo. Yachai, nuestro asistente, te atiende al instante, y después sigues conmigo por WhatsApp.</p>
       <p class="dato" style="margin-top:18px">Con qué trabajo</p>
-      <ul class="insignias insignias--chicas" role="list"><li>n8n</li><li>Claude</li><li>ChatGPT</li><li>Gemini</li><li>WhatsApp Business</li><li>Meta Ads</li><li>Go High Level</li><li>HubSpot</li><li>Python</li></ul>
+      <ul class="insignias insignias--chicas" role="list"><li>n8n</li><li>Claude Code</li><li>ChatGPT</li><li>Gemini</li><li>Qdrant</li><li>Baserow</li><li>Notion</li><li>Obsidian</li><li>WhatsApp Business</li><li>Meta Ads</li><li>Go High Level</li><li>HubSpot</li><li>Python</li></ul>
     </div>
   </div>
 </section>
@@ -246,14 +246,14 @@
     <li class="revelar"><span class="precios__nombre">Asistentes automáticos</span><span class="precios__valor">Desde S/750</span><span class="precios__nota">La tarea de todos los días, hecha sola</span></li>
     <li class="revelar"><span class="precios__nombre">Webs profesionales</span><span class="precios__valor">Desde S/480</span><span class="precios__nota">Tu web, tu dominio y tu servidor</span></li>
     <li class="revelar"><span class="precios__nombre">Publicaciones y catálogo</span><span class="precios__valor">Desde S/1,250</span><span class="precios__nota">Publicaciones que salen solas, con tu OK</span></li>
-    <li class="revelar"><span class="precios__nombre">Anuncios en redes</span><span class="precios__valor">Desde S/300 al mes</span><span class="precios__nota">Facebook e Instagram, con reporte claro</span></li>
-    <li class="revelar"><span class="precios__nombre">Videos con IA</span><span class="precios__valor">Desde S/750 al mes</span><span class="precios__nota">Videos para tus redes, sin rodaje</span></li>
     <li class="revelar"><span class="precios__nombre">Transcripción de audios</span><span class="precios__valor">Desde S/30 por hora de audio</span><span class="precios__nota">Reuniones y audios, convertidos en texto</span></li>
-    <li class="revelar"><span class="precios__nombre">IA con tus documentos</span><span class="precios__valor">Desde S/2,500</span><span class="precios__nota">Un asistente que conoce tus archivos</span></li>
+    <li class="revelar"><span class="precios__nombre">Bases de datos y herramientas</span><span class="precios__valor">Desde S/750</span><span class="precios__nota">Qdrant, Baserow, Notion, Obsidian, n8n</span></li>
     <li class="revelar"><span class="precios__nombre">Aplicaciones web</span><span class="precios__valor">Desde S/2,500</span><span class="precios__nota">Reservas, paneles y sistemas en el navegador</span></li>
     <li class="revelar"><span class="precios__nombre">Software a medida</span><span class="precios__valor">Desde S/2,500</span><span class="precios__nota">Cuando ninguna herramienta te sirve</span></li>
     <li class="revelar"><span class="precios__nombre">Clases de IA</span><span class="precios__valor">Desde S/300</span><span class="precios__nota">Claude, ChatGPT y Gemini en tu trabajo</span></li>
     <li class="revelar"><span class="precios__nombre">Seguridad de bots</span><span class="precios__valor">A cotizar</span><span class="precios__nota">Que un cliente tramposo no engañe a tu bot</span></li>
+    <li class="revelar"><span class="precios__nombre">Anuncios en redes</span><span class="precios__valor">Desde S/300 al mes</span><span class="precios__nota">Facebook e Instagram, con reporte claro</span></li>
+    <li class="revelar"><span class="precios__nombre">Videos con IA</span><span class="precios__valor">Desde S/750 al mes</span><span class="precios__nota">Videos para tus redes, sin rodaje</span></li>
   </ul>
 </section>
 
@@ -271,7 +271,7 @@
     <details class="revelar"><summary>¿Qué es la asesoría complementaria?</summary><p>Después del plan, te acompaño en lo que tu negocio necesita para crecer: marketing y anuncios, contenido y marca, ventas, bases de datos, automatización con n8n, agentes de IA y la seguridad de tus bots.</p></details>
     <details class="revelar"><summary>¿Por qué solo 10 cupos?</summary><p>Porque la asesoría la doy yo, uno por uno. Es lo que puedo atender bien en un mes.</p></details>
     <details class="revelar"><summary>¿Me obliga a contratar algo?</summary><p>No. Sin tarjeta y sin contrato. Te quedas con el plan, lo hagas conmigo, con otra persona o más adelante.</p></details>
-    <details class="revelar"><summary>¿Tienen que venir a mi negocio?</summary><p>No hace falta: todo es por WhatsApp y videollamada, a tu ritmo.</p></details>
+    <details class="revelar"><summary>¿Es presencial?</summary><p>Como te acomode: presencial en Cusco o por Meet.</p></details>
   </div>
 </section>
 
@@ -307,14 +307,14 @@
         <li><a href="asistentes-automaticos.html">Asistentes automáticos</a></li>
         <li><a href="web-propia.html">Webs profesionales</a></li>
         <li><a href="publicaciones-automaticas.html">Publicaciones y catálogo</a></li>
-        <li><a href="anuncios-meta-ads.html">Anuncios en redes</a></li>
-        <li><a href="videos-con-ia.html">Videos con IA</a></li>
         <li><a href="transcripcion-de-audios.html">Transcripción de audios</a></li>
-        <li><a href="ia-con-tus-documentos.html">IA con tus documentos</a></li>
+        <li><a href="bases-de-datos.html">Bases de datos y herramientas</a></li>
         <li><a href="aplicaciones-web.html">Aplicaciones web</a></li>
         <li><a href="software-a-medida.html">Software a medida</a></li>
         <li><a href="clases-de-ia.html">Clases de IA</a></li>
         <li><a href="seguridad.html">Seguridad de bots</a></li>
+        <li><a href="anuncios-meta-ads.html">Anuncios en redes</a></li>
+        <li><a href="videos-con-ia.html">Videos con IA</a></li>
       </ul>
     </div>
 
@@ -353,10 +353,10 @@
 <!-- CONTACTO: un solo botón flotante, como el de WhatsApp. -->
 <div class="contacto">
   <div class="contacto__globo" id="contacto-globo" role="dialog" aria-label="¿Con quién quieres hablar?" hidden>
-    <p class="contacto__cabeza"><span class="contacto__avatar" aria-hidden="true"></span><span><b>Yachai</b><small>En línea · te respondemos ahora</small></span></p>
-    <p class="contacto__pregunta">¡Hola! ¿Con quién quieres hablar?</p>
+    <p class="contacto__cabeza"><span class="contacto__avatar"><svg class="yachai" viewBox="0 0 60 60" aria-hidden="true"><path class="yachai__cuerpo" d="M24 3 H36 V14 H46 V24 H57 V36 H46 V46 H36 V57 H24 V46 H14 V36 H3 V24 H14 V14 H24 Z"/><g class="yachai__ojos"><circle cx="24.5" cy="28" r="2.9"/><circle cx="35.5" cy="28" r="2.9"/></g><path class="yachai__boca" d="M25.5 34.5 Q30 38.2 34.5 34.5"/><circle class="yachai__mejilla" cx="19.5" cy="33" r="2"/><circle class="yachai__mejilla" cx="40.5" cy="33" r="2"/></svg></span><span><b>Yachai</b><small>En línea · te respondemos ahora</small></span></p>
+    <p class="contacto__pregunta">¡Hola! Soy Yachai. ¿Con quién quieres hablar?</p>
     <button type="button" class="contacto__opcion" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">
-      <span class="contacto__icono contacto__icono--yachai" aria-hidden="true"></span>
+      <span class="contacto__icono contacto__icono--yachai"><svg class="yachai" viewBox="0 0 60 60" aria-hidden="true"><path class="yachai__cuerpo" d="M24 3 H36 V14 H46 V24 H57 V36 H46 V46 H36 V57 H24 V46 H14 V36 H3 V24 H14 V14 H24 Z"/><g class="yachai__ojos"><circle cx="24.5" cy="28" r="2.9"/><circle cx="35.5" cy="28" r="2.9"/></g><path class="yachai__boca" d="M25.5 34.5 Q30 38.2 34.5 34.5"/><circle class="yachai__mejilla" cx="19.5" cy="33" r="2"/><circle class="yachai__mejilla" cx="40.5" cy="33" r="2"/></svg></span>
       <span><b>Con Yachai, nuestro asistente</b><small>Responde al instante, a cualquier hora</small></span>
     </button>
     <a class="contacto__opcion contacto__opcion--wa" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20vi%20la%20web%20de%20Yachai%20y%20quiero%20conversar" target="_blank" rel="noopener">
@@ -364,8 +364,8 @@
       <span><b>Directo con Rodrigo</b><small>Por WhatsApp · +51 969 322 677</small></span>
     </a>
   </div>
-  <button type="button" class="contacto__boton" aria-expanded="false" aria-controls="contacto-globo" aria-label="Hablemos: elige con quién">
-    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5A12.5 12.5 0 0 0 5.2 22.3L3.5 28.5l6.4-1.7A12.5 12.5 0 1 0 16 3.5z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M12.2 10.2c.3-.1.6 0 .8.3l1.3 2.7c.1.3.1.6-.1.8l-.9 1c.8 1.6 2 2.8 3.6 3.6l1-.9c.2-.2.5-.3.8-.1l2.7 1.3c.3.2.4.5.3.8-.5 1.6-1.9 2.4-3.4 2.1-3.6-.8-6.3-3.5-7.1-7.1-.3-1.5.5-2.9 2.1-3.4z" fill="currentColor"/></svg>
+  <button type="button" class="contacto__boton" aria-expanded="false" aria-controls="contacto-globo" aria-label="Hablar con Yachai o con Rodrigo">
+    <svg class="yachai" viewBox="0 0 60 60" aria-hidden="true"><path class="yachai__cuerpo" d="M24 3 H36 V14 H46 V24 H57 V36 H46 V46 H36 V57 H24 V46 H14 V36 H3 V24 H14 V14 H24 Z"/><g class="yachai__ojos"><circle cx="24.5" cy="28" r="2.9"/><circle cx="35.5" cy="28" r="2.9"/></g><path class="yachai__boca" d="M25.5 34.5 Q30 38.2 34.5 34.5"/><circle class="yachai__mejilla" cx="19.5" cy="33" r="2"/><circle class="yachai__mejilla" cx="40.5" cy="33" r="2"/></svg>
     <span class="contacto__punto" aria-hidden="true"></span>
   </button>
 </div>
@@ -378,8 +378,8 @@
 </div>
 
 <script>document.getElementById('anio').textContent = new Date().getFullYear();</script>
-<script src="assets/js/datos.js?v=7bc0709c"></script>
-<script src="assets/js/main.js?v=8e0d5c59" defer></script>
+<script src="assets/js/datos.js?v=9beddd82"></script>
+<script src="assets/js/main.js?v=9a42f05f" defer></script>
 <script src="assets/js/menu.js?v=4f5db3fb" defer></script>
 </body>
 </html>

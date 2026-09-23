@@ -352,8 +352,12 @@ ${S.RUBROS.map((r) => `        <li><a href="${r.slug}.html">${esc(r.nombre)}</a>
 </footer>`;
 }
 
-// Íconos del botón de contacto: una burbuja de chat con un teléfono (el gesto
-// de WhatsApp, dibujado acá) y la chakana de Yachai.
+// Yachai, el personaje de la marca (2026-09-23): la chakana en blanco, con
+// cara. Parpadea y saluda (CSS). Va en el botón de contacto y en el globo.
+const YACHAI_SVG = '<svg class="yachai" viewBox="0 0 60 60" aria-hidden="true"><path class="yachai__cuerpo" d="M24 3 H36 V14 H46 V24 H57 V36 H46 V46 H36 V57 H24 V46 H14 V36 H3 V24 H14 V14 H24 Z"/><g class="yachai__ojos"><circle cx="24.5" cy="28" r="2.9"/><circle cx="35.5" cy="28" r="2.9"/></g><path class="yachai__boca" d="M25.5 34.5 Q30 38.2 34.5 34.5"/><circle class="yachai__mejilla" cx="19.5" cy="33" r="2"/><circle class="yachai__mejilla" cx="40.5" cy="33" r="2"/></svg>';
+
+// Ícono de WhatsApp para «Directo con Rodrigo»: una burbuja de chat con un
+// teléfono, dibujada acá.
 const ICONO_CHAT = `<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5A12.5 12.5 0 0 0 5.2 22.3L3.5 28.5l6.4-1.7A12.5 12.5 0 1 0 16 3.5z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M12.2 10.2c.3-.1.6 0 .8.3l1.3 2.7c.1.3.1.6-.1.8l-.9 1c.8 1.6 2 2.8 3.6 3.6l1-.9c.2-.2.5-.3.8-.1l2.7 1.3c.3.2.4.5.3.8-.5 1.6-1.9 2.4-3.4 2.1-3.6-.8-6.3-3.5-7.1-7.1-.3-1.5.5-2.9 2.1-3.4z" fill="currentColor"/></svg>`;
 
 // Un solo botón de contacto (pedido del usuario, 2026-09-23: "uno solo, no lo
@@ -374,10 +378,10 @@ function accesos(conChat, conRegalo = false) {
 <!-- CONTACTO: un solo botón flotante, como el de WhatsApp. -->
 <div class="contacto">
   <div class="contacto__globo" id="contacto-globo" role="dialog" aria-label="¿Con quién quieres hablar?" hidden>
-    <p class="contacto__cabeza"><span class="contacto__avatar" aria-hidden="true"></span><span><b>Yachai</b><small>En línea · te respondemos ahora</small></span></p>
-    <p class="contacto__pregunta">¡Hola! ¿Con quién quieres hablar?</p>
+    <p class="contacto__cabeza"><span class="contacto__avatar">${YACHAI_SVG}</span><span><b>Yachai</b><small>En línea · te respondemos ahora</small></span></p>
+    <p class="contacto__pregunta">¡Hola! Soy Yachai. ¿Con quién quieres hablar?</p>
     <button type="button" class="contacto__opcion" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">
-      <span class="contacto__icono contacto__icono--yachai" aria-hidden="true"></span>
+      <span class="contacto__icono contacto__icono--yachai">${YACHAI_SVG}</span>
       <span><b>Con Yachai, nuestro asistente</b><small>Responde al instante, a cualquier hora</small></span>
     </button>
     <a class="contacto__opcion contacto__opcion--wa" href="${S.wa('Hola Rodrigo, vi la web de Yachai y quiero conversar')}" ${EXTERNO}>
@@ -385,8 +389,8 @@ function accesos(conChat, conRegalo = false) {
       <span><b>Directo con Rodrigo</b><small>Por WhatsApp · ${S.WA_VISIBLE}</small></span>
     </a>
   </div>
-  <button type="button" class="contacto__boton" aria-expanded="false" aria-controls="contacto-globo" aria-label="Hablemos: elige con quién">
-    ${ICONO_CHAT}
+  <button type="button" class="contacto__boton" aria-expanded="false" aria-controls="contacto-globo" aria-label="Hablar con Yachai o con Rodrigo">
+    ${YACHAI_SVG}
     <span class="contacto__punto" aria-hidden="true"></span>
   </button>
 </div>
@@ -629,6 +633,20 @@ ${s.incluye.map(([t, d]) => `    <li class="revelar"><h3>${esc(t)}</h3><p>${esc(
   </ul>
 </section>`);
   }
+  if (s.tipos) {
+    secciones.push(`<section class="seccion">
+  ${cab(++n, 'Tipos de web', 'Desde una landing hasta una web completa, hecha para tu rubro.')}
+  <ul class="incluye" role="list">
+${s.tipos.map(([t, d]) => `    <li class="revelar"><h3>${esc(t)}</h3><p>${esc(d)}</p></li>`).join('\n')}
+  </ul>
+</section>`);
+  }
+  if (s.herramientas) {
+    secciones.push(`<section class="seccion">
+  ${cab(++n, 'Con qué herramientas', 'Se elige la que tu equipo va a usar de verdad.')}
+  <ul class="insignias" role="list">${s.herramientas.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
+</section>`);
+  }
   if (s.pasos) {
     secciones.push(`<section class="seccion">
   ${cab(++n, 'Cómo funciona')}
@@ -674,6 +692,7 @@ ${rubros.map((r) => `    <li><a class="chip" href="${r.slug}.html">${esc(r.nombr
     <h1 class="pcabeza__titulo">${esc(s.h1)}</h1>
     <p class="pcabeza__bajada">${esc(s.entrega)}</p>
     ${estadoHtml(s.estado)}
+    ${s.pagado ? `<p class="promo promo--pagado"><b>Servicio pagado:</b> no entra en el regalo de ${esc(S.ASESORIA.mes)}. La publicidad y la producción siempre tienen costo.</p>` : ''}
     ${s.promo ? `<a class="promo" href="${S.ASESORIA.pagina}"><b>Solo en ${esc(S.ASESORIA.mes)}:</b> tu web gratis con la asesoría. Solo pagas servidor y dominio. Ver cómo →</a>` : ''}
     <p class="precio-chip">${s.precio.texto ? `<b>${esc(s.precio.texto)}</b>` : s.precio.desde == null ? 'Precio: <b>a cotizar</b>' : `Desde <b>${soles(s.precio.desde)}</b>${s.precio.unidad ? ' ' + esc(s.precio.unidad) : ''}`}</p>
     <div class="acciones">
@@ -929,7 +948,7 @@ ${S.TESTIMONIOS.map((t) => `    <li class="testimonio revelar">${t.foto ? `<img 
     <ul class="landing__puntos" role="list">
       <li><b>Gratis todo ${esc(a.mes)}:</b> US$1,000 es el precio de la asesoría desde noviembre.</li>
       <li><b>Sin tarjeta y sin contrato:</b> el plan es tuyo, lo hagas conmigo o no.</li>
-      <li><b>A distancia:</b> por WhatsApp y videollamada.</li>
+      <li><b>Presencial o por Meet:</b> en Cusco, o donde estés.</li>
     </ul>
     <p class="landing__vigencia">Válido ${esc(a.vigencia.charAt(0).toLowerCase() + a.vigencia.slice(1).replace(/\.$/, ''))} · ${S.CUPOS} cupos <span class="landing__cuenta" data-cuenta-inicio="${a.inicioISO}" data-cuenta-fin="${a.finISO}"></span></p>
     <p class="acciones">
@@ -970,7 +989,7 @@ ${S.REGALO.map((r, i) => `    <li><div class="tarjeta tarjeta--img revelar"${i ?
   ${cab(++n, `Qué pasa en los ${a.dias} días`, 'En ningún paso trabajas a ciegas, y al final decides tú.')}
   <ol class="pasos" role="list">
     <li class="paso revelar"><span class="paso__num">01</span><h3 class="paso__titulo">Conversamos</h3><p class="paso__texto">Me cuentas qué te quita el tiempo: los mensajes, el cuaderno, las tareas que repites.</p></li>
-    <li class="paso revelar" data-retraso="80"><span class="paso__num">02</span><h3 class="paso__titulo">Reviso tu negocio</h3><p class="paso__texto">Cómo atiendes, qué se repite y dónde se pierden clientes. Contigo, por WhatsApp y videollamada.</p></li>
+    <li class="paso revelar" data-retraso="80"><span class="paso__num">02</span><h3 class="paso__titulo">Reviso tu negocio</h3><p class="paso__texto">Cómo atiendes, qué se repite y dónde se pierden clientes. Contigo, presencial o por Meet.</p></li>
     <li class="paso revelar" data-retraso="160"><span class="paso__num">03</span><h3 class="paso__titulo">Te entrego el plan</h3><p class="paso__texto">Qué automatizar primero, en orden, y cuánto cuesta cada paso. Por escrito.</p></li>
     <li class="paso revelar" data-retraso="240"><span class="paso__num">04</span><h3 class="paso__titulo">Decides tú</h3><p class="paso__texto">Lo hacemos juntos, lo haces con otra persona o lo dejas para más adelante.</p></li>
   </ol>
@@ -1016,7 +1035,7 @@ ${S.REGALO.map((r, i) => `    <li><div class="tarjeta tarjeta--img revelar"${i ?
       <p class="parrafo"><b>Rodrigo Vicente Miranda Vargas</b>, fundador de Yachai. Tres años automatizando negocios y más de cinco en marketing, trabajando con CRM.</p>
       <p class="parrafo">La asesoría la doy yo. Yachai, nuestro asistente, te atiende al instante, y después sigues conmigo por WhatsApp.</p>
       <p class="dato" style="margin-top:18px">Con qué trabajo</p>
-      <ul class="insignias insignias--chicas" role="list"><li>n8n</li><li>Claude</li><li>ChatGPT</li><li>Gemini</li><li>WhatsApp Business</li><li>Meta Ads</li><li>Go High Level</li><li>HubSpot</li><li>Python</li></ul>
+      <ul class="insignias insignias--chicas" role="list"><li>n8n</li><li>Claude Code</li><li>ChatGPT</li><li>Gemini</li><li>Qdrant</li><li>Baserow</li><li>Notion</li><li>Obsidian</li><li>WhatsApp Business</li><li>Meta Ads</li><li>Go High Level</li><li>HubSpot</li><li>Python</li></ul>
     </div>
   </div>
 </section>
@@ -1052,7 +1071,7 @@ ${S.SERVICIOS.map((s) => `    <li class="revelar"><span class="precios__nombre">
     ['¿Qué es la asesoría complementaria?', 'Después del plan, te acompaño en lo que tu negocio necesita para crecer: marketing y anuncios, contenido y marca, ventas, bases de datos, automatización con n8n, agentes de IA y la seguridad de tus bots.'],
     ['¿Por qué solo ' + S.CUPOS + ' cupos?', 'Porque la asesoría la doy yo, uno por uno. Es lo que puedo atender bien en un mes.'],
     ['¿Me obliga a contratar algo?', 'No. Sin tarjeta y sin contrato. Te quedas con el plan, lo hagas conmigo, con otra persona o más adelante.'],
-    ['¿Tienen que venir a mi negocio?', 'No hace falta: todo es por WhatsApp y videollamada, a tu ritmo.'],
+    ['¿Es presencial?', 'Como te acomode: presencial en Cusco o por Meet.'],
   ])}
 </section>
 
@@ -1403,6 +1422,7 @@ function datosJs() {
     whatsapp: S.WA_NUMERO,
     cupos: S.CUPOS,
     marca: S.MARCA,
+    registro: S.REGISTRO_CONTACTOS,
     asesoria: { regalo: S.ASESORIA.regalo, regaloExplica: S.ASESORIA.regaloExplica, precioTexto: S.ASESORIA.precioTexto, dias: S.ASESORIA.dias, mes: S.ASESORIA.mes, despues: S.ASESORIA.despues, texto: S.ASESORIA.texto, pagina: S.ASESORIA.pagina },
     servicios: {},
     rubros: {},

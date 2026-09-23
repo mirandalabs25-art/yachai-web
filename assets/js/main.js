@@ -461,6 +461,67 @@
   }
 
   window.addEventListener('scroll', alHacerScroll, { passive: true });
+
+  /* --- Avance automático del giro (pedido del usuario, 2026-09-23) ---------
+     "A veces se queda en intermedio… que automáticamente se pase a la
+     siguiente; dale un segundo." Si el scroll se detiene con la chakana a
+     medio girar (una escena abriéndose o cerrándose), al segundo la página
+     avanza sola hasta la siguiente escena abierta, en la dirección en que
+     venía la persona. Si la escena ya está abierta, no la mueve: se lee
+     tranquila. Tocar o girar la rueda corta el viaje en el acto. */
+  if (giroVivo) {
+    var ultimaY = window.scrollY, direccion = 1, relojQuieto = null, enViaje = false;
+    var ESPERA = 1000;                  // "dale un segundo"
+    var ABIERTA = [0.36, 0.82];         // tramo de cada escena en que se ve entera
+
+    var paradasGiro = function () {
+      medirGiro();
+      var inicio = giro.offsetTop, fin = giro.offsetTop + giro.offsetHeight - window.innerHeight;
+      var lista = [inicio];
+      for (var k = 0; k < caras.length; k++) lista.push(inicio + (INTRO + k + 0.62) * m.tramo);
+      lista.push(fin);
+      return { inicio: inicio, fin: fin, lista: lista };
+    };
+    var viajarA = function (destino) {
+      var desde = window.scrollY, dist = destino - desde, t0 = null;
+      if (Math.abs(dist) < 2) return;
+      var dur = Math.min(900, Math.max(450, Math.abs(dist) * 0.8));
+      enViaje = true;
+      var paso = function (ts) {
+        if (!enViaje) return;
+        if (t0 === null) t0 = ts;
+        var p = Math.min(1, (ts - t0) / dur);
+        var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        saltar(desde + dist * e);
+        if (p < 1) window.requestAnimationFrame(paso); else enViaje = false;
+      };
+      window.requestAnimationFrame(paso);
+    };
+    ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (tipo) {
+      window.addEventListener(tipo, function () { enViaje = false; }, { passive: true });
+    });
+
+    var alQuedarQuieto = function () {
+      if (enViaje || sinMovimiento) return;
+      var y = window.scrollY, p = paradasGiro();
+      if (y <= p.inicio + 2 || y >= p.fin - 2) return;          // fuera del giro
+      var rel = (y - p.inicio) / m.tramo - INTRO, k = Math.floor(rel), t = rel - k;
+      var ultima = k >= caras.length - 1;
+      if (k >= 0 && t >= ABIERTA[0] && (t <= ABIERTA[1] || ultima)) return;  // escena abierta
+      var destino = direccion > 0
+        ? p.lista.filter(function (q) { return q > y + 1; })[0]
+        : p.lista.filter(function (q) { return q < y - 1; }).pop();
+      if (destino != null) viajarA(destino);
+    };
+
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY;
+      if (!enViaje && Math.abs(y - ultimaY) > 1) direccion = y > ultimaY ? 1 : -1;
+      ultimaY = y;
+      clearTimeout(relojQuieto);
+      if (!enViaje) relojQuieto = setTimeout(alQuedarQuieto, ESPERA);
+    }, { passive: true });
+  }
   window.addEventListener('resize', function () { medirGiro(); alHacerScroll(); });
   window.addEventListener('load', function () { medirGiro(); pintar(); });
   pintar();
@@ -642,7 +703,7 @@
   var formulario = chat && chat.querySelector('.chat__formulario');
   var campo = chat && chat.querySelector('.chat__campo');
   var etiqueta = chat && chat.querySelector('.chat__etiqueta');
-  var datos = { nombre: '', negocio: '', interes: '', consulta: '', tiempo: '', web: '' };
+  var datos = { nombre: '', negocio: '', empresa: '', interes: '', consulta: '', tiempo: '', web: '' };
 
   // Los dos pasos previos de la página del QR (aceptados por el usuario el
   // 2026-09-23): antes de WhatsApp, dos preguntas que dejan el diagnóstico
@@ -911,13 +972,37 @@
     return partes.length ? ' · ' + partes.join(' · ') : '';
   }
 
+  // Registro de contactos: si sitio.js tiene la URL de un webhook (n8n), cada
+  // persona que termina el asistente queda guardada en la base, con su rubro,
+  // lo que le quita tiempo y de dónde llegó. Sin URL no se envía nada.
+  // text/plain para que el navegador no pida permiso previo (CORS).
+  function registrar() {
+    if (!DATOS.registro || !window.fetch) return;
+    var origenQR = '';
+    try { origenQR = new URLSearchParams(location.search).get('origen') || ''; } catch (e) {}
+    try {
+      fetch(DATOS.registro, {
+        method: 'POST', mode: 'no-cors', keepalive: true,
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: JSON.stringify({
+          fecha: new Date().toISOString(), nombre: datos.nombre, empresa: datos.empresa,
+          rubro: datos.negocio, interes: datos.interes, consulta: datos.consulta,
+          tiempo: datos.tiempo, web: datos.web,
+          pagina: document.body.getAttribute('data-origen') || 'inicio', origen: origenQR
+        })
+      });
+    } catch (e) {}
+  }
+
   function cerrar() {
     var texto = 'Hola Rodrigo, soy ' + datos.nombre + '.' +
       (datos.negocio ? ' Tengo ' + datos.negocio + '.' : '') +
+      (datos.empresa ? ' Mi negocio: ' + datos.empresa + '.' : '') +
       (datos.consulta ? ' Mi consulta: ' + datos.consulta : ' Me interesa: ' + (datos.interes || 'conocer más de Yachai') + '.') +
       (datos.tiempo ? ' Lo que más tiempo me quita: ' + datos.tiempo + '.' : '') +
       (datos.web ? ' Web: ' + datos.web + '.' : '') +
       ' (Te escribo desde la web de Yachai' + origen() + ')';
+    registrar();
     var a = document.createElement('a');
     a.className = 'boton boton--qori chat__enviar';
     a.href = WHATSAPP + encodeURIComponent(texto);
@@ -942,10 +1027,19 @@
         decir(['Anotado. ¿Cómo te llamas?'], function () { pedir('nombre', 'Tu nombre', 'name', ''); });
       } else if (pidiendo === 'nombre') {
         datos.nombre = valor;
+        if (MODO === 'asesoria' && !datos.empresa) {
+          decir(['Gracias, ' + valor + '. ¿Cómo se llama tu negocio?'], function () {
+            pedir('empresa', 'Nombre de tu negocio', 'organization', 'Ej.: Hostal Qori, en San Blas');
+          });
+          return;
+        }
         if (datos.negocio || datos.consulta) { cerrar(); return; }
         decir(['Gracias, ' + valor + '. ¿Qué negocio tienes?'], function () {
           pedir('negocio', 'Tu negocio', 'organization', 'Ej.: una tienda de ropa en San Blas');
         });
+      } else if (pidiendo === 'empresa') {
+        datos.empresa = valor;
+        cerrar();
       } else {
         datos.negocio = valor;
         cerrar();

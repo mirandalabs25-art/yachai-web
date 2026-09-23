@@ -74,6 +74,9 @@ const REGALO = [
   { titulo: 'Tu web, gratis', mini: '04', texto: 'Me pasas una web que te guste como referencia y armamos la tuya sin costo. Lo único que pagas es tu servidor (VPS) y tu dominio, a tu nombre, para que la web sea tuya.' },
 ];
 
+// REVISAR: URL del webhook de n8n que guarda cada contacto en la base (Baserow).
+const REGISTRO_CONTACTOS = null;
+
 // Cupos de la promoción (aceptado por el usuario el 2026-09-23: "ponle eso de
 // cupos limitados… está bien"). Es un límite real: lo que se puede atender.
 const CUPOS = 10;
@@ -97,7 +100,7 @@ const ESTADOS = {
    -------------------------------------------------------------------------- */
 const SERVICIOS = [
   {
-    slug: 'asesoria-en-ia', cara: null, grupo: 'medida', destacado: true,
+    slug: 'asesoria-en-ia', cara: null, grupo: 'asesoria', destacado: true,
     imagen: 'assets/img/rodrigo.jpg',
     nombre: 'Asesoría en IA y marketing',
     menu: 'Qué automatizar, qué anunciar y en qué orden',
@@ -115,7 +118,7 @@ const SERVICIOS = [
     ],
     pasos: [
       ['Conversamos', 'Me cuentas tu negocio y qué te quita el tiempo.'],
-      ['Reviso contigo', 'Por WhatsApp y videollamada, a tu ritmo.'],
+      ['Reviso contigo', 'Presencial en Cusco o por Meet, a tu ritmo.'],
       ['Te entrego el plan', 'Por escrito. Lo haces conmigo o con quien quieras.'],
     ],
     rubros: ['hotel', 'restaurante', 'consultorio', 'oficina', 'tienda'],
@@ -213,6 +216,14 @@ const SERVICIOS = [
   },
   {
     slug: 'web-propia', cara: '04', grupo: 'atender', promo: true,
+    tipos: [
+      ['Landing de una página', 'Para una oferta, un evento o un QR. Desde S/480.'],
+      ['Web para restaurantes', 'La carta, las reservas y los pedidos a WhatsApp.'],
+      ['Web para hoteles y hospedajes', 'Habitaciones, fotos y reservas directas, sin comisión.'],
+      ['Web comercial y catálogo', 'Tus productos con foto y precio, y el pedido a WhatsApp. Desde S/980.'],
+      ['Web para agencias', 'Portafolio, casos y un formulario que llega ordenado.'],
+      ['Web para consultorios y estudios', 'Servicios, equipo y citas.'],
+    ],
     nombre: 'Webs profesionales',
     menu: 'Tu web, tu dominio y tu servidor',
     h1: 'Tu web propia: que te encuentren cuando te buscan',
@@ -269,64 +280,6 @@ const SERVICIOS = [
     cta: 'Ordenar mis publicaciones',
   },
   {
-    slug: 'anuncios-meta-ads', cara: null, grupo: 'atender',
-    nombre: 'Anuncios en redes',
-    menu: 'Facebook e Instagram, con reporte claro',
-    h1: 'Anuncios en Facebook e Instagram que sabes si funcionan',
-    dolor: 'Invierto en anuncios y no sé si funcionan.',
-    entrega: 'Armo tus campañas en Meta, las ajusto cada semana y te llega un reporte simple: cuánto gastaste, cuántos mensajes llegaron y cuánto costó cada uno.',
-    precio: { desde: 300, unidad: 'al mes', nota: 'Gestión de campañas. Lo que se invierte en los anuncios lo pagas tú directo a Meta, desde tu cuenta.' },
-    estado: ['listo', 'Listo para trabajar. Más de cinco años en marketing.'],
-    demo: 'reporte',
-    incluye: [
-      ['Anuncios que llevan a WhatsApp', 'La persona toca el anuncio y te escribe. Así sabes qué anuncio trajo cada mensaje.'],
-      ['El público correcto', 'Gente de Cusco, turistas o el rubro que te sirve, no cualquiera.'],
-      ['Reporte en palabras simples', 'Cada semana: cuánto gastaste y qué conseguiste.'],
-      ['Tu cuenta, a tu nombre', 'Las campañas y los datos son tuyos, no de la agencia.'],
-    ],
-    pasos: [
-      ['Vemos tu presupuesto', 'Cuánto quieres invertir y qué quieres conseguir.'],
-      ['Armamos las campañas', 'Con tus fotos, tus precios y tu forma de hablar.'],
-      ['Cada semana, reporte y ajustes', 'Lo que funciona se queda; lo que no, se cambia.'],
-    ],
-    rubros: ['tienda', 'restaurante', 'hotel'],
-    faq: [
-      ['¿Cuánto tengo que invertir en anuncios?', 'Lo definimos juntos según tu negocio. Ese dinero va directo a Meta, desde tu cuenta, aparte de la gestión.'],
-      ['¿Y si todavía no tengo presupuesto?', 'Empieza por lo que no cuesta mantener: tu web, tu perfil de Google y responder rápido por WhatsApp.'],
-    ],
-    mensaje: 'Hola Rodrigo, quiero anuncios en Facebook e Instagram para mi negocio',
-    cta: 'Quiero anunciar',
-  },
-  {
-    slug: 'videos-con-ia', cara: null, grupo: 'atender',
-    video: 'assets/video/05-publicar.mp4', poster: 'assets/img/giro/05-publicar.webp', mini: '05',
-    nombre: 'Videos con IA',
-    menu: 'Videos para tus redes, sin rodaje',
-    h1: 'Videos para tu marca, hechos con inteligencia artificial',
-    dolor: 'No tengo videos para mis redes.',
-    entrega: 'Videos cortos para tus redes y tu web, hechos con inteligencia artificial a partir de tus productos y tu idea. Sin rodaje y sin actores.',
-    precio: { desde: 750, unidad: 'al mes', nota: 'Pack de videos cortos para redes. Un video puntual se cotiza aparte.' },
-    estado: ['vivo', 'Funcionando: los videos de las escenas de esta misma web se hicieron así.'],
-    incluye: [
-      ['Idea y guion', 'Qué mostrar y cómo contarlo en pocos segundos.'],
-      ['Imagen y movimiento con IA', 'Escenas que no necesitan cámara ni locación.'],
-      ['El formato de cada red', 'Vertical para reels y TikTok, horizontal para tu web.'],
-      ['Tus productos, tu estilo', 'Se parte de tus fotos reales, no de imágenes genéricas.'],
-    ],
-    pasos: [
-      ['Me cuentas qué quieres mostrar', 'Un producto, tu local, una promoción.'],
-      ['Armo guion e imágenes', 'Te muestro la idea antes de animarla.'],
-      ['Te entrego los videos', 'Listos para subir.'],
-    ],
-    rubros: ['tienda', 'restaurante', 'hotel'],
-    faq: [
-      ['¿Puedo usar mis propias fotos?', 'Sí, y es lo mejor: la IA parte de tus productos reales.'],
-      ['¿Sirve para anuncios?', 'Sí. Se pueden usar en tus campañas de Facebook e Instagram.'],
-    ],
-    mensaje: 'Hola Rodrigo, quiero videos con IA para mis redes',
-    cta: 'Quiero mis videos',
-  },
-  {
     slug: 'transcripcion-de-audios', cara: '06', grupo: 'ordenar',
     nombre: 'Transcripción de audios',
     menu: 'Reuniones y audios, convertidos en texto',
@@ -355,36 +308,37 @@ const SERVICIOS = [
     cta: 'Transcribir mis audios',
   },
   {
-    slug: 'ia-con-tus-documentos', cara: null, grupo: 'ordenar',
-    nombre: 'IA con tus documentos',
-    menu: 'Un asistente que conoce tus archivos',
-    h1: 'Un asistente que responde con tus propios documentos',
-    dolor: 'La información está, pero nadie la encuentra.',
-    entrega: 'Tus documentos, catálogos o normas en una base de datos inteligente (Qdrant). Un asistente responde con lo que dicen, y te muestra de dónde lo sacó.',
-    precio: { desde: 2500, nota: 'Incluye preparar tus documentos. El uso de la IA se paga aparte, según cuánto se consulte.' },
-    estado: ['prepara', 'En preparación: lo estoy montando primero en mis propios sistemas, antes de ofrecerlo.'],
+    slug: 'bases-de-datos', cara: null, grupo: 'ordenar',
+    nombre: 'Bases de datos y herramientas',
+    menu: 'Qdrant, Baserow, Notion, Obsidian, n8n',
+    h1: 'Tus datos y tus herramientas, ordenados y conectados',
+    dolor: 'Tengo la información regada en mil lados.',
+    entrega: 'Ordeno tus datos en la herramienta que te sirve —Baserow, Notion, Obsidian o una base con IA como Qdrant— y la conecto con n8n para que trabaje sola.',
+    precio: { desde: 750, nota: 'Una base ordenada y conectada. Con un asistente de IA que responde con tus documentos (Qdrant), desde S/2,500.' },
+    estado: ['listo', 'Listo para construir: mi propio segundo cerebro corre en Obsidian, conectado con agentes. La parte de IA con Qdrant, en preparación.'],
     demo: 'documentos',
+    herramientas: ['Qdrant', 'Baserow', 'Notion', 'Obsidian', 'n8n', 'Claude Code'],
     incluye: [
-      ['Tus documentos, ordenados', 'Contratos, catálogos, manuales o normas, en una sola base.'],
-      ['Respuestas con la fuente', 'Cada respuesta dice de qué documento salió.'],
-      ['Solo lo que tú cargas', 'Si no está en tus documentos, responde que no lo sabe.'],
-      ['Privado', 'Tus archivos no se publican ni se usan para entrenar a nadie.'],
+      ['Tus datos en un solo lugar', 'En Baserow, Notion u Obsidian, según cómo trabajas tú y tu equipo.'],
+      ['Conectados con n8n', 'Lo que entra por WhatsApp o por la web se guarda solo, sin copiar a mano.'],
+      ['Búsqueda con IA', 'Con Qdrant, un asistente responde con tus documentos y dice de dónde sacó la respuesta.'],
+      ['Tuyos', 'A tu nombre, y los puedes descargar cuando quieras.'],
     ],
     pasos: [
-      ['Juntamos los documentos', 'Lo que tu equipo consulta todos los días.'],
-      ['Los cargamos a la base', 'Ordenados para que se encuentren por su significado.'],
-      ['Lo pruebas con preguntas reales', 'Y se ajusta hasta que responda bien.'],
+      ['Vemos dónde está tu información', 'Cuadernos, Excel, chats, carpetas.'],
+      ['Elegimos la herramienta', 'La que tu equipo va a usar de verdad, no la de moda.'],
+      ['La conectamos', 'Para que se llene sola y se consulte fácil.'],
     ],
-    rubros: ['oficina', 'consultorio', 'hotel'],
+    rubros: ['oficina', 'consultorio', 'hotel', 'tienda'],
     faq: [
+      ['¿Qué herramienta me conviene?', 'Depende de cómo trabajas. Baserow es como un Excel que no se rompe; Notion, para equipos que escriben; Obsidian, para ordenar conocimiento; Qdrant, para que una IA busque en tus documentos.'],
       ['¿Qué es Qdrant?', 'Una base de datos que busca por significado, no por palabras exactas. Por eso encuentra la respuesta aunque la pregunta esté dicha de otra forma.'],
-      ['¿Puede inventar respuestas?', 'Se configura para responder solo con lo que está en tus documentos y decir que no sabe cuando no está. Igual conviene revisar lo importante.'],
     ],
-    mensaje: 'Hola Rodrigo, quiero un asistente que responda con mis documentos',
-    cta: 'Quiero probarlo',
+    mensaje: 'Hola Rodrigo, quiero ordenar los datos de mi negocio',
+    cta: 'Ordenar mis datos',
   },
   {
-    slug: 'aplicaciones-web', cara: null, grupo: 'medida',
+    slug: 'aplicaciones-web', cara: null, grupo: 'ordenar',
     nombre: 'Aplicaciones web',
     menu: 'Reservas, paneles y sistemas en el navegador',
     h1: 'Aplicaciones web a medida para tu negocio',
@@ -413,7 +367,7 @@ const SERVICIOS = [
     cta: 'Contarte mi idea',
   },
   {
-    slug: 'software-a-medida', cara: '07', grupo: 'medida',
+    slug: 'software-a-medida', cara: '07', grupo: 'ordenar',
     nombre: 'Software a medida',
     menu: 'Cuando ninguna herramienta te sirve',
     h1: 'Software a medida, cuando ninguna herramienta te sirve',
@@ -441,7 +395,7 @@ const SERVICIOS = [
     cta: 'Contarte mi idea',
   },
   {
-    slug: 'clases-de-ia', cara: null, grupo: 'medida',
+    slug: 'clases-de-ia', cara: null, grupo: 'asesoria',
     nombre: 'Clases de IA',
     menu: 'Claude, ChatGPT y Gemini en tu trabajo',
     h1: 'Clases de inteligencia artificial para tu trabajo',
@@ -457,7 +411,7 @@ const SERVICIOS = [
     ],
     pasos: [
       ['Vemos qué haces', 'Qué tareas te quitan más tiempo.'],
-      ['Clases prácticas', 'Por videollamada, con tus propios documentos y tareas.'],
+      ['Clases prácticas', 'Presenciales en Cusco o por Meet, con tus propios documentos y tareas.'],
       ['Seguimiento', 'Resolvemos las dudas que salgan cuando ya lo estás usando.'],
     ],
     rubros: ['oficina', 'consultorio'],
@@ -469,7 +423,7 @@ const SERVICIOS = [
     cta: 'Quiero clases',
   },
   {
-    slug: 'seguridad', cara: null, grupo: 'medida',
+    slug: 'seguridad', cara: null, grupo: 'asesoria',
     nombre: 'Seguridad de bots',
     menu: 'Que un cliente tramposo no engañe a tu bot',
     h1: 'Seguro por diseño',
@@ -481,12 +435,70 @@ const SERVICIOS = [
     mensaje: 'Hola Rodrigo, quiero revisar la seguridad de mis bots',
     cta: 'Revisar mis bots',
   },
+  {
+    slug: 'anuncios-meta-ads', cara: null, grupo: 'atender', pagado: true,
+    nombre: 'Anuncios en redes',
+    menu: 'Facebook e Instagram, con reporte claro',
+    h1: 'Anuncios en Facebook e Instagram que sabes si funcionan',
+    dolor: 'Invierto en anuncios y no sé si funcionan.',
+    entrega: 'Armo tus campañas en Meta, las ajusto cada semana y te llega un reporte simple: cuánto gastaste, cuántos mensajes llegaron y cuánto costó cada uno.',
+    precio: { desde: 300, unidad: 'al mes', nota: 'Gestión de campañas. Lo que se invierte en los anuncios lo pagas tú directo a Meta, desde tu cuenta.' },
+    estado: ['listo', 'Listo para trabajar. Más de cinco años en marketing.'],
+    demo: 'reporte',
+    incluye: [
+      ['Anuncios que llevan a WhatsApp', 'La persona toca el anuncio y te escribe. Así sabes qué anuncio trajo cada mensaje.'],
+      ['El público correcto', 'Gente de Cusco, turistas o el rubro que te sirve, no cualquiera.'],
+      ['Reporte en palabras simples', 'Cada semana: cuánto gastaste y qué conseguiste.'],
+      ['Tu cuenta, a tu nombre', 'Las campañas y los datos son tuyos, no de la agencia.'],
+    ],
+    pasos: [
+      ['Vemos tu presupuesto', 'Cuánto quieres invertir y qué quieres conseguir.'],
+      ['Armamos las campañas', 'Con tus fotos, tus precios y tu forma de hablar.'],
+      ['Cada semana, reporte y ajustes', 'Lo que funciona se queda; lo que no, se cambia.'],
+    ],
+    rubros: ['tienda', 'restaurante', 'hotel'],
+    faq: [
+      ['¿Cuánto tengo que invertir en anuncios?', 'Lo definimos juntos según tu negocio. Ese dinero va directo a Meta, desde tu cuenta, aparte de la gestión.'],
+      ['¿Y si todavía no tengo presupuesto?', 'Empieza por lo que no cuesta mantener: tu web, tu perfil de Google y responder rápido por WhatsApp.'],
+    ],
+    mensaje: 'Hola Rodrigo, quiero anuncios en Facebook e Instagram para mi negocio',
+    cta: 'Quiero anunciar',
+  },
+  {
+    slug: 'videos-con-ia', cara: null, grupo: 'atender', pagado: true,
+    video: 'assets/video/05-publicar.mp4', poster: 'assets/img/giro/05-publicar.webp', mini: '05',
+    nombre: 'Videos con IA',
+    menu: 'Videos para tus redes, sin rodaje',
+    h1: 'Videos para tu marca, hechos con inteligencia artificial',
+    dolor: 'No tengo videos para mis redes.',
+    entrega: 'Videos cortos para tus redes y tu web, hechos con inteligencia artificial a partir de tus productos y tu idea. Sin rodaje y sin actores.',
+    precio: { desde: 750, unidad: 'al mes', nota: 'Pack de videos cortos para redes. Un video puntual se cotiza aparte.' },
+    estado: ['vivo', 'Funcionando: los videos de las escenas de esta misma web se hicieron así.'],
+    incluye: [
+      ['Idea y guion', 'Qué mostrar y cómo contarlo en pocos segundos.'],
+      ['Imagen y movimiento con IA', 'Escenas que no necesitan cámara ni locación.'],
+      ['El formato de cada red', 'Vertical para reels y TikTok, horizontal para tu web.'],
+      ['Tus productos, tu estilo', 'Se parte de tus fotos reales, no de imágenes genéricas.'],
+    ],
+    pasos: [
+      ['Me cuentas qué quieres mostrar', 'Un producto, tu local, una promoción.'],
+      ['Armo guion e imágenes', 'Te muestro la idea antes de animarla.'],
+      ['Te entrego los videos', 'Listos para subir.'],
+    ],
+    rubros: ['tienda', 'restaurante', 'hotel'],
+    faq: [
+      ['¿Puedo usar mis propias fotos?', 'Sí, y es lo mejor: la IA parte de tus productos reales.'],
+      ['¿Sirve para anuncios?', 'Sí. Se pueden usar en tus campañas de Facebook e Instagram.'],
+    ],
+    mensaje: 'Hola Rodrigo, quiero videos con IA para mis redes',
+    cta: 'Quiero mis videos',
+  },
 ];
 
 const GRUPOS = [
+  { id: 'asesoria', titulo: 'Asesoría y aprendizaje' },
   { id: 'atender', titulo: 'Atender y vender' },
-  { id: 'ordenar', titulo: 'Ordenar tu negocio' },
-  { id: 'medida',  titulo: 'A medida y aprendizaje' },
+  { id: 'ordenar', titulo: 'Ordenar y construir' },
 ];
 
 /* --------------------------------------------------------------------------
@@ -651,6 +663,6 @@ const PROHIBIDAS = [
 ];
 
 module.exports = {
-  MARCA, WA_NUMERO, WA_VISIBLE, wa, RUC, ASESORIA, REGALO, CUPOS, TESTIMONIOS, ESTADOS, SERVICIOS, GRUPOS, RUBROS,
+  MARCA, WA_NUMERO, WA_VISIBLE, wa, RUC, REGISTRO_CONTACTOS, ASESORIA, REGALO, CUPOS, TESTIMONIOS, ESTADOS, SERVICIOS, GRUPOS, RUBROS,
   OTROS_RUBROS, CIFRAS, MENU, PROHIBIDAS,
 };

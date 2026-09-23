@@ -54,26 +54,11 @@
     .fromTo('.hero__sombra', { '--sombra': 0 }, { '--sombra': 0.75, ease: 'none' }, 0);
 
   /* ======================================================================
-     3. La chakana de obsidiana: el imán que frena en cada cara abierta
-     El giro lo pinta main.js desde el scroll. Acá solo se agrega el snap:
-     al soltar el dedo, la página se acomoda en la cara abierta más cercana.
+     3. (Sacado el 2026-09-23) El imán de GSAP que frenaba en cada cara.
+     En el celular a veces no alcanzaba a actuar y la chakana quedaba a medio
+     girar. Lo reemplaza el avance automático de main.js («Avance automático
+     del giro»), que funciona con o sin GSAP.
      ====================================================================== */
-
-  var giro = $('.giro');
-  if (giro && giro.classList.contains('giro--vivo')) {
-    var nCaras = $$('.cara').length;
-    var puntos = [0];
-    for (var k = 0; k < nCaras; k++) puntos.push((k + 0.62) / nCaras);
-    puntos.push(1);
-    ScrollTrigger.create({
-      trigger: giro,
-      start: 'top top',
-      end: 'bottom bottom',
-      // directional:false = frena en la cara más cercana, no en la siguiente.
-      // Si no, un salto directo terminaba una cara más allá.
-      snap: { snapTo: puntos, directional: false, duration: { min: 0.25, max: 0.7 }, delay: 0.12, ease: 'power2.inOut' }
-    });
-  }
 
   /* ======================================================================
      4. La banda se enciende palabra por palabra

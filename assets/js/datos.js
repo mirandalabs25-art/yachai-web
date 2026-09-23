@@ -7,6 +7,7 @@ window.YACHAI_DATOS = {
   "corto": "Agencia de IA y marketing",
   "enfasis": "Asesorías en inteligencia artificial"
  },
+ "registro": null,
  "asesoria": {
   "regalo": "Te regalamos US$1,000",
   "regaloExplica": "15 días de asesoría en IA y tu web, gratis todo octubre",
@@ -182,13 +183,13 @@ window.YACHAI_DATOS = {
   "asistentes-automaticos": 750,
   "web-propia": 480,
   "publicaciones-automaticas": 1250,
-  "anuncios-meta-ads": 300,
-  "videos-con-ia": 750,
   "transcripcion-de-audios": 30,
-  "ia-con-tus-documentos": 2500,
+  "bases-de-datos": 750,
   "aplicaciones-web": 2500,
   "software-a-medida": 2500,
   "clases-de-ia": 300,
-  "seguridad": null
+  "seguridad": null,
+  "anuncios-meta-ads": 300,
+  "videos-con-ia": 750
  }
 };
