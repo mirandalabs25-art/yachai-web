@@ -1,6 +1,6 @@
 /* ==========================================================================
    YACHAI — hoja de estilos
-   Estructura heredada de la web de Trueink (hero fijo + tarjetas que desfilan
+   Estructura heredada de la web de Trueink (hero fijo + tarjetas que desfilan;
    en horizontal + banda + tira + letrero + pie), con tres cambios:
    el hero es generativo en vez de foto, hay marca propia, y la tipografía
    pasa de Helvetica a un sistema con display expandido + monoespaciada.
@@ -211,67 +211,170 @@ a{color:inherit;text-decoration:none}
 }
 @keyframes tira{0%,100%{transform:scaleX(.3)}50%{transform:scaleX(1)}}
 
-/* --- carrusel: el scroll vertical mueve las tarjetas ---------------------- */
+/* --- giro: la chakana cibernética y los siete dolores -------------------- */
+/* Base (sin JS o con "reducir movimiento"): las caras van una debajo de la
+   otra, con su imagen y su texto. Con .giro--vivo (lo pone main.js) la
+   escena queda fija y la chakana gira con el scroll. */
 
-.carrusel{position:relative;z-index:1;height:340vh}
-@media (max-width:900px){.carrusel{height:290vh}}
+.giro{position:relative;z-index:1;background:var(--negro)}
+.giro__fondo,.giro__chakana,.giro__guia{display:none}
 
-.carrusel__fijo{
-  position:sticky;top:0;height:100svh;
-  overflow:hidden;display:flex;align-items:center;
+.cara{position:relative;border-top:1px solid var(--filete)}
+.cara__medio{position:relative;height:min(70vh,620px);overflow:hidden}
+.cara__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cara__contenido{padding:clamp(28px,5vw,56px) var(--gutter);display:grid;gap:22px}
+.cara__num{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--qori)}
+.cara--tuya .cara__num::after{content:' · Para tu negocio'}
+.cara__dolor{
+  font-size:clamp(1.55rem,6.2vw,3.4rem);font-weight:800;line-height:1.02;
+  letter-spacing:-.03em;text-transform:uppercase;font-stretch:106%;
+  margin:10px 0 0;max-width:17ch;text-wrap:balance;
 }
-@supports not (height:100svh){.carrusel__fijo{height:100vh}}
+.cara__pie{display:grid;gap:14px;justify-items:start;max-width:46ch}
+.cara__entrega{font-size:clamp(.95rem,1.4vw,1.05rem);line-height:1.55;color:var(--hueso);margin:0}
+.cara__caso{font-family:var(--mono);font-size:10px;line-height:1.6;letter-spacing:.03em;color:var(--gris);margin:0}
+.cara__caso b{color:var(--qori);font-weight:500}
 
-.carrusel__fondo{position:absolute;inset:0;z-index:0;background:var(--negro);opacity:var(--opacidad,0)}
+/* --- la escena fija ------------------------------------------------------ */
+.giro--vivo{height:850vh}
+@supports (height:100svh){.giro--vivo{height:850svh}}
+.giro--vivo .giro__escena{position:sticky;top:0;height:100vh;overflow:hidden;isolation:isolate}
+@supports (height:100svh){.giro--vivo .giro__escena{height:100svh}}
+.giro--vivo{background:transparent}
+.giro--vivo .giro__fondo{display:block;position:absolute;inset:0;background:var(--negro);opacity:var(--fondo,0)}
+.giro--vivo .giro__caras{position:absolute;inset:0;z-index:1}
 
-.carrusel__pista{
-  position:relative;z-index:1;flex:0 0 auto;
-  display:flex;align-items:center;
-  gap:clamp(12px,2.2vw,26px);
-  padding-inline:calc((100vw - var(--ancho-tarjeta)) / 2);
-  will-change:transform;
+.giro--vivo .cara{position:absolute;inset:0;border:0;visibility:hidden}
+.giro--vivo .cara.es-visible{visibility:visible}
+.giro--vivo .cara__medio{
+  position:absolute;inset:0;height:auto;
+  clip-path:ellipse(var(--rx,0px) var(--ry,0px) at var(--hx,50%) var(--hy,50%));
+}
+/* Velo para leer encima de la escena: oscuro arriba y abajo. */
+.giro--vivo .cara__medio::after{
+  content:'';position:absolute;inset:0;opacity:var(--velo,0);
+  background:linear-gradient(to bottom,rgba(0,0,0,.82) 0%,rgba(0,0,0,.2) 34%,rgba(0,0,0,.3) 58%,rgba(0,0,0,.92) 100%);
 }
 
-.tarjeta{
-  flex:0 0 auto;width:var(--ancho-tarjeta);
-  border:1px solid var(--filete);
-  background:rgba(13,13,13,.72);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-  padding:clamp(18px,2.4vw,26px);
-  display:flex;flex-direction:column;gap:11px;
-  transform-origin:center center;
-  will-change:transform,opacity;
+.giro--vivo .cara__contenido{
+  position:absolute;inset:0;z-index:2;
+  padding:calc(var(--alto-cabecera,120px) + 14px) var(--gutter) clamp(18px,3.5vh,36px);
+  display:flex;flex-direction:column;justify-content:space-between;gap:14px;
+  pointer-events:none;
 }
-/* El diagrama dice qué se está haciendo. Va compacto: la tarjeta entera
-   tiene que caber en una pantalla de teléfono junto al botón. */
-.tarjeta__diagrama{
-  aspect-ratio:4/3;max-height:min(30vh,190px);
-  border:1px solid var(--filete);background:var(--negro);
-  overflow:hidden;display:grid;place-items:center;
+.giro--vivo .cara.abierta .cara__contenido{pointer-events:auto}
+.giro--vivo .cara__cabeza,
+.giro--vivo .cara__pie,
+.giro--vivo .demo{opacity:0;transform:translateY(18px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+.giro--vivo .cara.abierta .cara__cabeza{opacity:1;transform:none}
+.giro--vivo .cara.abierta .demo{opacity:1;transform:none;transition-delay:.12s}
+.giro--vivo .cara.abierta .cara__pie{opacity:1;transform:none;transition-delay:.22s}
+.giro--vivo .cara__dolor{text-shadow:0 2px 24px rgba(0,0,0,.6)}
+
+@media (min-width:900px){
+  .giro--vivo .cara__contenido{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);
+    grid-template-rows:auto 1fr auto;grid-template-areas:"cabeza demo" ". demo" "pie demo";
+    column-gap:clamp(40px,6vw,96px);padding-bottom:clamp(28px,6vh,64px);
+  }
+  .giro--vivo .cara__cabeza{grid-area:cabeza}
+  .giro--vivo .demo{grid-area:demo;align-self:center}
+  .giro--vivo .cara__pie{grid-area:pie}
 }
-.tarjeta__diagrama img{width:100%;height:100%;object-fit:contain}
-.tarjeta .boton{align-self:stretch;text-align:center;margin-top:2px}
-.tarjeta__num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--qori)}
-.tarjeta__dolor{
-  font-size:clamp(1.1rem,2.1vw,1.4rem);
-  font-weight:700;line-height:1.25;letter-spacing:-.015em;margin:0;
+/* Sin JS, en escritorio: imagen a un lado, texto al otro. */
+@media (min-width:900px){
+  .giro:not(.giro--vivo) .cara{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}
+  .giro:not(.giro--vivo) .cara__medio{height:auto;min-height:520px}
 }
-.tarjeta__flecha{width:100%;height:1px;background:var(--filete);margin:2px 0}
-.tarjeta__entrega{font-size:.88rem;line-height:1.55;color:var(--hueso);margin:0;flex:1}
-.tarjeta__caso{
-  font-family:var(--mono);font-size:10px;line-height:1.55;
-  letter-spacing:.03em;color:var(--gris);margin:0;
-  padding-top:11px;border-top:1px solid var(--filete);
+
+/* --- la chakana ---------------------------------------------------------- */
+/* Fondo negro de la imagen + mix-blend-mode:screen = el negro desaparece y
+   el hueco deja ver la escena que está detrás. */
+.giro--vivo .giro__chakana{
+  display:block;position:absolute;z-index:3;left:50%;top:52%;
+  width:min(84vw,60vh);aspect-ratio:1;
+  transform:translate(-50%,-50%) scale(var(--escala,1));
+  perspective:1400px;mix-blend-mode:screen;pointer-events:none;will-change:transform,opacity;
 }
-.tarjeta__caso b{color:var(--qori);font-weight:500}
+@supports (height:100svh){.giro--vivo .giro__chakana{width:min(84vw,60svh)}}
+.giro__pieza{position:relative;width:100%;height:100%;transform-style:preserve-3d;will-change:transform}
+.giro__lado{position:absolute;inset:0;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.giro__lado--reverso{transform:rotateY(180deg)}
+/* El canto: una lámina dorada girada 90°. Solo se ve cuando la pieza está
+   de perfil, y le da grosor en vez de desaparecer. */
+.giro__pieza::before{
+  content:'';position:absolute;top:2%;bottom:3%;left:50%;width:16px;margin-left:-8px;
+  background:linear-gradient(to bottom,#6b5208,#f5c518 18%,#8a6a0a 50%,#f5c518 82%,#6b5208);
+  box-shadow:0 0 22px rgba(245,197,24,.55);transform:rotateY(90deg);opacity:var(--canto,0);
+}
+.giro--vivo .giro__guia{
+  display:block;position:absolute;z-index:4;left:0;right:0;bottom:clamp(20px,5vh,44px);
+  text-align:center;opacity:var(--guia,1);transition:opacity .4s;
+}
+
+/* --- demostraciones (HTML encima de la escena, nunca dentro del video) ---- */
+.demo{
+  width:min(100%,380px);align-self:center;
+  background:rgba(8,8,8,.84);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border:1px solid var(--filete-fuerte);padding:12px 14px 14px;
+  display:flex;flex-direction:column;gap:8px;font-size:.86rem;line-height:1.45;
+}
+.demo [data-paso]{margin:0}
+.demo__etiqueta{
+  display:flex;justify-content:space-between;gap:10px;margin:0 0 2px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gris);
+}
+.demo__etiqueta span:last-child{color:var(--qori)}
+.giro--vivo .demo [data-paso]{opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s}
+.giro--vivo .demo [data-paso].visible{opacity:1;transform:none}
+.demo [data-fugaz]{display:none}
+.giro--vivo .demo [data-fugaz].visible{display:flex}
+
+.burbuja{max-width:86%;padding:8px 11px 17px;position:relative;margin:0}
+.burbuja small{position:absolute;right:8px;bottom:3px;font-family:var(--mono);font-size:9px;color:var(--gris)}
+.burbuja--cliente{align-self:flex-start;background:var(--grafito);color:var(--hueso)}
+.burbuja--bot{align-self:flex-end;background:rgba(245,197,24,.13);border:1px solid rgba(245,197,24,.35);color:var(--hueso)}
+.escribiendo{align-self:flex-end;gap:5px;padding:11px 13px;background:rgba(245,197,24,.13);border:1px solid rgba(245,197,24,.35)}
+.escribiendo i{width:6px;height:6px;border-radius:50%;background:var(--qori);animation:punto 1s ease-in-out infinite}
+.escribiendo i:nth-child(2){animation-delay:.15s}
+.escribiendo i:nth-child(3){animation-delay:.3s}
+@keyframes punto{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+
+.fila{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--filete);font-size:.84rem}
+.fila span{color:var(--gris)}
+.fila b{color:var(--hueso);font-weight:600;text-align:right}
+.fila b.ok{color:var(--qori)}
+.fila--nota{border-bottom:0}
+
+.aviso{padding:10px 12px;background:var(--grafito);border-left:2px solid var(--qori);color:var(--hueso)}
+.aviso b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--qori);margin-bottom:3px;font-weight:500}
+.aviso--hecho{border-left-color:var(--hueso)}
+.acciones{display:flex;gap:7px;flex-wrap:wrap}
+.accion{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--filete-fuerte);padding:7px 10px;color:var(--hueso)}
+.accion--si{background:var(--qori);border-color:var(--qori);color:var(--negro)}
+
+.buscador{padding:10px 12px;border:1px solid var(--filete-fuerte);font-family:var(--mono);font-size:12px;color:var(--hueso)}
+.buscador::before{content:'› ';color:var(--qori)}
+.resultado{padding:10px 12px;background:var(--grafito)}
+.resultado b{display:block;color:var(--qori);font-size:1.02rem}
+.resultado span{color:var(--gris);font-size:.8rem}
+
+.onda{display:flex;align-items:center;gap:3px;height:34px}
+.onda i{flex:1;height:30%;background:var(--qori);animation:onda 1.1s ease-in-out infinite}
+.onda i:nth-child(3n){animation-delay:.2s}
+.onda i:nth-child(3n+1){animation-delay:.45s}
+.onda i:nth-child(4n){animation-delay:.7s}
+@keyframes onda{0%,100%{height:22%}50%{height:95%}}
+.linea{display:grid;grid-template-columns:5.5ch 1fr;gap:8px;font-size:.84rem;color:var(--hueso)}
+.linea span{font-family:var(--mono);font-size:10px;color:var(--gris);padding-top:2px}
+.linea--tarea span{color:var(--qori)}
+
+.nodo{position:relative;padding:9px 12px;border:1px solid var(--filete-fuerte);font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--hueso)}
+.nodo + .nodo::before{content:'';position:absolute;left:18px;top:-9px;width:1px;height:9px;background:var(--qori)}
+.nodo--fin{background:var(--qori);border-color:var(--qori);color:var(--negro)}
 
 @media (prefers-reduced-motion:reduce){
-  .carrusel{height:auto}
-  .carrusel__fijo{position:static;height:auto;padding-block:clamp(56px,10vw,90px)}
-  .carrusel__fondo{opacity:1}
-  .carrusel__pista{overflow-x:auto;scroll-snap-type:x mandatory;padding-inline:var(--gutter)}
-  .tarjeta{scroll-snap-align:center;transform:none !important;opacity:1 !important}
+  .escribiendo i,.onda i{animation:none}
 }
 
 /* --- lo que sigue tapa el hero ------------------------------------------- */
@@ -463,9 +566,6 @@ a{color:inherit;text-decoration:none}
 .rubro:hover,.opcion:hover{border-color:var(--qori);color:var(--qori)}
 .rubro[aria-pressed="true"],.opcion[aria-pressed="true"]{background:var(--qori);border-color:var(--qori);color:var(--negro)}
 
-/* Las tarjetas que le sirven al rubro elegido */
-.tarjeta--tuya{border-color:var(--qori)}
-.tarjeta--tuya .tarjeta__num::after{content:' · Para tu negocio'}
 
 /* --- cómo trabajo -------------------------------------------------------- */
 /* La línea qori une los cuatro pasos y se dibuja con el scroll (--avance,

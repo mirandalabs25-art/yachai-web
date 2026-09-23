@@ -31,15 +31,15 @@
 
   /* ======================================================================
      2. Bajar atraviesa la chakana
-     Mientras las tarjetas suben sobre el hero, la cruz gira un octavo de
+     Mientras la escena de la chakana sube sobre el hero, la cruz gira un octavo de
      vuelta y la cámara entra por el hueco del centro.
      ====================================================================== */
 
   var heroScroll = gsap.timeline({
     scrollTrigger: {
-      trigger: '.carrusel',
-      start: 'top bottom',   // la primera tarjeta asoma por abajo
-      end: 'top top',        // el carrusel llegó arriba
+      trigger: '.giro',
+      start: 'top bottom',   // la escena de la chakana asoma por abajo
+      end: 'top top',        // la escena llegó arriba y queda fija
       scrub: 0.8
     }
   });
@@ -51,52 +51,23 @@
     .fromTo('.hero__sombra', { '--sombra': 0 }, { '--sombra': 0.75, ease: 'none' }, 0);
 
   /* ======================================================================
-     3. Carrusel: el scroll vertical desfila las tarjetas
-     La pista ya la centra main.js (padding lateral). Acá se mueve con
-     inercia (scrub) y se detiene en una tarjeta entera (snap).
+     3. La chakana: el imán que frena en cada cara abierta
+     El giro lo pinta main.js desde el scroll. Acá solo se agrega el snap:
+     al soltar el dedo, la página se acomoda en la cara abierta más cercana.
      ====================================================================== */
 
-  var carrusel = $('.carrusel');
-  var fijo = $('.carrusel__fijo');
-  var pista = $('.carrusel__pista');
-  var fondo = $('.carrusel__fondo');
-  var tarjetas = $$('.tarjeta');
-
-  function efectoVentana() {
-    // La del centro entera; las de los lados, más chicas y apagadas.
-    var medio = window.innerWidth / 2;
-    tarjetas.forEach(function (tj) {
-      var r = tj.getBoundingClientRect();
-      var d = Math.abs((r.left + r.width / 2) - medio) / window.innerWidth;
-      tj.style.transform = 'scale(' + Math.max(0.76, 1 - d * 0.54).toFixed(3) + ')';
-      tj.style.opacity = Math.max(0.34, 1 - d * 1.3).toFixed(3);
+  var giro = $('.giro');
+  if (giro && giro.classList.contains('giro--vivo')) {
+    var nCaras = $$('.cara').length, INTRO = 0.5, total = nCaras + INTRO;
+    var puntos = [0];
+    for (var k = 0; k < nCaras; k++) puntos.push((INTRO + k + 0.62) / total);
+    puntos.push(1);
+    ScrollTrigger.create({
+      trigger: giro,
+      start: 'top top',
+      end: 'bottom bottom',
+      snap: { snapTo: puntos, duration: { min: 0.25, max: 0.7 }, delay: 0.12, ease: 'power2.inOut' }
     });
-  }
-
-  if (carrusel && pista && fijo && tarjetas.length) {
-    var pasos = tarjetas.length - 1;
-    gsap.to(pista, {
-      x: function () { return -Math.max(0, pista.scrollWidth - fijo.clientWidth); },
-      ease: 'none',
-      scrollTrigger: {
-        trigger: carrusel,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.6,
-        invalidateOnRefresh: true,
-        snap: pasos > 0 ? {
-          snapTo: 1 / pasos,
-          duration: { min: 0.2, max: 0.6 },
-          delay: 0.08,
-          ease: 'power2.inOut'
-        } : false,
-        onUpdate: function (self) {
-          if (fondo) fondo.style.setProperty('--opacidad', Math.min(1, self.progress * 1.9).toFixed(3));
-        }
-      },
-      onUpdate: efectoVentana
-    });
-    efectoVentana();
   }
 
   /* ======================================================================

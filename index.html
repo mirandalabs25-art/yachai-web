@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/css/style.css?v=3">
+<link rel="stylesheet" href="assets/css/style.css?v=4">
 </head>
 <body>
 
@@ -95,83 +95,183 @@
   </div>
 </section>
 
-<!-- CARRUSEL: los dolores ================================================ -->
-<section class="carrusel" id="servicios" aria-label="Qué resuelvo">
-  <div class="carrusel__fijo">
-    <div class="carrusel__fondo" aria-hidden="true"></div>
-    <div class="carrusel__pista">
+<!-- GIRO: la chakana cibernética y los siete dolores ===================== -->
+<!-- Cada vuelta de la chakana abre una cara: la escena (imagen hoy, video de
+     Kling después: basta con agregar data-video="assets/video/NN.mp4" al
+     <article>), la frase del dolor, una demostración en HTML y el botón.
+     El texto nunca va dentro de la imagen ni del video: la IA lo deforma.
+     Sin JS o con "reducir movimiento", las caras quedan una debajo de otra. -->
+<section class="giro" id="servicios" aria-label="Qué resuelvo">
+  <div class="giro__escena">
+    <div class="giro__fondo" aria-hidden="true"></div>
 
-      <article class="tarjeta" data-dolor="01">
-        <div class="tarjeta__diagrama"><img src="assets/img/diag-01-mensajes.svg" alt="Conversación que se contesta sola" loading="lazy" width="400" height="300"></div>
-        <span class="tarjeta__num">01</span>
-        <h2 class="tarjeta__dolor">«Me paso el día contestando mensajes.»</h2>
-        <div class="tarjeta__flecha" aria-hidden="true"></div>
-        <p class="tarjeta__entrega">Un WhatsApp que atiende, cotiza y agenda solo, las 24 horas. Tú entras cuando hay que cerrar.</p>
-        <p class="tarjeta__caso"><b>Caso:</b> un estudio de tatuajes con dos sedes que agendaba por mensaje directo, a mano.</p>
-        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20un%20bot%20de%20WhatsApp%20que%20atienda%20mi%20negocio" target="_blank" rel="noopener">Probar el bot</a>
+    <div class="giro__caras">
+
+      <article class="cara" data-dolor="01">
+        <div class="cara__medio"><img class="cara__img" src="assets/img/giro/01-mensajes.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
+        <div class="cara__contenido">
+          <header class="cara__cabeza">
+            <span class="cara__num">01</span>
+            <h2 class="cara__dolor">«Me paso el día contestando mensajes.»</h2>
+          </header>
+          <div class="demo demo--chat" aria-label="Ejemplo de conversación con el bot">
+            <p class="demo__etiqueta"><span>Tu negocio · en línea</span><span>Demostración</span></p>
+            <p class="burbuja burbuja--cliente" data-paso>Hola, ¿tienen cita para un tatuaje pequeño este jueves?<small>23:14</small></p>
+            <p class="escribiendo" data-paso data-fugaz aria-hidden="true"><i></i><i></i><i></i></p>
+            <p class="burbuja burbuja--bot" data-paso>¡Hola! Tengo el jueves a las 4 pm o el viernes a las 11 am. ¿Cuál te acomoda?<small>23:14</small></p>
+            <p class="burbuja burbuja--cliente" data-paso>Jueves a las 4.<small>23:15</small></p>
+            <p class="escribiendo" data-paso data-fugaz aria-hidden="true"><i></i><i></i><i></i></p>
+            <p class="burbuja burbuja--bot" data-paso>Listo, quedó agendado. Te recuerdo un día antes.<small>23:15</small></p>
+          </div>
+          <div class="cara__pie">
+            <p class="cara__entrega">Un WhatsApp que atiende, cotiza y agenda solo, las 24 horas. Tú entras cuando hay que cerrar.</p>
+            <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20un%20bot%20de%20WhatsApp%20que%20atienda%20mi%20negocio" target="_blank" rel="noopener">Quiero este bot</a>
+            <p class="cara__caso"><b>Caso:</b> un estudio de tatuajes con dos sedes que agendaba por mensaje directo, a mano.</p>
+          </div>
+        </div>
       </article>
 
-      <article class="tarjeta" data-dolor="02">
-        <div class="tarjeta__diagrama"><img src="assets/img/diag-02-base.svg" alt="Del cuaderno a una base de datos" loading="lazy" width="400" height="300"></div>
-        <span class="tarjeta__num">02</span>
-        <h2 class="tarjeta__dolor">«Tengo todo en un cuaderno y en la cabeza.»</h2>
-        <div class="tarjeta__flecha" aria-hidden="true"></div>
-        <p class="tarjeta__entrega">Una base con tus clientes, su historial y lo que te compraron. Tuya, no de una app que te la alquila.</p>
-        <p class="tarjeta__caso"><b>Caso:</b> doce años de trabajos y precios anotados en papel. Cada cliente que vuelve, empieza de cero.</p>
-        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20pasar%20mis%20clientes%20del%20cuaderno%20a%20una%20base%20de%20datos" target="_blank" rel="noopener">Ver la demo</a>
+      <article class="cara" data-dolor="02">
+        <div class="cara__medio"><img class="cara__img" src="assets/img/giro/02-cuaderno.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
+        <div class="cara__contenido">
+          <header class="cara__cabeza">
+            <span class="cara__num">02</span>
+            <h2 class="cara__dolor">«Tengo todo en un cuaderno y en la cabeza.»</h2>
+          </header>
+          <div class="demo demo--ficha" aria-label="Ejemplo de ficha de cliente">
+            <p class="demo__etiqueta"><span>Ficha de cliente</span><span>Demostración</span></p>
+            <p class="fila" data-paso><span>Cliente</span><b>Andrea M.</b></p>
+            <p class="fila" data-paso><span>Visitas</span><b>4</b></p>
+            <p class="fila" data-paso><span>Último trabajo</span><b>Línea fina, antebrazo</b></p>
+            <p class="fila" data-paso><span>Próxima cita</span><b>Jueves 4 pm</b></p>
+            <p class="fila fila--nota" data-paso><span>Nota</span><b>Prefiere las tardes</b></p>
+          </div>
+          <div class="cara__pie">
+            <p class="cara__entrega">Una base con tus clientes, su historial y lo que te compraron. Tuya, no de una app que te la alquila.</p>
+            <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20pasar%20mis%20clientes%20del%20cuaderno%20a%20una%20base%20de%20datos" target="_blank" rel="noopener">Ordenar mis clientes</a>
+            <p class="cara__caso"><b>Caso:</b> doce años de trabajos y precios anotados en papel. Cada cliente que vuelve, empieza de cero.</p>
+          </div>
+        </div>
       </article>
 
-      <article class="tarjeta" data-dolor="03">
-        <div class="tarjeta__diagrama"><img src="assets/img/diag-03-repite.svg" alt="Una tarea que se repite sola cada día" loading="lazy" width="400" height="300"></div>
-        <span class="tarjeta__num">03</span>
-        <h2 class="tarjeta__dolor">«Hago lo mismo todos los días.»</h2>
-        <div class="tarjeta__flecha" aria-hidden="true"></div>
-        <p class="tarjeta__entrega">Un asistente que hace esa tarea solo, todos los días, y te avisa únicamente cuando algo necesita tu decisión.</p>
-        <p class="tarjeta__caso"><b>Caso:</b> un estudio jurídico. Los plazos corren desde el segundo día hábil y se revisan a mano, uno por uno.</p>
-        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20tengo%20una%20tarea%20que%20hago%20todos%20los%20d%C3%ADas%20y%20quiero%20automatizarla" target="_blank" rel="noopener">Probar la automatización</a>
+      <article class="cara" data-dolor="03">
+        <div class="cara__medio"><img class="cara__img" src="assets/img/giro/03-repite.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
+        <div class="cara__contenido">
+          <header class="cara__cabeza">
+            <span class="cara__num">03</span>
+            <h2 class="cara__dolor">«Hago lo mismo todos los días.»</h2>
+          </header>
+          <div class="demo demo--aviso" aria-label="Ejemplo de aviso del asistente">
+            <p class="demo__etiqueta"><span>Asistente · 7:00 am</span><span>Demostración</span></p>
+            <p class="aviso" data-paso><b>Expediente 0234-2026</b>El plazo vence en 2 días hábiles.</p>
+            <p class="aviso aviso--hecho" data-paso>Ya preparé el borrador del escrito.</p>
+            <p class="acciones" data-paso><span class="accion accion--si">Revisar</span><span class="accion">Recordar mañana</span></p>
+          </div>
+          <div class="cara__pie">
+            <p class="cara__entrega">Un asistente que hace esa tarea solo, todos los días, y te avisa únicamente cuando algo necesita tu decisión.</p>
+            <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20tengo%20una%20tarea%20que%20hago%20todos%20los%20d%C3%ADas%20y%20quiero%20automatizarla" target="_blank" rel="noopener">Automatizar mi tarea</a>
+            <p class="cara__caso"><b>Caso:</b> un estudio jurídico. Los plazos corren desde el segundo día hábil y se revisan a mano, uno por uno.</p>
+          </div>
+        </div>
       </article>
 
-      <article class="tarjeta" data-dolor="04">
-        <div class="tarjeta__diagrama"><img src="assets/img/diag-04-web.svg" alt="Tu web apareciendo en las búsquedas" loading="lazy" width="400" height="300"></div>
-        <span class="tarjeta__num">04</span>
-        <h2 class="tarjeta__dolor">«No existo en internet.»</h2>
-        <div class="tarjeta__flecha" aria-hidden="true"></div>
-        <p class="tarjeta__entrega">Tu web, tu dominio y tu servidor. Que te encuentren cuando te buscan, y que la página sea tuya de verdad.</p>
-        <p class="tarjeta__caso"><b>Caso:</b> una tienda con años de trayectoria que no aparecía en Google. Hoy tiene web propia en producción.</p>
-        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20una%20web%20propia%20para%20mi%20negocio" target="_blank" rel="noopener">Quiero mi web</a>
+      <article class="cara" data-dolor="04">
+        <div class="cara__medio"><img class="cara__img" src="assets/img/giro/04-web.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
+        <div class="cara__contenido">
+          <header class="cara__cabeza">
+            <span class="cara__num">04</span>
+            <h2 class="cara__dolor">«No existo en internet.»</h2>
+          </header>
+          <div class="demo demo--busqueda" aria-label="Ejemplo de tu negocio apareciendo en una búsqueda">
+            <p class="demo__etiqueta"><span>Búsqueda</span><span>Demostración</span></p>
+            <p class="buscador" data-paso>tienda de gorras en cusco</p>
+            <p class="resultado" data-paso><b>Tu negocio</b><span>Tienda en Cusco · Abierto ahora</span></p>
+            <p class="acciones" data-paso><span class="accion accion--si">Sitio web</span><span class="accion">Cómo llegar</span><span class="accion">Llamar</span></p>
+          </div>
+          <div class="cara__pie">
+            <p class="cara__entrega">Tu web, tu dominio y tu servidor. Que te encuentren cuando te buscan, y que la página sea tuya de verdad.</p>
+            <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20una%20web%20propia%20para%20mi%20negocio" target="_blank" rel="noopener">Quiero mi web</a>
+            <p class="cara__caso"><b>Caso:</b> una tienda con años de trayectoria que no aparecía en Google. Hoy tiene web propia en producción.</p>
+          </div>
+        </div>
       </article>
 
-      <article class="tarjeta" data-dolor="05">
-        <div class="tarjeta__diagrama"><img src="assets/img/diag-05-publicar.svg" alt="Publicaciones que salen con tu aprobación" loading="lazy" width="400" height="300"></div>
-        <span class="tarjeta__num">05</span>
-        <h2 class="tarjeta__dolor">«Publico poco, o publico sin orden.»</h2>
-        <div class="tarjeta__flecha" aria-hidden="true"></div>
-        <p class="tarjeta__entrega">Catálogo y publicaciones que salen solas, con tu aprobación por WhatsApp antes de que se publique nada.</p>
-        <p class="tarjeta__caso"><b>Caso:</b> 491 productos con foto, rotando sin que nadie tenga que sentarse a subirlos.</p>
-        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20que%20mis%20publicaciones%20salgan%20solas%20con%20mi%20aprobaci%C3%B3n" target="_blank" rel="noopener">Ver la demo</a>
+      <article class="cara" data-dolor="05">
+        <div class="cara__medio"><img class="cara__img" src="assets/img/giro/05-publicar.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
+        <div class="cara__contenido">
+          <header class="cara__cabeza">
+            <span class="cara__num">05</span>
+            <h2 class="cara__dolor">«Publico poco, o publico sin orden.»</h2>
+          </header>
+          <div class="demo demo--cola" aria-label="Ejemplo de publicaciones programadas con aprobación">
+            <p class="demo__etiqueta"><span>Publicaciones de hoy</span><span>Demostración</span></p>
+            <p class="fila" data-paso><span>10:00 · Gorra negra</span><b class="ok">✓ Aprobada</b></p>
+            <p class="fila" data-paso><span>13:00 · Chullo rojo</span><b class="ok">✓ Aprobada</b></p>
+            <p class="fila" data-paso><span>19:00 · Catálogo de la semana</span><b>Espera tu OK</b></p>
+          </div>
+          <div class="cara__pie">
+            <p class="cara__entrega">Catálogo y publicaciones que salen solas, con tu aprobación por WhatsApp antes de que se publique nada.</p>
+            <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20que%20mis%20publicaciones%20salgan%20solas%20con%20mi%20aprobaci%C3%B3n" target="_blank" rel="noopener">Ordenar mis publicaciones</a>
+            <p class="cara__caso"><b>Caso:</b> 491 productos con foto, rotando sin que nadie tenga que sentarse a subirlos.</p>
+          </div>
+        </div>
       </article>
 
-      <article class="tarjeta" data-dolor="06">
-        <div class="tarjeta__diagrama"><img src="assets/img/diag-06-audio.svg" alt="Audio convertido en texto ordenado" loading="lazy" width="400" height="300"></div>
-        <span class="tarjeta__num">06</span>
-        <h2 class="tarjeta__dolor">«Tengo horas de audio y papeles sin procesar.»</h2>
-        <div class="tarjeta__flecha" aria-hidden="true"></div>
-        <p class="tarjeta__entrega">Todo transcrito, ordenado y buscable. Sin subir tus grabaciones a ningún servicio ajeno: se procesa en tu propia máquina.</p>
-        <p class="tarjeta__caso"><b>Caso:</b> reuniones y clases que se convierten en notas conectadas entre sí, no en carpetas muertas.</p>
-        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20probar%20la%20transcripci%C3%B3n%20de%20audios" target="_blank" rel="noopener">Probar el transcriptor</a>
+      <article class="cara" data-dolor="06">
+        <div class="cara__medio"><img class="cara__img" src="assets/img/giro/06-audio.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
+        <div class="cara__contenido">
+          <header class="cara__cabeza">
+            <span class="cara__num">06</span>
+            <h2 class="cara__dolor">«Tengo horas de audio y papeles sin procesar.»</h2>
+          </header>
+          <div class="demo demo--audio" aria-label="Ejemplo de audio convertido en texto">
+            <p class="demo__etiqueta"><span>Reunión · 12 min</span><span>Demostración</span></p>
+            <p class="onda" data-paso aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></p>
+            <p class="linea" data-paso><span>00:00</span>Revisamos los pedidos de la semana.</p>
+            <p class="linea" data-paso><span>00:12</span>Faltan tres proveedores por confirmar.</p>
+            <p class="linea linea--tarea" data-paso><span>Tarea</span>Llamar a los tres antes del viernes.</p>
+          </div>
+          <div class="cara__pie">
+            <p class="cara__entrega">Todo transcrito, ordenado y buscable. Sin subir tus grabaciones a ningún servicio ajeno: se procesa en tu propia máquina.</p>
+            <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20quiero%20probar%20la%20transcripci%C3%B3n%20de%20audios" target="_blank" rel="noopener">Transcribir mis audios</a>
+            <p class="cara__caso"><b>Caso:</b> reuniones y clases que se convierten en notas conectadas entre sí, no en carpetas muertas.</p>
+          </div>
+        </div>
       </article>
 
-      <article class="tarjeta" data-dolor="07">
-        <div class="tarjeta__diagrama"><img src="assets/img/diag-07-medida.svg" alt="Piezas de software armadas a medida" loading="lazy" width="400" height="300"></div>
-        <span class="tarjeta__num">07</span>
-        <h2 class="tarjeta__dolor">«Necesito algo que no existe.»</h2>
-        <div class="tarjeta__flecha" aria-hidden="true"></div>
-        <p class="tarjeta__entrega">Software y aplicaciones a medida, cuando ninguna herramienta del mercado hace lo que tu negocio necesita.</p>
-        <p class="tarjeta__caso"><b>Detrás:</b> n8n, Go High Level, Claude Code, Python, VPS propio. La herramienta se elige después del problema.</p>
-        <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20necesito%20algo%20a%20medida%20y%20quiero%20conversarlo" target="_blank" rel="noopener">Agendar una llamada</a>
+      <article class="cara" data-dolor="07">
+        <div class="cara__medio"><img class="cara__img" src="assets/img/giro/07-medida.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async"></div>
+        <div class="cara__contenido">
+          <header class="cara__cabeza">
+            <span class="cara__num">07</span>
+            <h2 class="cara__dolor">«Necesito algo que no existe.»</h2>
+          </header>
+          <div class="demo demo--nodos" aria-label="Ejemplo de un sistema a medida conectando piezas">
+            <p class="demo__etiqueta"><span>Tu sistema</span><span>Demostración</span></p>
+            <p class="nodo" data-paso>Mensaje de WhatsApp</p>
+            <p class="nodo" data-paso>Revisión por código</p>
+            <p class="nodo" data-paso>Tu base de datos</p>
+            <p class="nodo nodo--fin" data-paso>Aviso para ti</p>
+          </div>
+          <div class="cara__pie">
+            <p class="cara__entrega">Software y aplicaciones a medida, cuando ninguna herramienta del mercado hace lo que tu negocio necesita.</p>
+            <a class="boton boton--qori" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20necesito%20algo%20a%20medida%20y%20quiero%20conversarlo" target="_blank" rel="noopener">Contarte mi idea</a>
+            <p class="cara__caso"><b>Detrás:</b> n8n, Claude Code, Python, VPS propio. La herramienta se elige después del problema.</p>
+          </div>
+        </div>
       </article>
 
     </div>
+
+    <!-- La chakana: dos caras de la misma pieza. Gira con el scroll. -->
+    <div class="giro__chakana" aria-hidden="true">
+      <div class="giro__pieza">
+        <img class="giro__lado giro__lado--frente" src="assets/img/giro/08-chakana.webp" alt="" width="900" height="900">
+        <img class="giro__lado giro__lado--reverso" src="assets/img/giro/09-chakana-reverso.webp" alt="" width="900" height="900" loading="lazy">
+      </div>
+    </div>
+
+    <p class="giro__guia dato" aria-hidden="true">Baja para girarla</p>
   </div>
 </section>
 
@@ -527,7 +627,7 @@
 <!-- GSAP 3.15 (gratis, incluidos los plugins). Si no carga, main.js hace todo solo. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=4" defer></script>
-<script src="assets/js/movimiento.js?v=2" defer></script>
+<script src="assets/js/main.js?v=5" defer></script>
+<script src="assets/js/movimiento.js?v=3" defer></script>
 </body>
 </html>
