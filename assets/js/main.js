@@ -764,7 +764,7 @@
       case 'info':
         datos.interes = datos.interes || 'conocer más de Yachai';
         decir([
-          'Yachai es una empresa de automatización e inteligencia artificial nacida en Cusco.',
+          'Yachai es una agencia de inteligencia artificial y marketing nacida en Cusco. Hacemos asesorías en IA.',
           'Construimos bots que atienden, bases de datos con tus clientes, webs, agentes que trabajan solos y software a medida. Todo queda a tu nombre.',
           'Tres años automatizando negocios y más de cinco en marketing.'
         ], function () {
@@ -799,16 +799,16 @@
       case 'landing':   // la página del QR: el gancho va primero
         datos.interes = 'los ' + DIAS + ' días de asesoría gratis';
         decir([
-          (DATOS.asesoria.regalo ? DATOS.asesoria.regalo + ' ' + (DATOS.asesoria.regaloDetalle || '') + ': ' : '') + DIAS + ' días de asesoría y tu web, gratis todo ' + MES + '.' + (DATOS.cupos ? ' Son solo ' + DATOS.cupos + ' cupos.' : ''),
+          (DATOS.asesoria.regalo ? DATOS.asesoria.regalo + ': ' : '') + (DATOS.asesoria.regaloExplica || DIAS + ' días de asesoría y tu web, gratis todo ' + MES) + '.' + (DATOS.cupos ? ' Son solo ' + DATOS.cupos + ' cupos.' : ''),
           'Para empezar, ¿qué negocio tienes?'
         ], function () { ofrecer(RUBROS.map(function (r) { return [r[1], 'es:' + r[0]]; })); });
         break;
       case 'web':
-        datos.interes = 'una web para mi negocio';
+        datos.interes = 'mi web gratis de ' + MES;
         decir([
-          'Hacemos webs propias: tu dominio, tu servidor y un diseño pensado para tu negocio.',
-          'Si quieres, descríbeme cómo la imaginas y te mando una imagen de cómo quedaría.'
-        ], function () { ofrecer([['Describir mi web', '@describe'], ['Dejar mis datos', 'datos'], ['Volver al inicio', 'inicio']]); });
+          'Todo ' + MES + ' te regalamos el diseño y la construcción de tu web: me pasas una web que te guste como referencia y armamos la tuya.',
+          'Solo pagas tu servidor y tu dominio, a tu nombre.'
+        ], function () { ofrecer([['La quiero', 'datos'], ['Describir mi web', '@describe'], ['Volver al inicio', 'inicio']]); });
         break;
       case 'ia':
         datos.interes = 'clases de IA';

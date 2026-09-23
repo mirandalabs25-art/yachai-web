@@ -987,7 +987,7 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
   display:flex;align-items:flex-end;gap:8px;
 }
 .regalo__caja{
-  display:block;width:62px;height:62px;transform-origin:50% 100%;
+  display:block;width:48px;height:48px;transform-origin:50% 100%;
   filter:drop-shadow(0 6px 14px rgba(245,197,24,.45));
   animation:regalo-salta 1.9s cubic-bezier(.3,.7,.4,1) infinite;
 }
@@ -998,11 +998,11 @@ textarea.chat__campo{resize:vertical;min-height:120px;line-height:1.5}
 .regalo__cinta{fill:#000;opacity:.85}
 .regalo__sombra{fill:rgba(0,0,0,.25)}
 .regalo__texto{
-  display:grid;margin-bottom:4px;padding:6px 10px 7px;
+  display:grid;margin-bottom:2px;padding:4px 8px 5px;
   background:var(--negro);border:1px solid var(--qori);
   font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;line-height:1.3;color:var(--hueso);
 }
-.regalo__texto b{font-family:var(--display);font-size:1.15rem;letter-spacing:-.01em;line-height:1.05;color:var(--qori);font-weight:800}
+.regalo__texto b{font-family:var(--display);font-size:.98rem;letter-spacing:-.01em;line-height:1.05;color:var(--qori);font-weight:800}
 .regalo:hover .regalo__texto,.regalo:focus-visible .regalo__texto{background:var(--qori);color:var(--negro)}
 .regalo:hover .regalo__texto b,.regalo:focus-visible .regalo__texto b{color:var(--negro)}
 .regalo:focus-visible{outline:2px solid var(--hueso);outline-offset:4px}
@@ -1469,3 +1469,17 @@ a.tarjeta:hover .tarjeta__img img,a.tarjeta:focus-visible .tarjeta__img img{tran
 
 .insignias--chicas{margin-top:10px;gap:6px}
 .insignias--chicas li{padding:6px 9px;font-size:10px}
+
+/* --- v24: la marca arriba del título, el regalo junto a los botones, y lo
+   destacado del inicio (asesoría en IA, aprender IA, web gratis) --------- */
+.hero__marca{margin:0 0 16px}
+.hero__regalo{
+  display:inline-block;margin-top:16px;
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--qori);
+  border-bottom:1px solid var(--qori);padding-bottom:3px;
+}
+.hero__regalo:hover,.hero__regalo:focus-visible{color:var(--hueso);border-color:var(--hueso)}
+.landing__explica{color:var(--qori);font-weight:700}
+.tarjeta--destacada .tarjeta__titulo{font-size:1.45rem}
+.tarjeta--destacada .tarjeta__dato{color:var(--negro);background:var(--qori);align-self:flex-start;padding:3px 7px}
+.tarjeta__img img{object-position:center 22%}

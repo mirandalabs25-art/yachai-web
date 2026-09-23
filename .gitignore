@@ -1,2 +1,5 @@
 # Videos crudos de Kling: pesan mucho. Van comprimidos en assets/video/.
 produccion/*.mp4
+
+# Imágenes originales (ChatGPT, fotos): pesan. El constructor las convierte a assets/img/paginas/.
+produccion/imagenes/

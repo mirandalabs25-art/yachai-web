@@ -2,14 +2,19 @@
 window.YACHAI_DATOS = {
  "whatsapp": "51969322677",
  "cupos": 10,
+ "marca": {
+  "que": "Agencia de inteligencia artificial y marketing",
+  "corto": "Agencia de IA y marketing",
+  "enfasis": "Asesorías en inteligencia artificial"
+ },
  "asesoria": {
   "regalo": "Te regalamos US$1,000",
-  "regaloDetalle": "en asesoría para tu negocio",
+  "regaloExplica": "15 días de asesoría en IA y tu web, gratis todo octubre",
   "precioTexto": "US$1,000",
   "dias": 15,
   "mes": "octubre",
   "despues": "Desde noviembre, US$1,000",
-  "texto": "15 días de asesoría: entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos. Después lo haces conmigo o con quien quieras.",
+  "texto": "15 días de asesoría en inteligencia artificial: entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos. Después lo haces conmigo o con quien quieras.",
   "pagina": "asesoria-gratis.html"
  },
  "servicios": {
@@ -32,7 +37,7 @@ window.YACHAI_DATOS = {
    "url": "asistentes-automaticos.html"
   },
   "04": {
-   "nombre": "Web propia",
+   "nombre": "Webs profesionales",
    "dolor": "No existo en internet",
    "entrega": "Una web a tu nombre, con tu dominio, rápida en el celular y con los pedidos llegando directo a tu WhatsApp.",
    "url": "web-propia.html"
@@ -177,7 +182,11 @@ window.YACHAI_DATOS = {
   "asistentes-automaticos": 750,
   "web-propia": 480,
   "publicaciones-automaticas": 1250,
+  "anuncios-meta-ads": 300,
+  "videos-con-ia": 750,
   "transcripcion-de-audios": 30,
+  "ia-con-tus-documentos": 2500,
+  "aplicaciones-web": 2500,
   "software-a-medida": 2500,
   "clases-de-ia": 300,
   "seguridad": null

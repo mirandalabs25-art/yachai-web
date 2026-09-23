@@ -190,6 +190,21 @@ ${S.GRUPOS.map((g) => `        <div class="submenu__grupo">
       <p class="submenu__pie"><a href="servicios.html"${actual('servicios.html')}>Todos los servicios →</a><a href="precios.html">Precios →</a></p>
     </div>`;
   }
+  if (id === 'aprende') {
+    return `<div class="submenu" id="sub-aprende">
+      <div class="submenu__grid submenu__grid--rubros">
+        <div class="submenu__grupo submenu__grupo--ancho">
+          <p class="submenu__titulo">Aprende inteligencia artificial</p>
+          <ul role="list">${enlace('clases-de-ia.html', 'Clases de IA', 'Claude, ChatGPT y Gemini aplicados a tu trabajo, para ti o tu equipo')}${enlace('asesoria-en-ia.html', 'Asesoría en IA y marketing', 'Qué automatizar y por dónde empezar, gratis en octubre')}</ul>
+        </div>
+        <div class="submenu__grupo">
+          <p class="submenu__titulo">Para leer</p>
+          <ul role="list">${enlace('aprende.html', 'Artículos', 'Notas cortas para dueños de negocio')}</ul>
+        </div>
+      </div>
+      <p class="submenu__pie"><a href="clases-de-ia.html">Quiero aprender IA →</a><a href="aprende.html">Todos los artículos →</a></p>
+    </div>`;
+  }
   return `<div class="submenu" id="sub-soluciones">
       <div class="submenu__grid submenu__grid--rubros">
         <div class="submenu__grupo submenu__grupo--ancho">
@@ -221,7 +236,11 @@ function cabecera(seccion, archivo) {
   return `<header class="cabecera">
 <div class="anuncio" aria-hidden="true">
   <div class="anuncio__pista">
-    <span>${esc(S.ASESORIA.regalo)} en asesoría</span><span>—</span>
+    <span>${esc(S.ASESORIA.regalo)}</span><span>—</span>
+    <span>${esc(S.MARCA.corto)}</span><span>—</span>
+    <span>${esc(S.MARCA.enfasis)}</span><span>—</span>
+    <span>Aprende IA</span><span>—</span>
+    <span>Tu web gratis en ${esc(S.ASESORIA.mes)}</span><span>—</span>
     <span>Solo ${S.CUPOS} cupos en ${esc(S.ASESORIA.mes)}</span><span>—</span>
     <span>Cusco · Perú</span><span>—</span>
     <span>Bots y agentes</span><span>—</span>
@@ -239,11 +258,11 @@ function cabecera(seccion, archivo) {
 
   <ul class="nav__links" id="nav-links" role="list">
 ${items}
-    <li class="nav__item nav__item--cta"><a class="boton boton--qori" href="${S.ASESORIA.pagina}">${esc(S.ASESORIA.titulo)}</a></li>
+    <li class="nav__item nav__item--cta"><a class="boton boton--qori" href="${S.ASESORIA.pagina}">${esc(S.ASESORIA.regalo)}</a></li>
   </ul>
 
   <div class="nav__derecha">
-    <a class="boton boton--qori nav__cta" href="${S.ASESORIA.pagina}"${archivo === S.ASESORIA.pagina ? ' aria-current="page"' : ''}>${esc(S.ASESORIA.corto)}</a>
+    <a class="boton boton--qori nav__cta" href="${S.ASESORIA.pagina}"${archivo === S.ASESORIA.pagina ? ' aria-current="page"' : ''}>${esc(S.ASESORIA.regalo)}</a>
     <button type="button" class="nav__menu" aria-expanded="false" aria-controls="nav-links"><span class="nav__hamburguesa" aria-hidden="true"><i></i><i></i></span><span class="nav__menu-texto">Menú</span></button>
   </div>
 </nav>
@@ -257,7 +276,11 @@ function cabeceraMinima() {
   return `<header class="cabecera">
 <div class="anuncio" aria-hidden="true">
   <div class="anuncio__pista">
-    <span>${esc(S.ASESORIA.regalo)} en asesoría</span><span>—</span>
+    <span>${esc(S.ASESORIA.regalo)}</span><span>—</span>
+    <span>${esc(S.MARCA.corto)}</span><span>—</span>
+    <span>${esc(S.MARCA.enfasis)}</span><span>—</span>
+    <span>Aprende IA</span><span>—</span>
+    <span>Tu web gratis en ${esc(S.ASESORIA.mes)}</span><span>—</span>
     <span>${esc(S.ASESORIA.titulo)}</span><span>—</span>
     <span>Solo ${S.CUPOS} cupos en ${esc(S.ASESORIA.mes)}</span><span>—</span>
     <span>${esc(S.ASESORIA.despues)}</span><span>—</span>
@@ -324,7 +347,7 @@ ${S.RUBROS.map((r) => `        <li><a href="${r.slug}.html">${esc(r.nombre)}</a>
 
   <div class="pie__base">
     <span>© <span id="anio">2026</span> Yachai · Cusco, Perú · ${S.RUC ? 'RUC ' + esc(S.RUC) : '<!-- REVISAR: RUC de 11 dígitos -->[RUC por confirmar]'}</span>
-    <span>Automatización · IA aplicada · Seguridad</span>
+    <span>${esc(S.MARCA.que)} · ${esc(S.MARCA.enfasis)}</span>
   </div>
 </footer>`;
 }
@@ -342,9 +365,9 @@ function accesos(conChat, conRegalo = false) {
 <!-- REGALO: salta en el inicio y lleva a la asesoría gratis (pedido del
      usuario, 2026-09-23: "un regalito que esté saltando"). Animación en CSS;
      con "reducir movimiento", queda quieto. -->
-<a class="regalo" href="${S.ASESORIA.pagina}" aria-label="${esc(S.ASESORIA.regalo)} ${esc(S.ASESORIA.regaloDetalle)}: ${esc(S.ASESORIA.titulo)} todo ${esc(S.ASESORIA.mes)}">
+<a class="regalo" href="${S.ASESORIA.pagina}" aria-label="${esc(S.ASESORIA.regalo)}: ${esc(S.ASESORIA.regaloExplica)}">
   <span class="regalo__caja" aria-hidden="true"><svg viewBox="0 0 64 64"><path class="regalo__lazo" d="M32 19c-3-9-15-12-15-4 0 5 8 6 15 4zm0 0c3-9 15-12 15-4 0 5-8 6-15 4z"/><rect class="regalo__tapa" x="9" y="19" width="46" height="12" rx="2"/><rect class="regalo__cuerpo" x="12" y="31" width="40" height="26" rx="2"/><rect class="regalo__cinta" x="28.5" y="19" width="7" height="38"/><rect class="regalo__sombra" x="12" y="31" width="40" height="2.5"/></svg></span>
-  <span class="regalo__texto"><small>Te regalamos</small><b>${esc(S.ASESORIA.precioTexto)}</b><small>en asesoría</small></span>
+  <span class="regalo__texto"><small>Te regalamos</small><b>${esc(S.ASESORIA.precioTexto)}</b></span>
 </a>
 ` : '';
   return `${regalo}
@@ -416,6 +439,7 @@ function bandaCta(texto, boton, href) {
 }
 
 function precioTexto(s) {
+  if (s.precio && s.precio.texto) return s.precio.texto;
   if (!s.precio || s.precio.desde == null) return 'A cotizar';
   return 'Desde ' + soles(s.precio.desde) + (s.precio.unidad ? ' ' + s.precio.unidad : '');
 }
@@ -426,6 +450,39 @@ function mini(num) {
   const c = num ? cara(num) : null;
   return c ? c.img.replace('assets/img/giro/', 'assets/img/giro/mini/') : null;
 }
+const DIR_PAGINAS = path.join(RAIZ, 'assets', 'img', 'paginas');
+function imagenPagina(slug) {
+  const p = 'assets/img/paginas/' + slug + '.webp';
+  return fs.existsSync(path.join(RAIZ, p)) ? p : null;
+}
+function miniPagina(slug) {
+  const p = 'assets/img/paginas/mini/' + slug + '.webp';
+  return fs.existsSync(path.join(RAIZ, p)) ? p : null;
+}
+function prepararImagenes() {
+  const origen = path.join(RAIZ, 'produccion', 'imagenes');
+  if (!fs.existsSync(origen)) return [];
+  const hechas = [];
+  fs.mkdirSync(path.join(DIR_PAGINAS, 'mini'), { recursive: true });
+  for (const archivo of fs.readdirSync(origen)) {
+    const m = archivo.match(/^([a-z0-9-]+)\.(png|jpe?g|webp)$/i);
+    if (!m) continue;
+    const fuente = path.join(origen, archivo);
+    const grande = path.join(DIR_PAGINAS, m[1] + '.webp');
+    const chica = path.join(DIR_PAGINAS, 'mini', m[1] + '.webp');
+    if (fs.existsSync(grande) && fs.statSync(grande).mtimeMs >= fs.statSync(fuente).mtimeMs) continue;
+    try {
+      const { execFileSync } = require('child_process');
+      execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', fuente, '-vf', "scale='min(1024,iw)':-2", '-quality', '78', grande]);
+      execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', fuente, '-vf', 'scale=640:400:force_original_aspect_ratio=increase,crop=640:400', '-quality', '72', chica]);
+      hechas.push(m[1]);
+    } catch (e) {
+      console.warn('  ⚠ no se pudo convertir ' + archivo + ' (¿está ffmpeg?): ' + String(e.message).split('\n')[0]);
+    }
+  }
+  return hechas;
+}
+
 function tarjetaImg(src) {
   return src
     ? `<span class="tarjeta__img"><img src="${src}" alt="" loading="lazy" decoding="async" width="640" height="400"></span>`
@@ -434,8 +491,8 @@ function tarjetaImg(src) {
 
 function tarjetaServicio(s, conPrecio = true) {
   return `<li><a class="tarjeta tarjeta--img revelar" href="${s.slug}.html">
-      ${tarjetaImg(mini(s.cara))}
-      <span class="tarjeta__dato">${s.cara ? 'Servicio · ' + s.cara : 'Servicio'}</span>
+      ${tarjetaImg(mini(s.cara) || mini(s.mini) || miniPagina(s.slug) || s.imagen || null)}
+      <span class="tarjeta__dato">${s.destacado ? 'Gratis en ' + esc(S.ASESORIA.mes) : 'Servicio'}</span>
       <b class="tarjeta__titulo">${esc(s.nombre)}</b>
       <span class="tarjeta__texto">${esc(s.entrega)}</span>
       ${conPrecio ? `<span class="tarjeta__precio">${esc(precioTexto(s))}</span>` : ''}
@@ -543,8 +600,19 @@ function paginaServicio(s) {
       ${video}
       ${c.demo}
     </div>`;
+  } else if (s.video) {
+    medio = `<div class="servicio__medio">
+      <img src="${s.poster}" alt="" width="1024" height="1536" decoding="async">
+      <video class="servicio__video" src="${s.video}" poster="${s.poster}" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+      <p class="rubro__nota"><span>Hecho con IA</span>Este video es una de las escenas de esta misma web.</p>
+    </div>`;
+  } else if (imagenPagina(s.slug) || s.imagen) {
+    medio = `<div class="servicio__medio">
+      <img src="${imagenPagina(s.slug) || s.imagen}" alt="" width="1024" height="1536" decoding="async" style="object-position:center 20%">
+      ${s.demo || s.slug === 'clases-de-ia' || s.slug === 'seguridad' ? demoPropia(s.demo || s.slug) : ''}
+    </div>`;
   } else {
-    medio = `<div class="servicio__medio servicio__medio--patron">${demoPropia(s.slug)}</div>`;
+    medio = `<div class="servicio__medio servicio__medio--patron">${demoPropia(s.demo || s.slug)}</div>`;
   }
 
   const rubros = s.rubros.map((k) => porClave[k]).filter(Boolean);
@@ -607,9 +675,9 @@ ${rubros.map((r) => `    <li><a class="chip" href="${r.slug}.html">${esc(r.nombr
     <p class="pcabeza__bajada">${esc(s.entrega)}</p>
     ${estadoHtml(s.estado)}
     ${s.promo ? `<a class="promo" href="${S.ASESORIA.pagina}"><b>Solo en ${esc(S.ASESORIA.mes)}:</b> tu web gratis con la asesoría. Solo pagas servidor y dominio. Ver cómo →</a>` : ''}
-    <p class="precio-chip">${s.precio.desde == null ? 'Precio: <b>a cotizar</b>' : `Desde <b>${soles(s.precio.desde)}</b>${s.precio.unidad ? ' ' + esc(s.precio.unidad) : ''}`}</p>
+    <p class="precio-chip">${s.precio.texto ? `<b>${esc(s.precio.texto)}</b>` : s.precio.desde == null ? 'Precio: <b>a cotizar</b>' : `Desde <b>${soles(s.precio.desde)}</b>${s.precio.unidad ? ' ' + esc(s.precio.unidad) : ''}`}</p>
     <div class="acciones">
-      <a class="boton boton--qori" href="${S.wa(s.mensaje)}" ${EXTERNO}>${esc(s.cta)}</a>
+      <a class="boton boton--qori" href="${s.ctaHref || S.wa(s.mensaje)}"${s.ctaHref ? '' : ' ' + EXTERNO}>${esc(s.cta)}</a>
       <button type="button" class="boton" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">Preguntarle al asistente</button>
     </div>
   </div>
@@ -630,7 +698,7 @@ ${otros.map((x) => '    ' + tarjetaServicio(x)).join('\n')}
   PAGINAS[s.slug + '.html'] = pagina({
     archivo: s.slug + '.html', seccion: 'servicios.html',
     titulo: `${s.nombre} — Yachai · Cusco`,
-    descripcion: `${s.entrega} ${precioTexto(s)}. Yachai, automatización e IA desde Cusco.`,
+    descripcion: `${s.entrega} ${precioTexto(s)}. Yachai, ${S.MARCA.que.toLowerCase()} en Cusco.`,
     origen: s.nombre,
     migas: [['Servicios', 'servicios.html'], [s.nombre]],
     cuerpo,
@@ -639,6 +707,32 @@ ${otros.map((x) => '    ' + tarjetaServicio(x)).join('\n')}
 
 // Demostraciones escritas acá para los servicios que no tienen escena.
 function demoPropia(slug) {
+  if (slug === 'reporte') {
+    return `<div class="demo demo--ficha demo--animada" aria-label="Ejemplo de reporte semanal de anuncios">
+        <p class="demo__etiqueta"><span>Reporte · semana 2</span><span>Demostración</span></p>
+        <p class="fila" data-paso><span>Invertido en Meta</span><b>S/150</b></p>
+        <p class="fila" data-paso><span>Mensajes a WhatsApp</span><b>42</b></p>
+        <p class="fila" data-paso><span>Costo por mensaje</span><b>S/3.57</b></p>
+        <p class="fila fila--nota" data-paso><span>Qué cambió</span><b>Se pausó el anuncio que no traía mensajes</b></p>
+      </div>`;
+  }
+  if (slug === 'documentos') {
+    return `<div class="demo demo--chat demo--animada" aria-label="Ejemplo de un asistente que responde con documentos">
+        <p class="demo__etiqueta"><span>Asistente · tus documentos</span><span>Demostración</span></p>
+        <p class="burbuja burbuja--cliente" data-paso>¿Cuántos días de anticipación pide el contrato para renovar?</p>
+        <p class="escribiendo" data-paso data-fugaz aria-hidden="true"><i></i><i></i><i></i></p>
+        <p class="burbuja burbuja--bot" data-paso>30 días antes del vencimiento, por escrito.<small>Fuente: contrato-local.pdf, cláusula 8</small></p>
+      </div>`;
+  }
+  if (slug === 'panel') {
+    return `<div class="demo demo--ficha demo--animada" aria-label="Ejemplo de un panel de reservas">
+        <p class="demo__etiqueta"><span>Panel · reservas de hoy</span><span>Demostración</span></p>
+        <p class="fila" data-paso><span>10:00</span><b>Mesa 4 · 3 personas</b></p>
+        <p class="fila" data-paso><span>13:30</span><b>Mesa 2 · 2 personas</b></p>
+        <p class="fila" data-paso><span>19:00</span><b>Mesa 6 · 5 personas</b></p>
+        <p class="fila fila--nota" data-paso><span>Aviso</span><b>Recordatorio enviado a las 3 reservas</b></p>
+      </div>`;
+  }
   if (slug === 'clases-de-ia') {
     return `<div class="demo demo--chat demo--animada" aria-label="Ejemplo de una tarea resuelta en clase">
         <p class="demo__etiqueta"><span>Clase · tu tarea real</span><span>Demostración</span></p>
@@ -694,7 +788,7 @@ function paginaRubro(r) {
   const ideas = IDEAS.filter((i) => i.rubros.includes(r.clave));
   const casos = CASOS.filter((c) => c.rubro === r.clave);
   let n = 0;
-  const escena = r.escena ? cara(r.escena) : null;
+  const escena = imagenPagina(r.slug) ? { img: imagenPagina(r.slug) } : (r.escena ? cara(r.escena) : null);
   const cuerpo = `<section class="servicio servicio--rubro">
   <div class="servicio__texto">
     <p class="dato dato--qori">Soluciones · Cusco</p>
@@ -756,7 +850,7 @@ ${bandaCta(`Primero conversamos. ${S.ASESORIA.titulo} por lanzamiento.`, 'Conver
   PAGINAS[r.slug + '.html'] = pagina({
     archivo: r.slug + '.html', seccion: 'soluciones.html',
     titulo: `${r.nombre} — Automatización en Cusco · Yachai`,
-    descripcion: `${r.bajada} Yachai, automatización e IA desde Cusco.`,
+    descripcion: `${r.bajada} Yachai, ${S.MARCA.que.toLowerCase()} en Cusco.`,
     origen: r.nombre,
     migas: [['Soluciones', 'soluciones.html'], [r.nombre]],
     cuerpo,
@@ -779,7 +873,7 @@ function paginaSoluciones() {
 <section class="seccion">
   ${cab(1, 'Por tipo de negocio')}
   <ul class="tarjetas" role="list">
-${S.RUBROS.map((r, i) => `    <li><a class="tarjeta tarjeta--img revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}>${tarjetaImg(mini(r.escena))}<span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.» ${esc(r.dolores[0][1])}</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
+${S.RUBROS.map((r, i) => `    <li><a class="tarjeta tarjeta--img revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}>${tarjetaImg(miniPagina(r.slug) || mini(r.escena))}<span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.» ${esc(r.dolores[0][1])}</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
   </ul>
 </section>
 
@@ -830,8 +924,8 @@ ${S.TESTIMONIOS.map((t) => `    <li class="testimonio revelar">${t.foto ? `<img 
   const cuerpo = `<section class="landing">
   <div class="landing__texto">
     <p class="dato dato--qori">Todo ${esc(a.mes)} · Solo ${S.CUPOS} cupos · Cusco</p>
-    <h1 class="pcabeza__titulo">${esc(a.regalo)} <span class="landing__detalle">${esc(a.regaloDetalle)}</span></h1>
-    <p class="pcabeza__bajada">${a.dias} días de asesoría y tu web, gratis. Te digo qué automatizar, por dónde empezar y cuánto cuesta.</p>
+    <h1 class="pcabeza__titulo">${esc(a.regalo)}</h1>
+    <p class="pcabeza__bajada"><b class="landing__explica">${esc(a.regaloExplica)}.</b> Te digo qué automatizar, por dónde empezar y cuánto cuesta.</p>
     <ul class="landing__puntos" role="list">
       <li><b>Gratis todo ${esc(a.mes)}:</b> US$1,000 es el precio de la asesoría desde noviembre.</li>
       <li><b>Sin tarjeta y sin contrato:</b> el plan es tuyo, lo hagas conmigo o no.</li>
@@ -963,7 +1057,7 @@ ${S.SERVICIOS.map((s) => `    <li class="revelar"><span class="precios__nombre">
 </section>
 
 <section class="banda banda--cta">
-  <p class="banda__texto revelar">${esc(a.regalo)} ${esc(a.regaloDetalle)}. Solo ${S.CUPOS} cupos en ${esc(a.mes)}.</p>
+  <p class="banda__texto revelar">${esc(a.regalo)}. Solo ${S.CUPOS} cupos en ${esc(a.mes)}.</p>
   <p class="acciones revelar" data-retraso="80" style="margin:0">
     <a class="boton boton--negro" href="#asistente">Quiero mi regalo</a>
     <a class="boton boton--negro-borde" href="${a.whatsapp}" ${EXTERNO}>Escribir por WhatsApp</a>
@@ -972,8 +1066,8 @@ ${S.SERVICIOS.map((s) => `    <li class="revelar"><span class="precios__nombre">
 
   PAGINAS[a.pagina] = pagina({
     archivo: a.pagina, seccion: '', cabeceraMinima: true, chatEnPagina: true, chat: 'asesoria', clase: 'pagina--landing',
-    titulo: `${a.regalo} ${a.regaloDetalle} — Yachai · Cusco`,
-    descripcion: `${a.regalo} ${a.regaloDetalle}: ${a.dias} días de asesoría y tu web, gratis todo ${a.mes}. Solo ${S.CUPOS} cupos. Qué automatizar, por dónde empezar y cuánto cuesta.`,
+    titulo: `${a.regalo} — Yachai · Cusco`,
+    descripcion: `${a.regalo}: ${a.regaloExplica}. Solo ${S.CUPOS} cupos. Qué automatizar, por dónde empezar y cuánto cuesta.`,
     origen: 'Asesoría gratis',
     cuerpo,
   });
@@ -1176,7 +1270,7 @@ function paginaNosotros() {
     cuerpo: `<header class="pcabeza">
   <p class="dato dato--qori">Nosotros</p>
   <h1 class="pcabeza__titulo">Quién está detrás de Yachai</h1>
-  <p class="pcabeza__bajada">Una empresa de automatización e inteligencia artificial nacida en Cusco. Lo que construye queda a tu nombre, y si algo no lo sabe hacer todavía, te lo dice antes de empezar.</p>
+  <p class="pcabeza__bajada">Una agencia de inteligencia artificial y marketing nacida en Cusco. Hacemos asesorías en IA, automatización, webs y anuncios. Lo que construye queda a tu nombre, y si algo no lo sabe hacer todavía, te lo dice antes de empezar.</p>
 </header>
 
 ${renumerar(BLOQUE('quien'), 1).replace('<h2 class="titulo">Quién está detrás</h2>', '<h2 class="titulo">Rodrigo Miranda</h2>')}
@@ -1237,10 +1331,20 @@ ${bandaCta('Yachai · Cusco, Perú. Automatización, IA aplicada y seguridad.', 
    ========================================================================== */
 
 function inicioExplora() {
-  return `<section class="seccion" id="explora" aria-labelledby="explora-titulo">
-  ${cab(1, '¿Qué negocio tienes?', 'Elige el tuyo y mira qué automatizaría primero, con ejemplos de un día normal.', 'explora-titulo')}
+  const destacado = (href, img, dato, titulo, texto, ir, i) => `    <li><a class="tarjeta tarjeta--img tarjeta--destacada revelar" href="${href}"${i ? ` data-retraso="${i * 80}"` : ''}>${tarjetaImg(img)}<span class="tarjeta__dato">${dato}</span><b class="tarjeta__titulo">${titulo}</b><span class="tarjeta__texto">${texto}</span><span class="tarjeta__ir">${ir}</span></a></li>`;
+  return `<section class="seccion" id="empezar" aria-labelledby="empezar-titulo">
+  ${cab(1, 'Para empezar', `${esc(S.MARCA.que)}. ${esc(S.MARCA.enfasis)}, clases y webs.`, 'empezar-titulo')}
   <ul class="tarjetas" role="list">
-${S.RUBROS.map((r, i) => `    <li><a class="tarjeta tarjeta--img revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}>${tarjetaImg(mini(r.escena))}<span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
+${destacado('asesoria-en-ia.html', 'assets/img/rodrigo.jpg', 'Gratis en ' + esc(S.ASESORIA.mes), 'Asesoría en IA', 'Qué automatizar en tu negocio, por dónde empezar y cuánto cuesta. 15 días, conmigo.', 'La quiero →', 0)}
+${destacado('clases-de-ia.html', miniPagina('clases-de-ia') || mini('06'), 'Desde ' + soles(porSlug['clases-de-ia'].precio.desde), 'Aprende IA', 'Claude, ChatGPT y Gemini aplicados a tu trabajo, para ti o tu equipo.', 'Quiero aprender →', 1)}
+${destacado(S.ASESORIA.pagina, mini('04'), 'Gratis en ' + esc(S.ASESORIA.mes), 'Tu web, gratis', 'Me pasas una web que te guste y armamos la tuya. Solo pagas servidor y dominio.', 'La quiero →', 2)}
+  </ul>
+</section>
+
+<section class="seccion" id="explora" aria-labelledby="explora-titulo">
+  ${cab(2, '¿Qué negocio tienes?', 'Elige el tuyo y mira qué automatizaría primero, con ejemplos de un día normal.', 'explora-titulo')}
+  <ul class="tarjetas" role="list">
+${S.RUBROS.map((r, i) => `    <li><a class="tarjeta tarjeta--img revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}>${tarjetaImg(miniPagina(r.slug) || mini(r.escena))}<span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
     <li><a class="tarjeta revelar" href="soluciones.html#otros" data-retraso="160"><span class="tarjeta__dato">Turismo, academias, agencias…</span><b class="tarjeta__titulo">Otro negocio</b><span class="tarjeta__texto">Casi siempre hay algo que se puede automatizar.</span><span class="tarjeta__ir">Ver más →</span></a></li>
   </ul>
 
@@ -1255,7 +1359,7 @@ ${S.RUBROS.map((r, i) => `    <li><a class="tarjeta tarjeta--img revelar" href="
 // La banda amarilla después de las escenas: la oferta de entrada.
 function inicioBanda() {
   return `<section class="banda">
-  <p class="banda__texto revelar">${esc(S.ASESORIA.regalo)} ${esc(S.ASESORIA.regaloDetalle)}. Todo ${esc(S.ASESORIA.mes)}.</p>
+  <p class="banda__texto revelar">${esc(S.ASESORIA.regalo)}. Todo ${esc(S.ASESORIA.mes)}.</p>
   <p class="acciones revelar" data-retraso="80" style="margin:0">
     <a class="boton boton--negro" href="${S.ASESORIA.pagina}">La quiero</a>
   </p>
@@ -1264,7 +1368,7 @@ function inicioBanda() {
 
 function inicioCasos() {
   return `<section class="seccion" id="trabajos" aria-labelledby="trabajos-titulo">
-  ${cab(2, 'En qué estamos trabajando', 'Yachai nació en Cusco y empezó con negocios de aquí. Cada uno con un problema distinto y la misma raíz: <b>todo dependía de una sola persona.</b>', 'trabajos-titulo')}
+  ${cab(3, 'En qué estamos trabajando', 'Yachai nació en Cusco y empezó con negocios de aquí. Cada uno con un problema distinto y la misma raíz: <b>todo dependía de una sola persona.</b>', 'trabajos-titulo')}
   ${cifras()}
   <div class="trabajos">
 ${CASOS.map((c) => '    ' + casoTarjeta(c)).join('\n')}
@@ -1276,7 +1380,7 @@ ${CASOS.map((c) => '    ' + casoTarjeta(c)).join('\n')}
 function inicioAprende() {
   if (!ARTICULOS.length) return '';
   return `<section class="seccion" id="aprende" aria-labelledby="aprende-titulo">
-  ${cab(3, 'Aprende', 'Notas cortas para dueños de negocio. Salen de lo que estudio y aplico cada semana.', 'aprende-titulo')}
+  ${cab(4, 'Aprende', 'Notas cortas para dueños de negocio. Salen de lo que estudio y aplico cada semana.', 'aprende-titulo')}
   <ul class="tarjetas" role="list">
 ${ARTICULOS.slice(0, 3).map((a) => '    ' + tarjetaArticulo(a)).join('\n')}
   </ul>
@@ -1298,7 +1402,8 @@ function datosJs() {
   const d = {
     whatsapp: S.WA_NUMERO,
     cupos: S.CUPOS,
-    asesoria: { regalo: S.ASESORIA.regalo, regaloDetalle: S.ASESORIA.regaloDetalle, precioTexto: S.ASESORIA.precioTexto, dias: S.ASESORIA.dias, mes: S.ASESORIA.mes, despues: S.ASESORIA.despues, texto: S.ASESORIA.texto, pagina: S.ASESORIA.pagina },
+    marca: S.MARCA,
+    asesoria: { regalo: S.ASESORIA.regalo, regaloExplica: S.ASESORIA.regaloExplica, precioTexto: S.ASESORIA.precioTexto, dias: S.ASESORIA.dias, mes: S.ASESORIA.mes, despues: S.ASESORIA.despues, texto: S.ASESORIA.texto, pagina: S.ASESORIA.pagina },
     servicios: {},
     rubros: {},
     ideas: IDEAS.map((i) => ({ dolor: i.dolor.replace(/[«»]/g, '').replace(/\.\s*$/, ''), rubros: i.rubros })),
@@ -1338,6 +1443,8 @@ function revisar(archivos) {
    ========================================================================== */
 
 function construir() {
+  const nuevas = prepararImagenes();
+  if (nuevas.length) console.log('  imágenes nuevas: ' + nuevas.join(', '));
   // datos.js va primero: su huella entra en las versiones de las páginas.
   fs.writeFileSync(path.join(RAIZ, 'assets', 'js', 'datos.js'), datosJs());
   versionar();

@@ -15,6 +15,12 @@
      para ir mejorando"). Sin IGV.
    ========================================================================== */
 
+const MARCA = {
+  que: 'Agencia de inteligencia artificial y marketing',
+  corto: 'Agencia de IA y marketing',
+  enfasis: 'Asesorías en inteligencia artificial',
+};
+
 // REVISAR: cambiar al número nuevo de Yachai cuando exista el chip.
 const WA_NUMERO = '51969322677';
 const WA_VISIBLE = '+51 969 322 677';
@@ -34,9 +40,9 @@ const RUC = '10705854543';
 const ASESORIA = {
   precioTexto: 'US$1,000',
   dias: 15,
-  titulo: '15 días de asesoría gratis',
+  titulo: '15 días de asesoría en IA gratis',
   corto: 'Asesoría gratis',
-  texto: '15 días de asesoría: entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos. Después lo haces conmigo o con quien quieras.',
+  texto: '15 días de asesoría en inteligencia artificial: entiendo tu negocio, veo qué se puede automatizar y te entrego un plan con prioridades y costos. Después lo haces conmigo o con quien quieras.',
   vigencia: 'Del 1 al 31 de octubre de 2026.',
   mes: 'octubre',
   despues: 'Desde noviembre, US$1,000',
@@ -44,11 +50,13 @@ const ASESORIA = {
   // siempre con "en asesoría": sin eso se lee como plata regalada, y eso sí
   // sería engañoso. Vale porque US$1,000 es el precio desde noviembre.
   regalo: 'Te regalamos US$1,000',
-  regaloDetalle: 'en asesoría para tu negocio',
+  regaloDetalle: '',
+  // Lo que explica el regalo: va siempre al lado del titular.
+  regaloExplica: '15 días de asesoría en IA y tu web, gratis todo octubre',
   inicioISO: '2026-10-01T00:00:00-05:00',
   finISO: '2026-10-31T23:59:59-05:00',
   pagina: 'asesoria-gratis.html',
-  whatsapp: wa('Hola Rodrigo, quiero los 15 días de asesoría gratis para mi negocio'),
+  whatsapp: wa('Hola Rodrigo, quiero el regalo de octubre: la asesoría en IA y mi web gratis'),
 };
 
 // Lo que incluye el regalo (dictado 2026-09-23): la asesoría gratuita, una
@@ -88,6 +96,36 @@ const ESTADOS = {
    imagen, el video y la demostración, para no escribirlos dos veces.
    -------------------------------------------------------------------------- */
 const SERVICIOS = [
+  {
+    slug: 'asesoria-en-ia', cara: null, grupo: 'medida', destacado: true,
+    imagen: 'assets/img/rodrigo.jpg',
+    nombre: 'Asesoría en IA y marketing',
+    menu: 'Qué automatizar, qué anunciar y en qué orden',
+    h1: 'Asesoría en inteligencia artificial y marketing para tu negocio',
+    dolor: 'No sé por dónde empezar.',
+    entrega: 'Reviso tu negocio contigo y te entrego un plan por escrito: qué automatizar, qué anunciar y en qué orden, con lo que cuesta cada paso.',
+    precio: { texto: 'US$1,000 · gratis en octubre', nota: '15 días de asesoría. En octubre es gratis, con solo 10 cupos; desde noviembre cuesta US$1,000.' },
+    ctaHref: 'asesoria-gratis.html',
+    estado: ['listo', 'Lista para empezar en octubre, con 10 cupos. La doy yo, uno por uno.'],
+    incluye: [
+      ['Diagnóstico de tu negocio', 'Cómo atiendes, cómo vendes, qué repites y dónde se pierden clientes.'],
+      ['Plan por escrito', 'Qué hacer primero, en orden, y cuánto cuesta cada paso.'],
+      ['Marketing y anuncios', 'Qué contar, dónde y a quién, para que te encuentren los clientes correctos.'],
+      ['Acompañamiento', 'Lo que tu negocio necesita para crecer: contenido, ventas, bases de datos, automatización y seguridad.'],
+    ],
+    pasos: [
+      ['Conversamos', 'Me cuentas tu negocio y qué te quita el tiempo.'],
+      ['Reviso contigo', 'Por WhatsApp y videollamada, a tu ritmo.'],
+      ['Te entrego el plan', 'Por escrito. Lo haces conmigo o con quien quieras.'],
+    ],
+    rubros: ['hotel', 'restaurante', 'consultorio', 'oficina', 'tienda'],
+    faq: [
+      ['¿Cuánto dura?', '15 días. Al final te quedas con el plan por escrito.'],
+      ['¿De verdad es gratis?', 'En octubre sí, con 10 cupos. Desde noviembre cuesta US$1,000.'],
+    ],
+    mensaje: 'Hola Rodrigo, quiero la asesoría en IA gratis de octubre para mi negocio',
+    cta: 'Quiero mi asesoría',
+  },
   {
     slug: 'bot-de-whatsapp', cara: '01', grupo: 'atender',
     nombre: 'Bot de WhatsApp',
@@ -175,7 +213,7 @@ const SERVICIOS = [
   },
   {
     slug: 'web-propia', cara: '04', grupo: 'atender', promo: true,
-    nombre: 'Web propia',
+    nombre: 'Webs profesionales',
     menu: 'Tu web, tu dominio y tu servidor',
     h1: 'Tu web propia: que te encuentren cuando te buscan',
     dolor: 'No existo en internet.',
@@ -231,6 +269,64 @@ const SERVICIOS = [
     cta: 'Ordenar mis publicaciones',
   },
   {
+    slug: 'anuncios-meta-ads', cara: null, grupo: 'atender',
+    nombre: 'Anuncios en redes',
+    menu: 'Facebook e Instagram, con reporte claro',
+    h1: 'Anuncios en Facebook e Instagram que sabes si funcionan',
+    dolor: 'Invierto en anuncios y no sé si funcionan.',
+    entrega: 'Armo tus campañas en Meta, las ajusto cada semana y te llega un reporte simple: cuánto gastaste, cuántos mensajes llegaron y cuánto costó cada uno.',
+    precio: { desde: 300, unidad: 'al mes', nota: 'Gestión de campañas. Lo que se invierte en los anuncios lo pagas tú directo a Meta, desde tu cuenta.' },
+    estado: ['listo', 'Listo para trabajar. Más de cinco años en marketing.'],
+    demo: 'reporte',
+    incluye: [
+      ['Anuncios que llevan a WhatsApp', 'La persona toca el anuncio y te escribe. Así sabes qué anuncio trajo cada mensaje.'],
+      ['El público correcto', 'Gente de Cusco, turistas o el rubro que te sirve, no cualquiera.'],
+      ['Reporte en palabras simples', 'Cada semana: cuánto gastaste y qué conseguiste.'],
+      ['Tu cuenta, a tu nombre', 'Las campañas y los datos son tuyos, no de la agencia.'],
+    ],
+    pasos: [
+      ['Vemos tu presupuesto', 'Cuánto quieres invertir y qué quieres conseguir.'],
+      ['Armamos las campañas', 'Con tus fotos, tus precios y tu forma de hablar.'],
+      ['Cada semana, reporte y ajustes', 'Lo que funciona se queda; lo que no, se cambia.'],
+    ],
+    rubros: ['tienda', 'restaurante', 'hotel'],
+    faq: [
+      ['¿Cuánto tengo que invertir en anuncios?', 'Lo definimos juntos según tu negocio. Ese dinero va directo a Meta, desde tu cuenta, aparte de la gestión.'],
+      ['¿Y si todavía no tengo presupuesto?', 'Empieza por lo que no cuesta mantener: tu web, tu perfil de Google y responder rápido por WhatsApp.'],
+    ],
+    mensaje: 'Hola Rodrigo, quiero anuncios en Facebook e Instagram para mi negocio',
+    cta: 'Quiero anunciar',
+  },
+  {
+    slug: 'videos-con-ia', cara: null, grupo: 'atender',
+    video: 'assets/video/05-publicar.mp4', poster: 'assets/img/giro/05-publicar.webp', mini: '05',
+    nombre: 'Videos con IA',
+    menu: 'Videos para tus redes, sin rodaje',
+    h1: 'Videos para tu marca, hechos con inteligencia artificial',
+    dolor: 'No tengo videos para mis redes.',
+    entrega: 'Videos cortos para tus redes y tu web, hechos con inteligencia artificial a partir de tus productos y tu idea. Sin rodaje y sin actores.',
+    precio: { desde: 750, unidad: 'al mes', nota: 'Pack de videos cortos para redes. Un video puntual se cotiza aparte.' },
+    estado: ['vivo', 'Funcionando: los videos de las escenas de esta misma web se hicieron así.'],
+    incluye: [
+      ['Idea y guion', 'Qué mostrar y cómo contarlo en pocos segundos.'],
+      ['Imagen y movimiento con IA', 'Escenas que no necesitan cámara ni locación.'],
+      ['El formato de cada red', 'Vertical para reels y TikTok, horizontal para tu web.'],
+      ['Tus productos, tu estilo', 'Se parte de tus fotos reales, no de imágenes genéricas.'],
+    ],
+    pasos: [
+      ['Me cuentas qué quieres mostrar', 'Un producto, tu local, una promoción.'],
+      ['Armo guion e imágenes', 'Te muestro la idea antes de animarla.'],
+      ['Te entrego los videos', 'Listos para subir.'],
+    ],
+    rubros: ['tienda', 'restaurante', 'hotel'],
+    faq: [
+      ['¿Puedo usar mis propias fotos?', 'Sí, y es lo mejor: la IA parte de tus productos reales.'],
+      ['¿Sirve para anuncios?', 'Sí. Se pueden usar en tus campañas de Facebook e Instagram.'],
+    ],
+    mensaje: 'Hola Rodrigo, quiero videos con IA para mis redes',
+    cta: 'Quiero mis videos',
+  },
+  {
     slug: 'transcripcion-de-audios', cara: '06', grupo: 'ordenar',
     nombre: 'Transcripción de audios',
     menu: 'Reuniones y audios, convertidos en texto',
@@ -257,6 +353,64 @@ const SERVICIOS = [
     ],
     mensaje: 'Hola Rodrigo, quiero probar la transcripción de audios',
     cta: 'Transcribir mis audios',
+  },
+  {
+    slug: 'ia-con-tus-documentos', cara: null, grupo: 'ordenar',
+    nombre: 'IA con tus documentos',
+    menu: 'Un asistente que conoce tus archivos',
+    h1: 'Un asistente que responde con tus propios documentos',
+    dolor: 'La información está, pero nadie la encuentra.',
+    entrega: 'Tus documentos, catálogos o normas en una base de datos inteligente (Qdrant). Un asistente responde con lo que dicen, y te muestra de dónde lo sacó.',
+    precio: { desde: 2500, nota: 'Incluye preparar tus documentos. El uso de la IA se paga aparte, según cuánto se consulte.' },
+    estado: ['prepara', 'En preparación: lo estoy montando primero en mis propios sistemas, antes de ofrecerlo.'],
+    demo: 'documentos',
+    incluye: [
+      ['Tus documentos, ordenados', 'Contratos, catálogos, manuales o normas, en una sola base.'],
+      ['Respuestas con la fuente', 'Cada respuesta dice de qué documento salió.'],
+      ['Solo lo que tú cargas', 'Si no está en tus documentos, responde que no lo sabe.'],
+      ['Privado', 'Tus archivos no se publican ni se usan para entrenar a nadie.'],
+    ],
+    pasos: [
+      ['Juntamos los documentos', 'Lo que tu equipo consulta todos los días.'],
+      ['Los cargamos a la base', 'Ordenados para que se encuentren por su significado.'],
+      ['Lo pruebas con preguntas reales', 'Y se ajusta hasta que responda bien.'],
+    ],
+    rubros: ['oficina', 'consultorio', 'hotel'],
+    faq: [
+      ['¿Qué es Qdrant?', 'Una base de datos que busca por significado, no por palabras exactas. Por eso encuentra la respuesta aunque la pregunta esté dicha de otra forma.'],
+      ['¿Puede inventar respuestas?', 'Se configura para responder solo con lo que está en tus documentos y decir que no sabe cuando no está. Igual conviene revisar lo importante.'],
+    ],
+    mensaje: 'Hola Rodrigo, quiero un asistente que responda con mis documentos',
+    cta: 'Quiero probarlo',
+  },
+  {
+    slug: 'aplicaciones-web', cara: null, grupo: 'medida',
+    nombre: 'Aplicaciones web',
+    menu: 'Reservas, paneles y sistemas en el navegador',
+    h1: 'Aplicaciones web a medida para tu negocio',
+    dolor: 'Necesito un sistema, no solo una página.',
+    entrega: 'Sistemas que se usan desde el navegador o el celular: reservas, pedidos, paneles para tu equipo o un portal para tus clientes. Sin instalar nada.',
+    precio: { desde: 2500, nota: 'Depende del alcance. Primero la parte más importante funcionando; después crece por partes.' },
+    estado: ['listo', 'Listo para construir. Esta misma web se arma sola desde notas, con un sistema propio.'],
+    demo: 'panel',
+    incluye: [
+      ['Funciona en el celular', 'Tu equipo y tus clientes la usan desde el navegador.'],
+      ['Usuarios y permisos', 'Cada uno ve y toca solo lo que le corresponde.'],
+      ['Conectada', 'Con WhatsApp, tu base de clientes y lo que ya uses.'],
+      ['A tu nombre', 'En tu servidor y con tu dominio.'],
+    ],
+    pasos: [
+      ['Definimos lo mínimo', 'La parte que más te sirve, primero.'],
+      ['La construyo por partes', 'Ves cada avance en tu celular.'],
+      ['Crece con tu negocio', 'Se suma lo que ya demostró que sirve.'],
+    ],
+    rubros: ['hotel', 'consultorio', 'oficina'],
+    faq: [
+      ['¿Es lo mismo que una app de celular?', 'Se usa igual desde el celular, pero sin pasar por las tiendas de apps ni instalar nada.'],
+      ['¿Quién la mantiene?', 'Queda documentada y a tu nombre. La puedo mantener yo o cualquier programador.'],
+    ],
+    mensaje: 'Hola Rodrigo, necesito una aplicación web para mi negocio',
+    cta: 'Contarte mi idea',
   },
   {
     slug: 'software-a-medida', cara: '07', grupo: 'medida',
@@ -478,9 +632,9 @@ const CIFRAS = [
 const MENU = [
   { texto: 'Servicios', sub: 'servicios', href: 'servicios.html' },
   { texto: 'Soluciones', sub: 'soluciones', href: 'soluciones.html' },
+  { texto: 'Aprende IA', sub: 'aprende', href: 'aprende.html' },
   { texto: 'Precios', href: 'precios.html' },
   { texto: 'Casos', href: 'casos.html' },
-  { texto: 'Aprende', href: 'aprende.html' },
   { texto: 'Nosotros', href: 'nosotros.html' },
   { texto: 'Contacto', href: 'contacto.html' },
 ];
@@ -497,6 +651,6 @@ const PROHIBIDAS = [
 ];
 
 module.exports = {
-  WA_NUMERO, WA_VISIBLE, wa, RUC, ASESORIA, REGALO, CUPOS, TESTIMONIOS, ESTADOS, SERVICIOS, GRUPOS, RUBROS,
+  MARCA, WA_NUMERO, WA_VISIBLE, wa, RUC, ASESORIA, REGALO, CUPOS, TESTIMONIOS, ESTADOS, SERVICIOS, GRUPOS, RUBROS,
   OTROS_RUBROS, CIFRAS, MENU, PROHIBIDAS,
 };
