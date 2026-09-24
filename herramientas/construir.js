@@ -335,7 +335,7 @@ function pie() {
         <!-- REVISAR: correo propio -->
         <li>[correo@yachai]</li>
       </ul>
-      <p class="parrafo pie__marca"><i>Yachay</i> es <b>conocimiento</b> en quechua. El isotipo son tres bloques que encajan en una Y. <b>Inteligencia andina para negocios reales.</b></p>
+      <p class="parrafo pie__marca"><i>Yachay</i> es <b>conocimiento</b> en quechua. El isotipo son tres bloques que encajan en una Y. <b>Inteligencia artificial y marketing aplicados para escalar tu negocio.</b></p>
     </div>
 
     <div>
