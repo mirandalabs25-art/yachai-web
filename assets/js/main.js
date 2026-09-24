@@ -1109,10 +1109,10 @@
     if (arrancado || !registro) return;
     arrancado = true;
     if (MODO === 'asesoria' && !despues) {
-      decir(['¡Hola! Soy Yachai, el puma de esta web. Soy un asistente automatizado.'], function () { ir('landing'); });
+      decir(['¡Hola! Soy Yachay, el puma de esta web. Soy un asistente automatizado.'], function () { ir('landing'); });
       return;
     }
-    decir(['¡Hola! Soy Yachai, el puma de esta web. Soy un asistente automatizado.', despues ? '' : 'Puedo ayudarte a explorar información y ordenar tu consulta. ¿Qué te gustaría saber?'].filter(Boolean), function () {
+    decir(['¡Hola! Soy Yachay, el puma de esta web. Soy un asistente automatizado.', despues ? '' : 'Puedo ayudarte a explorar información y ordenar tu consulta. ¿Qué te gustaría saber?'].filter(Boolean), function () {
       if (despues) despues(); else ofrecer(INICIO);
     });
   }
@@ -1176,7 +1176,7 @@
 
   /* --- El botón de contacto: uno solo, como el de WhatsApp ----------------
      Pedido del usuario (2026-09-23): "uno solo, no lo partas en tres". Al
-     tocarlo pregunta con quién hablar: el asistente Yachai (abre la ventana
+     tocarlo pregunta con quién hablar: el asistente Yachay (abre la ventana
      del chat) o Rodrigo directo por WhatsApp. Si el chat está abierto, el
      mismo botón lo cierra. */
   var contacto = document.querySelector('.contacto');

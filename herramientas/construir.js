@@ -375,7 +375,7 @@ ${S.RUBROS.map((r) => `        <li><a href="${r.slug}.html">${esc(r.nombre)}</a>
 </footer>`;
 }
 
-// Yachai, el puma (manual v1.0; el 2026-09-24 Rodrigo decidió que el puma se llama Yachai): acompaña y explica, en el botón
+// Yachay, el puma (manual v1.0; el 2026-09-24 Rodrigo decidió que el puma se llama YACHAY, con y griega, y la empresa YACHAI): acompaña y explica, en el botón
 // de contacto y en el globo del asistente. Es personaje, nunca logo, y el
 // canal dice que es un asistente automatizado. Recorte de cabeza y hombros
 // del PNG maestro (07-Puma), ilustración generada con IA.
@@ -387,7 +387,7 @@ const ICONO_CHAT = `<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5
 
 // Un solo botón de contacto (pedido del usuario, 2026-09-23: "uno solo, no lo
 // partas en tres… como un WhatsApp"). Al tocarlo pregunta con quién hablar:
-// el asistente Yachai (responde al instante) o Rodrigo, directo por WhatsApp.
+// el asistente Yachay (responde al instante) o Rodrigo, directo por WhatsApp.
 // En el inicio, además, el regalo que salta y lleva a la página del QR.
 function accesos(conChat, conRegalo = false) {
   const regalo = conRegalo ? `
@@ -403,18 +403,18 @@ function accesos(conChat, conRegalo = false) {
 <!-- CONTACTO: un solo botón flotante, como el de WhatsApp. -->
 <div class="contacto">
   <div class="contacto__globo" id="contacto-globo" role="dialog" aria-label="¿Con quién quieres hablar?" hidden>
-    <p class="contacto__cabeza"><span class="contacto__avatar">${PUMA_IMG}</span><span><b>Yachai</b><small>Asistente automatizado · en línea</small></span></p>
-    <p class="contacto__pregunta">¡Hola! Soy Yachai, el puma de esta web, un asistente automatizado. ¿Con quién quieres hablar?</p>
+    <p class="contacto__cabeza"><span class="contacto__avatar">${PUMA_IMG}</span><span><b>Yachay</b><small>Asistente automatizado · en línea</small></span></p>
+    <p class="contacto__pregunta">¡Hola! Soy Yachay, el puma de esta web, un asistente automatizado. ¿Con quién quieres hablar?</p>
     <button type="button" class="contacto__opcion" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">
       <span class="contacto__icono contacto__icono--yachai">${PUMA_IMG}</span>
-      <span><b>Con Yachai, nuestro asistente</b><small>Automatizado · responde al instante</small></span>
+      <span><b>Con Yachay, nuestro asistente</b><small>Automatizado · responde al instante</small></span>
     </button>
     <a class="contacto__opcion contacto__opcion--wa" href="${S.wa('Hola Rodrigo, vi la web de Yachai y quiero conversar')}" ${EXTERNO}>
       <span class="contacto__icono contacto__icono--wa" aria-hidden="true">${ICONO_CHAT}</span>
       <span><b>Con una persona: Rodrigo</b><small>Por WhatsApp · ${S.WA_VISIBLE}</small></span>
     </a>
   </div>
-  <button type="button" class="contacto__boton" aria-expanded="false" aria-controls="contacto-globo" aria-label="Hablar con Yachai o con Rodrigo">
+  <button type="button" class="contacto__boton" aria-expanded="false" aria-controls="contacto-globo" aria-label="Hablar con Yachay o con Rodrigo">
     ${PUMA_IMG}
     <span class="contacto__punto" aria-hidden="true"></span>
   </button>
@@ -422,7 +422,7 @@ function accesos(conChat, conRegalo = false) {
 
 <!-- Ventana flotante del asistente. En el inicio, el chat de la sección se
      muda acá al abrirla y vuelve al cerrarla; en las demás páginas vive acá. -->
-<div class="panel-asistente" id="panel-asistente" role="dialog" aria-label="Yachai, asistente automatizado" hidden>
+<div class="panel-asistente" id="panel-asistente" role="dialog" aria-label="Yachay, asistente automatizado" hidden>
   <div class="panel-asistente__barra"><button type="button" class="panel-asistente__cerrar">Cerrar ✕</button></div>
   <div class="panel-asistente__cuerpo">${conChat ? '\n' + CHAT + '\n' : ''}</div>
 </div>`;
@@ -549,8 +549,8 @@ function fotoBanda(slug, alt, texto) {
 }
 function yachaiTrabajando() {
   return `<figure class="landing__yachai">
-      <img src="assets/img/marca/yachai-trabajando.webp" alt="Yachai, el puma de la marca, trabajando con una portátil" width="1100" height="619" loading="lazy" decoding="async">
-      <figcaption><b>Yachai</b> te atiende al instante. Es un asistente automatizado. Ilustración generada con IA.</figcaption>
+      <img src="assets/img/marca/yachai-trabajando.webp" alt="Yachay, el puma de la marca, trabajando con una portátil" width="1100" height="619" loading="lazy" decoding="async">
+      <figcaption><b>Yachay</b> te atiende al instante. Es un asistente automatizado. Ilustración generada con IA.</figcaption>
     </figure>`;
 }
 
@@ -1116,7 +1116,7 @@ ${fotoBanda('mundo-resultados', 'Escena ilustrativa: dos personas conversan con 
     </div>
     <div class="quien__texto revelar" data-retraso="100">
       <p class="parrafo"><b>Rodrigo Vicente Miranda Vargas</b>, fundador de Yachai. Tres años automatizando negocios y más de cinco en marketing, trabajando con CRM.</p>
-      <p class="parrafo">La asesoría la doy yo. Yachai, nuestro asistente, te atiende al instante, y después sigues conmigo por WhatsApp.</p>
+      <p class="parrafo">La asesoría la doy yo. Yachay, nuestro asistente, te atiende al instante, y después sigues conmigo por WhatsApp.</p>
       <p class="dato" style="margin-top:18px">Con qué trabajo</p>
       <ul class="insignias insignias--chicas" role="list"><li>n8n</li><li>Claude Code</li><li>ChatGPT</li><li>Gemini</li><li>Qdrant</li><li>Baserow</li><li>Notion</li><li>Obsidian</li><li>WhatsApp Business</li><li>Meta Ads</li><li>Go High Level</li><li>HubSpot</li><li>Python</li></ul>
     </div>
@@ -1381,7 +1381,7 @@ ${fotoBanda('mundo-cusco', 'Escena ilustrativa: una persona trabaja en un interi
   ${cab(2, 'Por qué Yachai')}
   <div class="quien">
     <div class="quien__texto revelar">
-      <p class="parrafo"><b><i>Yachay</i> es conocimiento en quechua.</b> El nombre dice de dónde viene la marca sin tener que explicarlo.</p>
+      <p class="parrafo"><b><i>Yachay</i> es conocimiento en quechua.</b> El nombre dice de dónde viene la marca sin tener que explicarlo. La empresa se llama <b>Yachai</b>; nuestro puma conserva la palabra quechua y se llama <b>Yachay</b>.</p>
       <p class="parrafo">El isotipo son <b>tres bloques que encajan formando una Y</b>: estructura, conexión y acción. <b>Entender. Conectar. Poner en acción.</b> Es plano, sin brillo ni relieve, y funciona igual en negro, dorado o a una sola tinta.</p>
     </div>
     <figure class="encaje revelar" data-retraso="60">
@@ -1400,10 +1400,10 @@ ${fotoBanda('mundo-cusco', 'Escena ilustrativa: una persona trabaja en un interi
   </div>
 
   <div class="puma-bloque revelar">
-    <figure class="puma-bloque__imagen"><img src="assets/img/marca/yachai-senalando.webp" alt="Yachai, el puma de la marca: pelaje cálido, sudadera negra de cierre dorado, señalando hacia un lado en gesto de explicar con calma" width="720" height="900" loading="lazy" decoding="async"></figure>
+    <figure class="puma-bloque__imagen"><img src="assets/img/marca/yachai-senalando.webp" alt="Yachay, el puma de la marca: pelaje cálido, sudadera negra de cierre dorado, señalando hacia un lado en gesto de explicar con calma" width="720" height="900" loading="lazy" decoding="async"></figure>
     <div class="puma-bloque__texto">
-      <h3 class="titulo">Yachai, nuestro puma</h3>
-      <p class="parrafo">Yachai acompaña la web y responde tus preguntas: explica una idea y te lleva al siguiente paso. Es el personaje de la marca. No es el logo ni firma nada, y es un asistente automatizado, no una persona del equipo.</p>
+      <h3 class="titulo">Yachay, nuestro puma</h3>
+      <p class="parrafo">Yachay acompaña la web y responde tus preguntas: explica una idea y te lleva al siguiente paso. Es el personaje de la marca. No es el logo ni firma nada, y es un asistente automatizado, no una persona del equipo.</p>
       <p class="puma-bloque__voz">«Vamos paso a paso. Cuéntame qué necesitas resolver.»</p>
       <p class="puma-bloque__nota">Ilustración generada con IA</p>
     </div>

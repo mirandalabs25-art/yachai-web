@@ -1822,3 +1822,15 @@ a.tarjeta--qori:hover,a.tarjeta--qori:focus-visible{background:var(--hueso);bord
     background:url(../img/marca/yachai-pensando.webp) right bottom/contain no-repeat;
   }
 }
+
+/* CAPA 7 (2026-09-24): el espacio libre a la derecha del chat, en el inicio, lleva la imagen de la IA (pedido de Rodrigo). */
+.asistente__ia{display:none;margin:0}
+@media (min-width:1200px){
+  .asistente__fila{grid-template-columns:minmax(220px,340px) minmax(0,600px) minmax(260px,1fr)}
+  .asistente__ia{display:grid;gap:10px;align-self:end}
+  .asistente__ia img{
+    display:block;width:100%;height:auto;aspect-ratio:4/5;max-height:470px;object-fit:cover;object-position:28% center;
+    border:1px solid var(--filete);border-radius:var(--radio-g);
+  }
+  .asistente__ia figcaption{font:500 11px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+}
