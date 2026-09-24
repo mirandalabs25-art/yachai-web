@@ -1668,7 +1668,7 @@ a.tarjeta--qori:hover,a.tarjeta--qori:focus-visible{background:var(--hueso);bord
   .pcabeza--yachai{min-height:340px;align-content:center}
   .pcabeza--yachai::after{
     content:'';position:absolute;z-index:-1;right:clamp(0px,4vw,80px);bottom:0;width:300px;height:min(96%,380px);pointer-events:none;
-    background:url(../img/marca/puma-cuerpo.webp) right bottom/contain no-repeat;
+    background:url(../img/marca/yachai-saludando.webp) right bottom/contain no-repeat;
   }
 }
 
@@ -1762,3 +1762,54 @@ a.tarjeta--qori:hover,a.tarjeta--qori:focus-visible{background:var(--hueso);bord
 
 /* Con foto propia (2026-09-24): el registro de seguridad se queda abajo, sobre la escena. Su regla sticky (top:130px) lo estiraba hasta arriba y tapaba la foto. */
 .servicio__medio .registro{top:auto;position:absolute}
+
+/* ==========================================================================
+   CAPA 5 (2026-09-24): la unión de la foto de Rodrigo con la escena de IA, las fotos de los
+   «mundos» del manual y las poses de Yachai (saludando, señalando, trabajando).
+   ========================================================================== */
+
+/* --- unión: la escena de fondo y Rodrigo encima, con su nombre (página de asesoría) --------- */
+.servicio__medio--union .union__rodrigo{
+  position:absolute;z-index:2;left:clamp(12px,2vw,22px);bottom:clamp(12px,2vw,22px);
+  width:min(44%,240px);margin:0;overflow:hidden;
+  background:var(--negro);border:2px solid var(--qori);border-radius:var(--radio-g);
+  box-shadow:0 18px 40px rgba(0,0,0,.55);
+}
+.union__rodrigo img{display:block;width:100%;height:auto;aspect-ratio:4/4.4;object-fit:cover;object-position:top}
+.union__rodrigo figcaption{padding:10px 12px 12px;background:var(--carbon);font-size:.78rem;line-height:1.35;color:var(--gris)}
+.union__rodrigo figcaption b{display:block;font-size:.92rem;color:var(--hueso)}
+
+/* --- tarjeta de asesoría: el rostro de Rodrigo sobre la escena --------------------------------- */
+.tarjeta__img--union{position:relative}
+.tarjeta__img .tarjeta__rostro{
+  position:absolute;left:14px;bottom:14px;width:56px;height:56px;
+  border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--qori);background:var(--negro);
+}
+
+/* --- fotos anchas de los mundos (Nosotros, regalo) -------------------------------------------------- */
+.seccion.seccion--foto{padding-top:0;padding-bottom:clamp(28px,5vw,56px)}
+.foto-banda{margin:0;display:grid;gap:12px}
+.foto-banda img{
+  display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:center 32%;
+  border:1px solid var(--filete);border-radius:var(--radio-g);
+}
+@media (min-width:900px){.foto-banda img{aspect-ratio:21/9}}
+.foto-banda figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 20px}
+.foto-banda__texto{font-size:.95rem;font-weight:600;color:var(--hueso)}
+.foto-banda__aviso{font:500 11px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+
+/* --- Yachai trabajando, sobre el chat del regalo ------------------------------------------------------- */
+.landing__yachai{margin:0 0 16px;display:grid;gap:10px}
+.landing__yachai img{
+  display:block;width:100%;height:auto;aspect-ratio:16/7;object-fit:cover;object-position:center 30%;
+  border:1px solid var(--filete);border-radius:var(--radio-g);background:var(--carbon);
+}
+.landing__yachai figcaption{font-size:.88rem;line-height:1.45;color:var(--gris)}
+.landing__yachai figcaption b{color:var(--hueso)}
+
+/* Ajustes de la capa 5: Yachai saludando sin bordes duros en «Hablemos» y un marco propio para la pose señalando en Nosotros. */
+@media (min-width:900px){
+  .pcabeza--yachai::after{-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);mask-image:radial-gradient(closest-side,#000 62%,transparent 100%)}
+}
+.puma-bloque__imagen{aspect-ratio:4/5;max-height:none;overflow:hidden;background:#0b0b0b;border:1px solid var(--filete);border-radius:var(--radio-g)}
+.puma-bloque__imagen img{object-fit:cover}

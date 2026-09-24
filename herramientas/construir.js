@@ -501,7 +501,7 @@ function prepararImagenes() {
     if (fs.existsSync(grande) && fs.statSync(grande).mtimeMs >= fs.statSync(fuente).mtimeMs) continue;
     try {
       const { execFileSync } = require('child_process');
-      execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', fuente, '-vf', "scale='min(1024,iw)':-2", '-quality', '78', grande]);
+      execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', fuente, '-vf', `scale='min(${/^mundo-/.test(m[1]) ? 1536 : 1024},iw)':-2`, '-quality', '78', grande]);
       execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', fuente, '-vf', 'scale=640:400:force_original_aspect_ratio=increase,crop=640:400', '-quality', '72', chica]);
       hechas.push(m[1]);
     } catch (e) {
@@ -536,15 +536,33 @@ function icono(slug, clase = 'icono') { return iconoNombre(ICONO_SERVICIO[slug],
 // Marcador <!--ICONO:nombre--> en bloques escritos a mano: se cambia por el ícono en línea.
 const conIconos = (h) => h.replace(/<!--ICONO:([a-z]+)-->/g, (_, n) => iconoNombre(n));
 
-function tarjetaImg(src) {
+// Foto ancha de un «mundo» del manual, con su aviso de imagen ilustrativa. Si la imagen no existe, no dibuja nada.
+function fotoBanda(slug, alt, texto) {
+  const p = imagenPagina(slug);
+  if (!p) return '';
+  return `<section class="seccion seccion--foto">
+  <figure class="foto-banda revelar">
+    <img src="${p}" alt="${alt}" loading="lazy" decoding="async" width="1536" height="1024">
+    <figcaption><span class="foto-banda__texto">${texto}</span><span class="foto-banda__aviso">Imagen ilustrativa generada con IA</span></figcaption>
+  </figure>
+</section>`;
+}
+function yachaiTrabajando() {
+  return `<figure class="landing__yachai">
+      <img src="assets/img/marca/yachai-trabajando.webp" alt="Yachai, el puma de la marca, trabajando con una portátil" width="1100" height="619" loading="lazy" decoding="async">
+      <figcaption><b>Yachai</b> te atiende al instante. Es un asistente automatizado. Ilustración generada con IA.</figcaption>
+    </figure>`;
+}
+
+function tarjetaImg(src, rostro) {
   return src
-    ? `<span class="tarjeta__img"><img src="${src}" alt="" loading="lazy" decoding="async" width="640" height="400"></span>`
+    ? `<span class="tarjeta__img${rostro ? ' tarjeta__img--union' : ''}"><img src="${src}" alt="" loading="lazy" decoding="async" width="640" height="400">${rostro ? `<img class="tarjeta__rostro" src="${rostro}" alt="" loading="lazy" decoding="async" width="200" height="200">` : ''}</span>`
     : '<span class="tarjeta__img tarjeta__img--patron" aria-hidden="true"></span>';
 }
 
 function tarjetaServicio(s, conPrecio = true) {
   return `<li><a class="tarjeta tarjeta--img revelar" href="${s.slug}.html">
-      ${tarjetaImg(mini(s.cara) || mini(s.mini) || miniPagina(s.slug) || s.imagen || null)}
+      ${tarjetaImg(mini(s.cara) || mini(s.mini) || miniPagina(s.slug) || s.imagen || null, s.slug === 'asesoria-en-ia' && miniPagina(s.slug) ? 'assets/img/rodrigo-rostro.webp' : null)}
       ${icono(s.slug)}
       <span class="tarjeta__dato">${s.destacado ? 'Gratis en ' + esc(S.ASESORIA.mes) : 'Servicio'}</span>
       <b class="tarjeta__titulo">${esc(s.nombre)}</b>
@@ -663,6 +681,15 @@ function paginaServicio(s) {
       <img src="${s.poster}" alt="" width="1024" height="1536" decoding="async">
       <video class="servicio__video" src="${s.video}" poster="${s.poster}" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
       <p class="rubro__nota"><span>Hecho con IA</span>Este video es una de las escenas de esta misma web.</p>
+    </div>`;
+  } else if (s.slug === 'asesoria-en-ia' && imagenPagina(s.slug)) {
+    // Unión: la escena de IA de fondo y la foto real de Rodrigo encima, con su nombre.
+    medio = `<div class="servicio__medio servicio__medio--union">
+      <img src="${imagenPagina(s.slug)}" alt="Escena ilustrativa: dos personas conversan sobre un plan de trabajo en una mesa" width="1024" height="1280" decoding="async" style="object-position:center 20%">
+      <figure class="union__rodrigo">
+        <img src="assets/img/rodrigo.jpg" alt="Rodrigo Miranda, quien da la asesoría" width="800" height="948" loading="lazy" decoding="async">
+        <figcaption><b>Te asesora Rodrigo</b>Yachai · Cusco</figcaption>
+      </figure>
     </div>`;
   } else if (imagenPagina(s.slug) || s.imagen) {
     medio = `<div class="servicio__medio">
@@ -1014,6 +1041,7 @@ ${S.TESTIMONIOS.map((t) => `    <li class="testimonio revelar">${t.foto ? `<img 
     </div>
   </div>
   <div class="landing__chat" id="asistente">
+    ${yachaiTrabajando()}
 ${CHAT}
   </div>
 </section>
@@ -1047,6 +1075,8 @@ ${S.REGALO.map((r, i) => `    <li><div class="tarjeta tarjeta--img revelar"${i ?
     <li class="paso revelar" data-retraso="240"><span class="paso__num">04</span><!--ICONO:personas--><h3 class="paso__titulo">Decides tú</h3><p class="paso__texto">Lo hacemos juntos, lo haces con otra persona o lo dejas para más adelante.</p></li>
   </ol>
 </section>
+
+${fotoBanda('mundo-resultados', 'Escena ilustrativa: dos personas conversan con calma después de revisar una tarea', 'Al final del plan, la decisión es tuya.')}
 
 <section class="seccion">
   ${cab(++n, 'Así se ve el plan que te entrego', 'Un ejemplo, con un negocio inventado. El tuyo sale de tu negocio real.')}
@@ -1345,6 +1375,8 @@ function paginaNosotros() {
 
 ${renumerar(BLOQUE('quien'), 1).replace('<h2 class="titulo">Quién está detrás</h2>', '<h2 class="titulo">Rodrigo Miranda</h2>')}
 
+${fotoBanda('mundo-cusco', 'Escena ilustrativa: una persona trabaja en un interior de piedra y madera con vista a la ciudad y las montañas de Cusco', 'Tecnología aplicada a negocios reales, hecha desde Cusco.')}
+
 <section class="seccion" id="marca">
   ${cab(2, 'Por qué Yachai')}
   <div class="quien">
@@ -1368,7 +1400,7 @@ ${renumerar(BLOQUE('quien'), 1).replace('<h2 class="titulo">Quién está detrás
   </div>
 
   <div class="puma-bloque revelar">
-    <figure class="puma-bloque__imagen"><img src="assets/img/marca/puma-cuerpo.webp" alt="Yachai, el puma de la marca: pelaje cálido, sudadera negra de cierre dorado y una mano abierta, en gesto de explicar" width="720" height="1080" loading="lazy" decoding="async"></figure>
+    <figure class="puma-bloque__imagen"><img src="assets/img/marca/yachai-senalando.webp" alt="Yachai, el puma de la marca: pelaje cálido, sudadera negra de cierre dorado, señalando hacia un lado en gesto de explicar con calma" width="720" height="900" loading="lazy" decoding="async"></figure>
     <div class="puma-bloque__texto">
       <h3 class="titulo">Yachai, nuestro puma</h3>
       <p class="parrafo">Yachai acompaña la web y responde tus preguntas: explica una idea y te lleva al siguiente paso. Es el personaje de la marca. No es el logo ni firma nada, y es un asistente automatizado, no una persona del equipo.</p>
@@ -1379,6 +1411,8 @@ ${renumerar(BLOQUE('quien'), 1).replace('<h2 class="titulo">Quién está detrás
 </section>
 
 ${como}
+
+${fotoBanda('mundo-tecnologia', 'Escena ilustrativa: una profesional revisa un flujo de trabajo en un portátil dentro de un espacio de piedra y madera', 'Primero se prueba en mi propio sistema; después, en el tuyo.')}
 
 ${renumerar(BLOQUE('stack'), 4)}
 
@@ -1420,11 +1454,11 @@ ${bandaCta('Yachai · Cusco, Perú. Automatización, IA aplicada y seguridad.', 
    ========================================================================== */
 
 function inicioExplora() {
-  const destacado = (href, img, dato, titulo, texto, ir, i) => `    <li><a class="tarjeta tarjeta--img tarjeta--destacada revelar" href="${href}"${i ? ` data-retraso="${i * 80}"` : ''}>${tarjetaImg(img)}<span class="tarjeta__dato">${dato}</span><b class="tarjeta__titulo">${titulo}</b><span class="tarjeta__texto">${texto}</span><span class="tarjeta__ir">${ir}</span></a></li>`;
+  const destacado = (href, img, dato, titulo, texto, ir, i, rostro) => `    <li><a class="tarjeta tarjeta--img tarjeta--destacada revelar" href="${href}"${i ? ` data-retraso="${i * 80}"` : ''}>${tarjetaImg(img, rostro)}<span class="tarjeta__dato">${dato}</span><b class="tarjeta__titulo">${titulo}</b><span class="tarjeta__texto">${texto}</span><span class="tarjeta__ir">${ir}</span></a></li>`;
   return `<section class="seccion" id="empezar" aria-labelledby="empezar-titulo">
   ${cab(1, 'Para empezar', `${esc(S.MARCA.que)}. ${esc(S.MARCA.enfasis)}, clases y webs.`, 'empezar-titulo')}
   <ul class="tarjetas" role="list">
-${destacado('asesoria-en-ia.html', 'assets/img/rodrigo.jpg', 'Gratis en ' + esc(S.ASESORIA.mes), 'Asesoría en IA', 'Qué automatizar en tu negocio, por dónde empezar y cuánto cuesta. 15 días, conmigo.', 'La quiero →', 0)}
+${destacado('asesoria-en-ia.html', miniPagina('asesoria-en-ia') || 'assets/img/rodrigo.jpg', 'Gratis en ' + esc(S.ASESORIA.mes), 'Asesoría en IA', 'Qué automatizar en tu negocio, por dónde empezar y cuánto cuesta. 15 días, conmigo.', 'La quiero →', 0, miniPagina('asesoria-en-ia') ? 'assets/img/rodrigo-rostro.webp' : null)}
 ${destacado('clases-de-ia.html', miniPagina('clases-de-ia') || mini('06'), 'Desde ' + soles(porSlug['clases-de-ia'].precio.desde), 'Aprende IA', 'Claude, ChatGPT y Gemini aplicados a tu trabajo, para ti o tu equipo.', 'Quiero aprender →', 1)}
 ${destacado(S.ASESORIA.pagina, mini('04'), 'Gratis en ' + esc(S.ASESORIA.mes), 'Tu web, gratis', 'Me pasas una web que te guste y armamos la tuya. Solo pagas servidor y dominio.', 'La quiero →', 2)}
   </ul>
