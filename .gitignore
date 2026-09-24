@@ -3,3 +3,6 @@ produccion/*.mp4
 
 # Imágenes originales (ChatGPT, fotos): pesan. El constructor las convierte a assets/img/paginas/.
 produccion/imagenes/
+
+# El kit de identidad completo (copia del que está en el escritorio): pesa 51 MB.
+produccion/marca/kit-v1/

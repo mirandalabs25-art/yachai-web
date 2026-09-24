@@ -3,20 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Yachai — Automatización e IA aplicada · Cusco</title>
-<meta name="description" content="Yachai: agencia de inteligencia artificial y marketing en Cusco. Asesorías en IA, clases de IA, automatización, webs, anuncios y software a medida. Te regalamos US$1,000 en octubre.">
+<title>Yachai — Inteligencia andina para negocios reales · Cusco</title>
+<meta name="description" content="Yachai: agencia de inteligencia artificial y marketing en Cusco. Inteligencia andina para negocios reales. Asesorías en IA, clases de IA, automatización, webs, anuncios y software a medida. Te regalamos US$1,000 en octubre.">
 <meta name="theme-color" content="#000000">
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/marca/favicon.ico" sizes="any">
+<link rel="icon" href="assets/img/marca/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/marca/apple-touch-icon.png">
+<link rel="manifest" href="assets/img/marca/site.webmanifest">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Yachai — Agencia de inteligencia artificial y marketing">
 <meta property="og:description" content="Todo pasa por ti. Eso tiene arreglo.">
 <meta property="og:locale" content="es_PE">
+<!-- OG:INICIO — imagen para compartir: la genera construir.js -->
+<!-- REVISAR: og:image, cuando exista SITIO_URL en contenido/sitio.js -->
+<!-- OG:FIN -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/css/style.css?v=57c4b6b5">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/css/style.css?v=9318c5f1">
 </head>
 <body>
 
@@ -28,27 +34,23 @@
 <header class="cabecera">
 <div class="anuncio" aria-hidden="true">
   <div class="anuncio__pista">
-    <span>Te regalamos US$1,000</span><span>—</span>
-    <span>Agencia de IA y marketing</span><span>—</span>
-    <span>Asesorías en inteligencia artificial</span><span>—</span>
-    <span>Aprende IA</span><span>—</span>
-    <span>Tu web gratis en octubre</span><span>—</span>
-    <span>Solo 10 cupos en octubre</span><span>—</span>
-    <span>Cusco · Perú</span><span>—</span>
-    <span>Bots y agentes</span><span>—</span>
-    <span>Bases de clientes</span><span>—</span>
-    <span>Webs propias</span><span>—</span>
-    <span>Software a medida</span><span>—</span>
+    <span>Te regalamos US$1,000</span><span class="sep" aria-hidden="true"></span>
+    <span>Agencia de IA y marketing</span><span class="sep" aria-hidden="true"></span>
+    <span>Asesorías en inteligencia artificial</span><span class="sep" aria-hidden="true"></span>
+    <span>Aprende IA</span><span class="sep" aria-hidden="true"></span>
+    <span>Tu web gratis en octubre</span><span class="sep" aria-hidden="true"></span>
+    <span>Solo 10 cupos en octubre</span><span class="sep" aria-hidden="true"></span>
+    <span>Cusco · Perú</span><span class="sep" aria-hidden="true"></span>
+    <span>Bots y agentes</span><span class="sep" aria-hidden="true"></span>
+    <span>Bases de clientes</span><span class="sep" aria-hidden="true"></span>
+    <span>Webs propias</span><span class="sep" aria-hidden="true"></span>
+    <span>Software a medida</span><span class="sep" aria-hidden="true"></span>
   </div>
 </div>
 
 <nav class="nav" aria-label="Principal">
   <a class="marca" href="index.html" aria-label="Yachai, inicio">
-    <svg class="marca__signo" viewBox="0 0 60 60" aria-hidden="true">
-      <path d="M24 0 H36 V12 H48 V24 H60 V36 H48 V48 H36 V60 H24 V48 H12 V36 H0 V24 H12 V12 H24 Z"/>
-      <circle cx="30" cy="30" r="6"/>
-    </svg>
-    <span class="marca__texto">Yachai</span>
+    <img class="marca__logo" src="assets/img/marca/logo-horizontal.svg" alt="" width="540" height="180">
   </a>
 
   <ul class="nav__links" id="nav-links" role="list">
@@ -144,22 +146,17 @@
       que tu negocio siga funcionando cuando tú no estás encima.
     </p>
     <div class="hero__acciones">
-      <a class="boton boton--qori" href="#asistente" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">Hablar con el asistente</a>
+      <a class="boton boton--ia" href="#asistente" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">Hablar con el asistente</a>
       <a class="boton" href="#servicios">Ver qué resuelvo</a>
     </div>
-    <a class="hero__regalo" href="asesoria-gratis.html">Te regalamos US$1,000 →</a>
   </div>
 
-  <div class="hero__pie">
-    <p class="dato">Cusco · Perú</p>
-    <span class="dato hero__scroll">Baja</span>
-  </div>
 </section>
 
-<!-- GIRO: la chakana cibernética y los siete dolores ===================== -->
-<!-- Va pegada al hero: la escena 1 se abre desde el hueco de la chakana de
-     nodos. Después, cada escena se abre y se cierra con forma de chakana, desde el centro
-     (la chakana de imagen que giraba entre ellas se sacó el 2026-09-22). Cada
+<!-- GIRO: los siete dolores, cada uno en una ventana hexagonal ================ -->
+<!-- Va pegada al hero: la escena 1 se abre desde el centro de la Y de nodos.
+     Después, cada escena se abre y se cierra con forma de hexágono (el módulo
+     del isotipo), desde el centro. Cada
      una trae: la escena (imagen hoy, video de
      Kling después: basta con agregar data-video="assets/video/NN.mp4" al
      <article>), la frase del dolor, una demostración en HTML y el botón.
@@ -334,7 +331,7 @@
 
     </div>
 
-    <!-- La chakanita con puntos: contorno y 20 nodos dorados que acompañan la
+    <!-- El hexágono con puntos: contorno y 6 nodos dorados que acompañan la
      apertura y el cierre de cada escena (los puntos los crea main.js). -->
     <svg class="giro__nodos" aria-hidden="true"><polygon class="giro__contorno"/><g class="giro__puntos"></g></svg>
 
@@ -357,9 +354,8 @@
 <!-- La acción principal de la landing del QR: quien escanea no sabe qué es
      Yachai. Bot con botones, sin IA (decisión del 2026-09-22); lo que deja
      la persona llega a WhatsApp con el mensaje armado. Guion en main.js. -->
-<section class="seccion asistente" id="asistente" aria-labelledby="asistente-titulo">
+<section class="seccion asistente asistente--ia" id="asistente" aria-labelledby="asistente-titulo">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">Hola —</span>
     <div>
       <h2 class="titulo" id="asistente-titulo">¿En qué te ayudo?</h2>
       <p class="parrafo" style="margin-top:16px">
@@ -369,8 +365,13 @@
     </div>
   </div>
 
+  <div class="asistente__fila">
+  <figure class="yachai-figura">
+    <img src="assets/img/marca/puma-cuerpo.webp" alt="Yachai, el puma de la marca: pelaje cálido, sudadera negra de cierre dorado y una mano abierta, en gesto de explicar" width="720" height="1080" loading="lazy" decoding="async">
+    <figcaption><b>Yachai</b> es un asistente automatizado. Ilustración generada con IA.</figcaption>
+  </figure>
   <div class="chat">
-    <p class="chat__cabeza"><span class="chat__yachai"><svg class="yachai" viewBox="0 0 60 60" aria-hidden="true"><path class="yachai__cuerpo" d="M24 3 H36 V14 H46 V24 H57 V36 H46 V46 H36 V57 H24 V46 H14 V36 H3 V24 H14 V14 H24 Z"/><g class="yachai__ojos"><circle cx="24.5" cy="28" r="2.9"/><circle cx="35.5" cy="28" r="2.9"/></g><path class="yachai__boca" d="M25.5 34.5 Q30 38.2 34.5 34.5"/><circle class="yachai__mejilla" cx="19.5" cy="33" r="2"/><circle class="yachai__mejilla" cx="40.5" cy="33" r="2"/></svg></span><span>Yachai · asistente</span><span class="chat__estado">en línea</span></p>
+    <p class="chat__cabeza"><img class="puma chat__puma" src="assets/img/marca/puma-avatar.webp" alt="" width="320" height="320" decoding="async"><span class="chat__nombre"><b>Yachai</b><small>Asistente automatizado</small></span><span class="chat__estado">en línea</span></p>
     <div class="chat__registro" role="log" aria-live="polite"></div>
     <div class="chat__opciones" role="group" aria-label="Opciones"></div>
     <form class="chat__formulario" hidden>
@@ -381,6 +382,8 @@
       </div>
     </form>
     <noscript><p class="parrafo" style="padding:16px">Escríbeme directo por WhatsApp: <a href="https://wa.me/51969322677">+51 969 322 677</a></p></noscript>
+  </div>
+
   </div>
 
   <div class="mas-ideas revelar">
@@ -455,7 +458,6 @@
 <!-- EXPLORA:INICIO -->
 <section class="seccion" id="empezar" aria-labelledby="empezar-titulo">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">01 —</span>
     <div>
       <h2 class="titulo" id="empezar-titulo">Para empezar</h2>
       <p class="parrafo" style="margin-top:16px">Agencia de inteligencia artificial y marketing. Asesorías en inteligencia artificial, clases y webs.</p>
@@ -470,25 +472,24 @@
 
 <section class="seccion" id="explora" aria-labelledby="explora-titulo">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">02 —</span>
     <div>
       <h2 class="titulo" id="explora-titulo">¿Qué negocio tienes?</h2>
       <p class="parrafo" style="margin-top:16px">Elige el tuyo y mira qué automatizaría primero, con ejemplos de un día normal.</p>
     </div>
   </div>
   <ul class="tarjetas" role="list">
-    <li><a class="tarjeta tarjeta--img revelar" href="para-hoteles.html"><span class="tarjeta__img"><img src="assets/img/giro/mini/01-mensajes.webp" alt="" loading="lazy" decoding="async" width="640" height="400"></span><span class="tarjeta__dato">Reservas y huéspedes, a cualquier hora</span><b class="tarjeta__titulo">Hoteles y hospedajes</b><span class="tarjeta__texto">«Preguntan de madrugada.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>
-    <li><a class="tarjeta tarjeta--img revelar" href="para-restaurantes.html" data-retraso="80"><span class="tarjeta__img"><img src="assets/img/giro/mini/05-publicar.webp" alt="" loading="lazy" decoding="async" width="640" height="400"></span><span class="tarjeta__dato">Carta, pedidos y el menú del día</span><b class="tarjeta__titulo">Restaurantes</b><span class="tarjeta__texto">«El celular suena en plena hora punta.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>
-    <li><a class="tarjeta tarjeta--img revelar" href="para-consultorios.html" data-retraso="160"><span class="tarjeta__img"><img src="assets/img/giro/mini/02-cuaderno.webp" alt="" loading="lazy" decoding="async" width="640" height="400"></span><span class="tarjeta__dato">Citas, recordatorios e historial</span><b class="tarjeta__titulo">Consultorios</b><span class="tarjeta__texto">«Te dejan plantado.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>
-    <li><a class="tarjeta tarjeta--img revelar" href="para-estudios-juridicos.html"><span class="tarjeta__img"><img src="assets/img/giro/mini/03-repite.webp" alt="" loading="lazy" decoding="async" width="640" height="400"></span><span class="tarjeta__dato">Plazos, expedientes y reuniones</span><b class="tarjeta__titulo">Estudios jurídicos y contables</b><span class="tarjeta__texto">«Los plazos se revisan a mano.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>
-    <li><a class="tarjeta tarjeta--img revelar" href="para-tiendas.html" data-retraso="80"><span class="tarjeta__img"><img src="assets/img/giro/mini/04-web.webp" alt="" loading="lazy" decoding="async" width="640" height="400"></span><span class="tarjeta__dato">Ropa, accesorios y tiendas pequeñas</span><b class="tarjeta__titulo">Tiendas y microempresas</b><span class="tarjeta__texto">«Preguntan precio y talla todo el día.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>
+    <li><a class="tarjeta tarjeta--img revelar" href="para-hoteles.html"><span class="tarjeta__img"><img src="assets/img/giro/mini/01-mensajes.webp" alt="" loading="lazy" decoding="async" width="640" height="400"></span><span class="icono" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="#EDEDEA" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="3"/><path d="M7 21v-3a5 5 0 0 1 10 0v3H7Z" stroke="#315CFF"/><path d="M5 4.5a2.5 2.5 0 1 0 0 5M19 4.5a2.5 2.5 0 1 1 0 5M4 14a4 4 0 0 0-3 4v2M20 14a4 4 0 0 1 3 4v2"/></g></svg></span><span class="tarjeta__dato">Reservas y huéspedes, a cualquier hora</span><b class="tarjeta__titulo">Hoteles y hospedajes</b><span class="tarjeta__texto">«Preguntan de madrugada.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>
+    <li><a class="tarjeta tarjeta--img revelar" href="para-restaurantes.html" data-retraso="80"><span class="tarjeta__img"><img src="assets/img/giro/mini/05-publicar.webp" alt="" loading="lazy" decoding="async" width="640" height="400"></span><span class="icono" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="#EDEDEA" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M12 8v5M5 17v-4h14v4"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1" stroke="#315CFF"/></g></svg></span><span class="tarjeta__dato">Carta, pedidos y el menú del día</span><b class="tarjeta__titulo">Restaurantes</b><span class="tarjeta__texto">«El celular suena en plena hora punta.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>
+    <li><a class="tarjeta tarjeta--img revelar" href="para-consultorios.html" data-retraso="160"><span class="tarjeta__img"><img src="assets/img/giro/mini/02-cuaderno.webp" alt="" loading="lazy" decoding="async" width="640" height="400"></span><span class="icono" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="#EDEDEA" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v13c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11c0 1.7 3.6 3 8 3s8-1.3 8-3"/><path d="M4 16c0 1.7 3.6 3 8 3s8-1.3 8-3" stroke="#315CFF"/></g></svg></span><span class="tarjeta__dato">Citas, recordatorios e historial</span><b class="tarjeta__titulo">Consultorios</b><span class="tarjeta__texto">«Te dejan plantado.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>
+    <li><a class="tarjeta tarjeta--img revelar" href="para-estudios-juridicos.html"><span class="tarjeta__img"><img src="assets/img/giro/mini/03-repite.webp" alt="" loading="lazy" decoding="async" width="640" height="400"></span><span class="icono" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="#EDEDEA" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 10A9 9 0 1 1 14 3.2"/><path d="M16.7 10.5A5 5 0 1 1 13.5 7.3"/><path d="m12 12 8-8m-3 0h3v3" stroke="#315CFF"/></g></svg></span><span class="tarjeta__dato">Plazos, expedientes y reuniones</span><b class="tarjeta__titulo">Estudios jurídicos y contables</b><span class="tarjeta__texto">«Los plazos se revisan a mano.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>
+    <li><a class="tarjeta tarjeta--img revelar" href="para-tiendas.html" data-retraso="80"><span class="tarjeta__img"><img src="assets/img/giro/mini/04-web.webp" alt="" loading="lazy" decoding="async" width="640" height="400"></span><span class="icono" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="#EDEDEA" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21v-6h4v6H3Zm7 0V11h4v10h-4Zm7 0V7h4v14h-4Z"/><path d="m3 10 7-6 4 1 7-3m-4 0h4v4" stroke="#315CFF"/></g></svg></span><span class="tarjeta__dato">Ropa, accesorios y tiendas pequeñas</span><b class="tarjeta__titulo">Tiendas y microempresas</b><span class="tarjeta__texto">«Preguntan precio y talla todo el día.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>
     <li><a class="tarjeta revelar" href="soluciones.html#otros" data-retraso="160"><span class="tarjeta__dato">Turismo, academias, agencias…</span><b class="tarjeta__titulo">Otro negocio</b><span class="tarjeta__texto">Casi siempre hay algo que se puede automatizar.</span><span class="tarjeta__ir">Ver más →</span></a></li>
   </ul>
 
   <ul class="atajos" role="list">
-    <li><a class="atajo revelar" href="nosotros.html#como"><span class="dato dato--qori">Cómo trabajo</span><b>Primero lo pruebas; después crece.</b><span>Cuatro pasos, y en ninguno trabajas a ciegas →</span></a></li>
-    <li><a class="atajo revelar" data-retraso="80" href="seguridad.html"><span class="dato dato--qori">Seguro por diseño</span><b>Candados en el código.</b><span>Por qué a mis bots no los engaña un cliente tramposo →</span></a></li>
-    <li><a class="atajo revelar" data-retraso="160" href="precios.html"><span class="dato dato--qori">Precios claros</span><b>Desde S/400.</b><span>Y la asesoría, gratis por lanzamiento →</span></a></li>
+    <li><a class="atajo revelar" href="nosotros.html#como"><span class="icono" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="#EDEDEA" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M12 8v5M5 17v-4h14v4"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1" stroke="#315CFF"/></g></svg></span><span class="dato dato--qori">Cómo trabajo</span><b>Primero lo pruebas; después crece.</b><span>Cuatro pasos, y en ninguno trabajas a ciegas →</span></a></li>
+    <li><a class="atajo revelar" data-retraso="80" href="seguridad.html"><span class="icono" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="#EDEDEA" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 9 4v6c0 4.3-4 8.5-9 10-5-1.5-9-5.7-9-10V6l9-4Z"/><path d="m8 12 3 3 5-6" stroke="#315CFF"/></g></svg></span><span class="dato dato--qori">Seguro por diseño</span><b>Candados en el código.</b><span>Por qué a mis bots no los engaña un cliente tramposo →</span></a></li>
+    <li><a class="atajo revelar" data-retraso="160" href="precios.html"><span class="icono" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="#EDEDEA" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 22H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2ZM7 6h5M7 9h2"/><path d="M7 17v2m5-6v6m5-10v10" stroke="#315CFF"/></g></svg></span><span class="dato dato--qori">Precios claros</span><b>Desde S/400.</b><span>Y la asesoría, gratis por lanzamiento →</span></a></li>
   </ul>
 </section>
 <!-- EXPLORA:FIN -->
@@ -496,7 +497,6 @@
 <!-- CASOS:INICIO -->
 <section class="seccion" id="trabajos" aria-labelledby="trabajos-titulo">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">03 —</span>
     <div>
       <h2 class="titulo" id="trabajos-titulo">En qué estamos trabajando</h2>
       <p class="parrafo" style="margin-top:16px">Yachai nació en Cusco y empezó con negocios de aquí. Cada uno con un problema distinto y la misma raíz: <b>todo dependía de una sola persona.</b></p>
@@ -565,7 +565,6 @@
 <!-- APRENDE:INICIO -->
 <section class="seccion" id="aprende" aria-labelledby="aprende-titulo">
   <div class="seccion__cabecera revelar">
-    <span class="seccion__num">04 —</span>
     <div>
       <h2 class="titulo" id="aprende-titulo">Aprende</h2>
       <p class="parrafo" style="margin-top:16px">Notas cortas para dueños de negocio. Salen de lo que estudio y aplico cada semana.</p>
@@ -599,24 +598,27 @@
 <section class="cusco">
   <img class="cusco__foto" src="assets/img/cusco.jpg" alt="Muros de Sacsayhuamán con la ciudad de Cusco al fondo" loading="lazy" width="1200" height="600">
   <div class="cusco__velo" aria-hidden="true"></div>
+  <div class="cusco__topo" aria-hidden="true"></div>
   <div class="cusco__texto">
     <h2 class="titulo revelar"><em>Yachay</em> es conocimiento en quechua.</h2>
     <p class="parrafo revelar" data-retraso="80" style="margin:18px auto 0;text-align:center">
-      El signo de la marca es la <b>chakana</b>, la cruz andina escalonada —
-      la misma figura de estos muros. Trabajo desde Cusco, y se nota.
+      El isotipo son tres bloques que encajan formando una <b>Y</b>, como las
+      piedras de estos muros. Inteligencia andina para negocios reales:
+      trabajo desde Cusco, y se nota.
     </p>
   </div>
 </section>
 
 <!-- LETRERO ============================================================== -->
 <div class="letrero" aria-hidden="true">
-  <div class="letrero__pista"><span>Yachai —</span><span>Yachai —</span></div>
+  <div class="letrero__pista"><span>Yachai</span><span>Yachai</span></div>
 </div>
 
 <!-- PIE:INICIO -->
 <footer class="pie" id="pie">
   <div class="pie__grid">
     <div>
+      <img class="pie__logo" src="assets/img/marca/logo-horizontal.svg" alt="YACHAI" width="540" height="180">
       <p class="pie__titulo">Escríbeme</p>
       <ul class="pie__lista" role="list">
         <li class="pie__grande"><a href="https://wa.me/51969322677" target="_blank" rel="noopener">+51 969 322 677</a></li>
@@ -625,7 +627,7 @@
         <!-- REVISAR: correo propio -->
         <li>[correo@yachai]</li>
       </ul>
-      <p class="parrafo pie__marca"><i>Yachay</i> es <b>conocimiento</b> en quechua. El signo es la <b>chakana</b>, la cruz andina. De Cusco, y se nota.</p>
+      <p class="parrafo pie__marca"><i>Yachay</i> es <b>conocimiento</b> en quechua. El isotipo son tres bloques que encajan en una Y. <b>Inteligencia andina para negocios reales.</b></p>
     </div>
 
     <div>
@@ -673,6 +675,8 @@
     </div>
   </div>
 
+  <p class="pie__aviso">Las imágenes y los videos de esta web son ilustrativos, generados con inteligencia artificial: no representan clientes ni resultados reales. Los ejemplos rotulados «Demostración» usan datos ficticios.</p>
+
   <div class="pie__base">
     <span>© <span id="anio">2026</span> Yachai · Cusco, Perú · RUC 10705854543</span>
     <span>Agencia de inteligencia artificial y marketing · Asesorías en inteligencia artificial</span>
@@ -696,26 +700,26 @@
 <!-- CONTACTO: un solo botón flotante, como el de WhatsApp. -->
 <div class="contacto">
   <div class="contacto__globo" id="contacto-globo" role="dialog" aria-label="¿Con quién quieres hablar?" hidden>
-    <p class="contacto__cabeza"><span class="contacto__avatar"><svg class="yachai" viewBox="0 0 60 60" aria-hidden="true"><path class="yachai__cuerpo" d="M24 3 H36 V14 H46 V24 H57 V36 H46 V46 H36 V57 H24 V46 H14 V36 H3 V24 H14 V14 H24 Z"/><g class="yachai__ojos"><circle cx="24.5" cy="28" r="2.9"/><circle cx="35.5" cy="28" r="2.9"/></g><path class="yachai__boca" d="M25.5 34.5 Q30 38.2 34.5 34.5"/><circle class="yachai__mejilla" cx="19.5" cy="33" r="2"/><circle class="yachai__mejilla" cx="40.5" cy="33" r="2"/></svg></span><span><b>Yachai</b><small>En línea · te respondemos ahora</small></span></p>
-    <p class="contacto__pregunta">¡Hola! Soy Yachai. ¿Con quién quieres hablar?</p>
+    <p class="contacto__cabeza"><span class="contacto__avatar"><img class="puma" src="assets/img/marca/puma-avatar.webp" alt="" width="320" height="320" decoding="async"></span><span><b>Yachai</b><small>Asistente automatizado · en línea</small></span></p>
+    <p class="contacto__pregunta">¡Hola! Soy Yachai, el puma de esta web, un asistente automatizado. ¿Con quién quieres hablar?</p>
     <button type="button" class="contacto__opcion" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">
-      <span class="contacto__icono contacto__icono--yachai"><svg class="yachai" viewBox="0 0 60 60" aria-hidden="true"><path class="yachai__cuerpo" d="M24 3 H36 V14 H46 V24 H57 V36 H46 V46 H36 V57 H24 V46 H14 V36 H3 V24 H14 V14 H24 Z"/><g class="yachai__ojos"><circle cx="24.5" cy="28" r="2.9"/><circle cx="35.5" cy="28" r="2.9"/></g><path class="yachai__boca" d="M25.5 34.5 Q30 38.2 34.5 34.5"/><circle class="yachai__mejilla" cx="19.5" cy="33" r="2"/><circle class="yachai__mejilla" cx="40.5" cy="33" r="2"/></svg></span>
-      <span><b>Con Yachai, nuestro asistente</b><small>Responde al instante, a cualquier hora</small></span>
+      <span class="contacto__icono contacto__icono--yachai"><img class="puma" src="assets/img/marca/puma-avatar.webp" alt="" width="320" height="320" decoding="async"></span>
+      <span><b>Con Yachai, nuestro asistente</b><small>Automatizado · responde al instante</small></span>
     </button>
     <a class="contacto__opcion contacto__opcion--wa" href="https://wa.me/51969322677?text=Hola%20Rodrigo%2C%20vi%20la%20web%20de%20Yachai%20y%20quiero%20conversar" target="_blank" rel="noopener">
       <span class="contacto__icono contacto__icono--wa" aria-hidden="true"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5A12.5 12.5 0 0 0 5.2 22.3L3.5 28.5l6.4-1.7A12.5 12.5 0 1 0 16 3.5z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M12.2 10.2c.3-.1.6 0 .8.3l1.3 2.7c.1.3.1.6-.1.8l-.9 1c.8 1.6 2 2.8 3.6 3.6l1-.9c.2-.2.5-.3.8-.1l2.7 1.3c.3.2.4.5.3.8-.5 1.6-1.9 2.4-3.4 2.1-3.6-.8-6.3-3.5-7.1-7.1-.3-1.5.5-2.9 2.1-3.4z" fill="currentColor"/></svg></span>
-      <span><b>Directo con Rodrigo</b><small>Por WhatsApp · +51 969 322 677</small></span>
+      <span><b>Con una persona: Rodrigo</b><small>Por WhatsApp · +51 969 322 677</small></span>
     </a>
   </div>
   <button type="button" class="contacto__boton" aria-expanded="false" aria-controls="contacto-globo" aria-label="Hablar con Yachai o con Rodrigo">
-    <svg class="yachai" viewBox="0 0 60 60" aria-hidden="true"><path class="yachai__cuerpo" d="M24 3 H36 V14 H46 V24 H57 V36 H46 V46 H36 V57 H24 V46 H14 V36 H3 V24 H14 V14 H24 Z"/><g class="yachai__ojos"><circle cx="24.5" cy="28" r="2.9"/><circle cx="35.5" cy="28" r="2.9"/></g><path class="yachai__boca" d="M25.5 34.5 Q30 38.2 34.5 34.5"/><circle class="yachai__mejilla" cx="19.5" cy="33" r="2"/><circle class="yachai__mejilla" cx="40.5" cy="33" r="2"/></svg>
+    <img class="puma" src="assets/img/marca/puma-avatar.webp" alt="" width="320" height="320" decoding="async">
     <span class="contacto__punto" aria-hidden="true"></span>
   </button>
 </div>
 
 <!-- Ventana flotante del asistente. En el inicio, el chat de la sección se
      muda acá al abrirla y vuelve al cerrarla; en las demás páginas vive acá. -->
-<div class="panel-asistente" id="panel-asistente" role="dialog" aria-label="Yachai, el asistente" hidden>
+<div class="panel-asistente" id="panel-asistente" role="dialog" aria-label="Yachai, asistente automatizado" hidden>
   <div class="panel-asistente__barra"><button type="button" class="panel-asistente__cerrar">Cerrar ✕</button></div>
   <div class="panel-asistente__cuerpo"></div>
 </div>
@@ -725,8 +729,8 @@
 <!-- GSAP 3.15 (gratis, incluidos los plugins). Si no carga, main.js hace todo solo. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=62233993" defer></script>
-<script src="assets/js/movimiento.js?v=5fb691bc" defer></script>
+<script src="assets/js/main.js?v=3e7ce54e" defer></script>
+<script src="assets/js/movimiento.js?v=f516fcff" defer></script>
 <script src="assets/js/menu.js?v=4f5db3fb" defer></script>
 </body>
 </html>

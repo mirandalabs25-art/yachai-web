@@ -42,23 +42,26 @@
     });
   })();
 
-  // Si GSAP cargó, movimiento.js arma la chakana del hero, hace entrar la
-  // cámara por su hueco al bajar y agrega el imán que frena en cada escena.
-  // Si no cargó, este archivo hace todo solo.
+  // Si GSAP cargó, movimiento.js encaja los tres módulos de la Y del hero y
+  // hace entrar la cámara por su centro al bajar. Si no cargó, este archivo
+  // hace todo solo.
   var usaGsap = !!(window.gsap && window.ScrollTrigger) && !sinMovimiento;
 
   // Estado del hero que GSAP anima desde movimiento.js:
-  //   armado: 0 = vértices dispersos, 1 = chakana formada
-  //   zoom / giro: la cámara que atraviesa la chakana al bajar
+  //   armado: 0 = vértices dispersos, 1 = los tres módulos encajados en la Y
+  //   zoom / giro: la cámara que atraviesa la Y por su centro al bajar (el
+  //   manual pide una firma sin giro: giro queda en 0)
   var estado = window.YACHAI_HERO = { armado: usaGsap ? 0 : 1, zoom: 1, giro: 0 };
 
   /* ======================================================================
-     1. Hero generativo — grafo de nodos sobre una chakana
+     1. Hero generativo — grafo de nodos que se encajan en la Y
      ----------------------------------------------------------------------
      No hay foto de Rodrigo, y una de banco sería una persona ajena haciendo
      de él. Se dibuja lo que realmente hace: nodos sueltos que se enlazan.
-     Los nodos "ancla" están puestos sobre el contorno de una chakana —
-     la cruz andina— así que la forma de Cusco se insinúa sin dibujarla.
+     Los nodos "ancla" son los 18 vértices de los tres módulos del isotipo
+     (manual de marca v1.0): llegan por separado y encajan, uno tras otro, en
+     la Y. La geometría sale de 01-Logos-SVG/construccion.json; no se
+     redibuja a ojo.
      ====================================================================== */
 
   var lienzo = document.getElementById('lienzo');
@@ -66,13 +69,26 @@
   var nodos = [];
   var ancho = 0, alto = 0, dpr = 1;
 
-  // Contorno de la chakana en coordenadas de rejilla (-3..3).
-  // Los 20 vertices de la chakana, en orden, centrados en (0,0).
-  var CHAKANA = [
-    [-1, 5], [1, 5], [1, 3], [3, 3], [3, 1], [5, 1], [5, -1], [3, -1],
-    [3, -3], [1, -3], [1, -5], [-1, -5], [-1, -3], [-3, -3], [-3, -1],
-    [-5, -1], [-5, 1], [-3, 1], [-3, 3], [-1, 3]
+  // Los tres módulos (construccion.json), centrados en (0,0) y a escala de
+  // rejilla: el ancho de la Y equivale a 10 unidades.
+  var Y_CRUDO = [
+    [[74.8897, 52.4752], [58.8897, 61.7128], [0, 27.7128], [0, 9.2376], [16, 0], [74.8897, 34]],
+    [[80.0859, 52.4752], [80.0859, 34], [138.9756, 0], [154.9756, 9.2376], [154.9756, 27.7128], [96.0859, 61.7128]],
+    [[77.4878, 56.9752], [93.4878, 66.2128], [93.4878, 134.2128], [77.4878, 143.4504], [61.4878, 134.2128], [61.4878, 66.2128]]
   ];
+  var Y_CENTRO = [77.4878, 71.7252], Y_UNIDAD = 10 / 155;
+  var Y_MODULOS = Y_CRUDO.map(function (m) {
+    return m.map(function (p) { return [(p[0] - Y_CENTRO[0]) * Y_UNIDAD, (p[1] - Y_CENTRO[1]) * Y_UNIDAD]; });
+  });
+  var Y_PUNTOS = [].concat.apply([], Y_MODULOS);   // 18 vértices, de 6 en 6 por módulo
+
+  // Escalonado del manual: cada módulo entra 80 ms después del anterior
+  // (sobre 880 ms de entrada de la marca).
+  var ESCALON = 0.09;
+  function armadoDe(modulo) {
+    var t = (estado.armado - modulo * ESCALON) / (1 - 2 * ESCALON);
+    return t < 0 ? 0 : t > 1 ? 1 : t;
+  }
 
   function medirLienzo() {
     if (!lienzo) return;
@@ -92,15 +108,15 @@
     escala = Math.min(ancho, alto) / 14;
     cx = ancho / 2; cy = alto / 2;
 
-    // Nodos ancla: los vértices de la chakana, más brillantes y quietos.
-    // bx/by es su lugar en la chakana (relativo al centro); ox/oy, el punto
-    // disperso desde el que llegan cuando la chakana se arma.
-    CHAKANA.forEach(function (p) {
+    // Nodos ancla: los vértices de los tres módulos, más brillantes y quietos.
+    // bx/by es su lugar en la Y (relativo al centro); ox/oy, el punto
+    // disperso desde el que llega cuando los módulos encajan.
+    Y_PUNTOS.forEach(function (p, n) {
       nodos.push({
         x: cx + p[0] * escala, y: cy + p[1] * escala,
         bx: p[0] * escala, by: p[1] * escala,
         ox: (Math.random() - 0.5) * ancho, oy: (Math.random() - 0.5) * alto,
-        vx: 0, vy: 0, r: 2.1, ancla: true, fase: Math.random() * 6.28
+        vx: 0, vy: 0, r: 2.1, ancla: true, modulo: Math.floor(n / 6), fase: Math.random() * 6.28
       });
     });
 
@@ -109,8 +125,8 @@
     for (var i = 0; i < sueltos; i++) {
       nodos.push({
         x: Math.random() * ancho, y: Math.random() * alto,
-        vx: (Math.random() - 0.5) * 0.22,
-        vy: (Math.random() - 0.5) * 0.22,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: (Math.random() - 0.5) * 0.12,
         r: Math.random() * 1.1 + 0.5, ancla: false, fase: 0
       });
     }
@@ -124,37 +140,37 @@
 
     var i, j, a, b, dx, dy, d;
     var limite = Math.min(ancho, alto) * 0.19;
-    var k = estado.armado, z = estado.zoom;
+    var z = estado.zoom;
     var cos = Math.cos(estado.giro), sen = Math.sin(estado.giro);
 
-    // Ubicar las anclas: de su punto disperso a su vértice (armado), y
-    // después girar y acercar alrededor del centro (la cámara del scroll).
-    for (i = 0; i < CHAKANA.length; i++) {
+    // Ubicar las anclas: de su punto disperso a su vértice (cada módulo con
+    // su turno), y después acercar alrededor del centro (la cámara del scroll).
+    for (i = 0; i < Y_PUNTOS.length; i++) {
       a = nodos[i];
-      var px = a.ox + (a.bx - a.ox) * k + Math.sin(t + a.fase) * 5;
-      var py = a.oy + (a.by - a.oy) * k + Math.cos(t * 0.8 + a.fase) * 5;
+      var km = armadoDe(a.modulo);
+      var px = a.ox + (a.bx - a.ox) * km + Math.sin(t + a.fase) * 5 * (1 - km);
+      var py = a.oy + (a.by - a.oy) * km + Math.cos(t * 0.8 + a.fase) * 5 * (1 - km);
       a.x = cx + (px * cos - py * sen) * z;
       a.y = cy + (px * sen + py * cos) * z;
     }
 
-    // El contorno de la chakana, uniendo anclas consecutivas. Sin esto la
-    // forma no se lee: quedaban puntos sueltos. Aparece a medida que se arma.
-    ctx.strokeStyle = 'rgba(245,197,24,' + (0.30 * k * k).toFixed(3) + ')';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    for (i = 0; i < CHAKANA.length; i++) {
-      a = nodos[i];
-      if (i === 0) ctx.moveTo(a.x, a.y); else ctx.lineTo(a.x, a.y);
+    // El contorno de cada módulo, uniendo sus seis anclas. Sin esto la forma
+    // no se lee: quedaban puntos sueltos. Aparece a medida que encaja, y el
+    // módulo se rellena con un dorado tenue (la Y llena está en el logo).
+    for (var mo = 0; mo < 3; mo++) {
+      var kk = armadoDe(mo);
+      ctx.beginPath();
+      for (i = 0; i < 6; i++) {
+        a = nodos[mo * 6 + i];
+        if (i === 0) ctx.moveTo(a.x, a.y); else ctx.lineTo(a.x, a.y);
+      }
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(245,197,24,' + (0.09 * kk * kk * kk).toFixed(3) + ')';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(245,197,24,' + (0.6 * kk * kk).toFixed(3) + ')';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
     }
-    ctx.closePath();
-    ctx.stroke();
-
-    // El hueco del centro, como en el signo de la marca. Al bajar, la
-    // cámara lo atraviesa.
-    ctx.strokeStyle = 'rgba(245,197,24,' + (0.45 * k * k).toFixed(3) + ')';
-    ctx.beginPath();
-    ctx.arc(cx, cy, escala * 1.05 * z, 0, 6.2832);
-    ctx.stroke();
 
     // Enlaces de proximidad, para que los nodos queden encima.
     for (i = 0; i < nodos.length; i++) {
@@ -165,11 +181,13 @@
         if (d > limite) continue;
         var fuerza = 1 - d / limite;
         if (a.ancla && b.ancla) continue;   // ya los une el contorno
-        var dorado = false;
-        ctx.strokeStyle = dorado
-          ? 'rgba(245,197,24,' + (fuerza * 0.5).toFixed(3) + ')'
+        // Manual: el azul informa. Los enlaces entre un módulo y un nodo suelto
+        // (la información que se conecta) van en azul; el resto, en hueso.
+        var conAncla = a.ancla !== b.ancla;
+        ctx.strokeStyle = conAncla
+          ? 'rgba(49,92,255,' + (fuerza * 0.7).toFixed(3) + ')'
           : 'rgba(237,237,234,' + (fuerza * 0.16).toFixed(3) + ')';
-        ctx.lineWidth = dorado ? 1 : 0.6;
+        ctx.lineWidth = conAncla ? 1 : 0.6;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
@@ -211,13 +229,12 @@
   }
 
   /* ======================================================================
-     2. Scroll: el hero se apaga y la chakana gira
+     2. Scroll: el hero se apaga y cada escena se abre en una ventana
      ----------------------------------------------------------------------
      La sección .giro es alta y su escena queda fija. El scroll se reparte
-     en tramos: una intro (aparece la chakana) y un tramo por cara. En cada
-     tramo la chakana da media vuelta (a los 90° cambia la escena que se ve
-     por el hueco), el hueco se abre hasta llenar la pantalla, se lee, y se
-     vuelve a cerrar. Todo sale de window.scrollY: funciona con o sin GSAP
+     en tramos: un tramo por cara. En cada uno la ventana hexagonal (el
+     módulo del isotipo) se abre desde el centro hasta llenar la pantalla, se
+     lee, y se vuelve a cerrar. Todo sale de window.scrollY: funciona con o sin GSAP
      (GSAP solo agrega el "imán" que frena en cada cara).
      ====================================================================== */
 
@@ -388,15 +405,21 @@
     if (cara) { cara.classList.add('abierta'); correrDemo(cara); }
   }
 
-  // La chakanita con puntos que abre y cierra cada escena (pedido del
-  // usuario, 2026-09-22: "en vez de ese círculo, una chakanita con puntos").
-  // Usa los mismos 20 vértices que la chakana del hero.
+  // El hexágono con puntos que abre y cierra cada escena. Es el módulo del
+  // isotipo, no la Y (la Y es la firma y no se recorta ni se anima así). Un
+  // hexágono regular de apotema 3: con el cuadrado central (±3) ya cubre toda
+  // la pantalla, gire como gire.
+  var VENTANA = [];
+  for (var v = 0; v < 6; v++) {
+    var angulo = -Math.PI / 2 + v * Math.PI / 3;
+    VENTANA.push([Math.cos(angulo) * 3.4641, Math.sin(angulo) * 3.4641]);
+  }
   var nodosSvg = document.querySelector('.giro__nodos');
   var contornoSvg = nodosSvg && nodosSvg.querySelector('.giro__contorno');
   var puntosSvg = [];
   if (nodosSvg) {
     var grupo = nodosSvg.querySelector('.giro__puntos');
-    CHAKANA.forEach(function () {
+    VENTANA.forEach(function () {
       var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       c.setAttribute('r', '3');
       grupo.appendChild(c);
@@ -412,23 +435,22 @@
     var i = Math.min(caras.length - 1, Math.floor(P));
     var t = Math.min(1, P - i);
 
-    // Cada escena se abre desde el centro con forma de chakana hasta llenar
-    // la pantalla, se lee, y se cierra otra vez en una chakana. La última no
-    // se cierra: la sección termina con ella abierta.
+    // Cada escena se abre desde el centro con forma de hexágono hasta llenar
+    // la pantalla, se lee, y se cierra otra vez. La última no se cierra: la
+    // sección termina con ella abierta.
     var abre = suave((t - 0.04) / 0.3);
     var cierra = i === caras.length - 1 ? 0 : suave((t - 0.84) / 0.16);
     var abierto = abre * (1 - cierra);
 
-    // Tamaño: con el cuadrado central (±3 unidades) ya cubre toda la
-    // pantalla, gire como gire. Giro: en la escena 1 acompaña a la chakana
-    // del hero (que gira al bajar); en las demás, un deslizamiento suave de
-    // ~20° mientras se abre o se cierra.
+    // Tamaño: con el apotema de 3 unidades ya cubre toda la pantalla. Giro:
+    // un deslizamiento suave de ~11° mientras se abre o se cierra (el manual
+    // pide movimiento con función y sin exceso: la ventana no da vueltas).
     var escalaMax = Math.sqrt(W * W + H * H) / 2 / 3 * 1.06;
     var s = abierto * escalaMax;
     var desdeHero = i === 0 && t < 0.5;
-    var ang = desdeHero ? (estado.giro || 0) : (1 - abierto) * 0.35;
+    var ang = desdeHero ? (estado.giro || 0) : (1 - abierto) * 0.2;
     var cos = Math.cos(ang), sen = Math.sin(ang), cx = W / 2, cy = H / 2;
-    var pts = CHAKANA.map(function (p) {
+    var pts = VENTANA.map(function (p) {
       return [cx + (p[0] * cos - p[1] * sen) * s, cy + (p[0] * sen + p[1] * cos) * s];
     });
     var poligono = pts.map(function (q) { return q[0].toFixed(1) + 'px ' + q[1].toFixed(1) + 'px'; }).join(',');
@@ -439,7 +461,7 @@
     escena.style.setProperty('--forma', 'polygon(' + poligono + ')');
     escena.style.setProperty('--velo', abierto.toFixed(3));
 
-    // El contorno y los puntos dorados: se ven mientras la chakana se abre o
+    // El contorno y los puntos dorados: se ven mientras la ventana se abre o
     // se cierra. En la escena 1, al abrir, no hacen falta: ya están los del hero.
     if (nodosSvg) {
       var verNodos = abierto > 0.002 && abierto < 0.97 && !desdeHero;
@@ -497,8 +519,8 @@
 
   /* --- Avance automático del giro (pedido del usuario, 2026-09-23) ---------
      "A veces se queda en intermedio… que automáticamente se pase a la
-     siguiente; dale un segundo." Si el scroll se detiene con la chakana a
-     medio girar (una escena abriéndose o cerrándose), al segundo la página
+     siguiente; dale un segundo." Si el scroll se detiene con una escena
+     a medio abrir (abriéndose o cerrándose), al segundo la página
      avanza sola hasta la siguiente escena abierta, en la dirección en que
      venía la persona. Si la escena ya está abierta, no la mueve: se lee
      tranquila. Tocar o girar la rueda corta el viaje en el acto. */
@@ -603,11 +625,11 @@
   }
 
   /* ======================================================================
-     3b. Saltos directos a una escena de la chakana
+     3b. Saltos directos a una escena
      ----------------------------------------------------------------------
      El asistente ("Ver cómo se ve"), el menú y el enlace ?cara=04 llevan de
      golpe a esa escena ya abierta. De golpe y no con scroll suave: un viaje
-     suave por el medio haría girar la chakana por todas las caras.
+     suave por el medio abriría y cerraría todas las escenas del camino.
      ====================================================================== */
 
   function saltar(top) {
@@ -635,7 +657,7 @@
   medirCabecera();
   window.addEventListener('resize', medirCabecera);
 
-  // Enlaces internos (menú, botones del hero): si el viaje cruza la chakana,
+  // Enlaces internos (menú, botones del hero): si el viaje cruza las escenas,
   // van de golpe.
   document.addEventListener('click', function (e) {
     var enlace = e.target.closest('a[href^="#"]');
@@ -840,7 +862,7 @@
       location.href = destino.slice(1);
       return;
     }
-    if (destino.indexOf('@cara-') === 0) {   // saltar a esa escena de la chakana
+    if (destino.indexOf('@cara-') === 0) {   // saltar a esa escena
       var d = destino.slice(6);
       if (document.getElementById('cara-' + d)) { cerrarPanel(); irACara(d); }
       else if (DATOS.servicios[d]) location.href = DATOS.servicios[d].url;
@@ -1087,10 +1109,10 @@
     if (arrancado || !registro) return;
     arrancado = true;
     if (MODO === 'asesoria' && !despues) {
-      decir(['¡Hola! Soy Yachai, el asistente de esta web.'], function () { ir('landing'); });
+      decir(['¡Hola! Soy Yachai, el puma de esta web. Soy un asistente automatizado.'], function () { ir('landing'); });
       return;
     }
-    decir(['¡Hola! Soy Yachai, el asistente de esta web.', despues ? '' : '¿Qué te gustaría saber?'].filter(Boolean), function () {
+    decir(['¡Hola! Soy Yachai, el puma de esta web. Soy un asistente automatizado.', despues ? '' : 'Puedo ayudarte a explorar información y ordenar tu consulta. ¿Qué te gustaría saber?'].filter(Boolean), function () {
       if (despues) despues(); else ofrecer(INICIO);
     });
   }

@@ -19,23 +19,25 @@
   var estado = window.YACHAI_HERO;
 
   /* ======================================================================
-     1. Entrada: la chakana del hero se arma
-     Los veinte vértices llegan desde donde estaban sueltos y se cierran en
-     la cruz. El titular ya sube solo por CSS; la bajada llega detrás.
+     1. Entrada: los tres módulos de la Y encajan
+     Manual de marca, «Motion»: los módulos llegan uno tras otro (80 ms de
+     desfase), convergen con la curva cubic-bezier(.22,1,.36,1) y la firma
+     permanece. Sin giro ni rebote. Los 18 vértices llegan desde donde
+     estaban sueltos y se cierran en la Y. El titular ya sube solo por CSS;
+     la bajada llega detrás. (La entrada del logo en sí dura 880 ms; en el
+     hero, con el fondo de nodos, se alarga a 1,6 s para que se lea.)
      ====================================================================== */
 
   var entrada = gsap.timeline({ delay: 0.15 });
-  if (estado) entrada.to(estado, { armado: 1, duration: 2.4, ease: 'expo.inOut' }, 0);
+  if (estado) entrada.to(estado, { armado: 1, duration: 1.6, ease: 'expo.out' }, 0);
   entrada.from('.hero__bajada', { autoAlpha: 0, y: 18, duration: 1, ease: 'power3.out' }, 0.7);
-  entrada.from('.hero__pie', { autoAlpha: 0, duration: 1 }, 1.2);
 
   /* ======================================================================
-     2. Bajar atraviesa la chakana del hero
-     La cruz gira un octavo de vuelta y la cámara entra por su hueco. En el
-     mismo tramo (el 38 % de una pantalla), main.js abre la escena 1 desde
-     ese hueco: se entra a la primera cara a través de la chakana de nodos.
-     (Corrección del 2026-09-22: antes aparecía primero la chakana de
-     obsidiana y daba una vuelta sola; sobraba.)
+     2. Bajar atraviesa la Y del hero
+     La cámara entra por el centro de la Y, sin girarla (el manual pide una
+     firma sin giro). En el mismo tramo (el 38 % de una pantalla), main.js
+     abre la escena 1 desde ese centro: se entra a la primera cara a través
+     de la Y de nodos.
      ====================================================================== */
 
   var heroScroll = gsap.timeline({
@@ -46,17 +48,15 @@
       scrub: 0.6
     }
   });
-  if (estado) heroScroll.to(estado, { zoom: 5.5, giro: Math.PI / 4, ease: 'power2.in' }, 0);
+  if (estado) heroScroll.to(estado, { zoom: 5.5, ease: 'power2.in' }, 0);
   heroScroll
     .to('.hero__texto', { autoAlpha: 0, y: -60, ease: 'power1.in' }, 0)
-    // fromTo sin render inmediato: si no, pisa el fundido de entrada del pie.
-    .fromTo('.hero__pie', { autoAlpha: 1 }, { autoAlpha: 0, ease: 'none', duration: 0.4, immediateRender: false }, 0)
     .fromTo('.hero__sombra', { '--sombra': 0 }, { '--sombra': 0.75, ease: 'none' }, 0);
 
   /* ======================================================================
      3. (Sacado el 2026-09-23) El imán de GSAP que frenaba en cada cara.
-     En el celular a veces no alcanzaba a actuar y la chakana quedaba a medio
-     girar. Lo reemplaza el avance automático de main.js («Avance automático
+     En el celular a veces no alcanzaba a actuar y la escena quedaba a medio
+     abrir. Lo reemplaza el avance automático de main.js («Avance automático
      del giro»), que funciona con o sin GSAP.
      ====================================================================== */
 

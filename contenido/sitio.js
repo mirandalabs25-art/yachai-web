@@ -21,6 +21,11 @@ const MARCA = {
   enfasis: 'Asesorías en inteligencia artificial',
 };
 
+// REVISAR: dirección pública de la web, con https:// y sin barra final (por
+// ejemplo, «https://yachai.com.pe»). Sin ella no sale la imagen para compartir el
+// enlace por WhatsApp o Facebook: necesitan la dirección completa (og:image).
+const SITIO_URL = null;
+
 // REVISAR: cambiar al número nuevo de Yachai cuando exista el chip.
 const WA_NUMERO = '51969322677';
 const WA_VISIBLE = '+51 969 322 677';
@@ -663,6 +668,6 @@ const PROHIBIDAS = [
 ];
 
 module.exports = {
-  MARCA, WA_NUMERO, WA_VISIBLE, wa, RUC, REGISTRO_CONTACTOS, ASESORIA, REGALO, CUPOS, TESTIMONIOS, ESTADOS, SERVICIOS, GRUPOS, RUBROS,
+  SITIO_URL, MARCA, WA_NUMERO, WA_VISIBLE, wa, RUC, REGISTRO_CONTACTOS, ASESORIA, REGALO, CUPOS, TESTIMONIOS, ESTADOS, SERVICIOS, GRUPOS, RUBROS,
   OTROS_RUBROS, CIFRAS, MENU, PROHIBIDAS,
 };

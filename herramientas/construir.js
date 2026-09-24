@@ -96,7 +96,8 @@ const IDEAS = (() => {
   }));
 })();
 
-const BLOQUE = (nombre) => leer(path.join(RAIZ, 'contenido', 'bloques', nombre + '.html'));
+const BLOQUE = (nombre) => leer(path.join(RAIZ, 'contenido', 'bloques', nombre + '.html'))
+  .replace(/[ \t]*<span class="seccion__num">[^<]*<\/span>\r?\n/g, '');   // sin numeración de adorno (2026-09-24)
 
 /* --- notas del vault con `web: publicar` --------------------------------- */
 
@@ -155,14 +156,35 @@ function versionar() {
    Piezas compartidas
    ========================================================================== */
 
+// Manual de marca v1.0: Manrope (principal: 400 texto · 500 navegación · 600
+// subtítulos y botones · 700 títulos · 800 titulares) y JetBrains Mono
+// (secundaria: 400/500, etiquetas y datos). Ambas con licencia SIL OFL; los
+// TTF están en produccion/marca/kit-v1/YACHAI/04-Tipografia/ por si se
+// autoaloja cuando la web tenga servidor propio.
 const FUENTES = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">`;
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">`;
 
-const SIGNO = `<svg class="marca__signo" viewBox="0 0 60 60" aria-hidden="true">
-      <path d="M24 0 H36 V12 H48 V24 H60 V36 H48 V48 H36 V60 H24 V48 H12 V36 H0 V24 H12 V12 H24 Z"/>
-      <circle cx="30" cy="30" r="6"/>
-    </svg>`;
+// Iconos de la pestaña, el celular y la instalación (03-Iconos-app del kit).
+const ICONOS_HEAD = `<link rel="icon" href="assets/img/marca/favicon.ico" sizes="any">
+<link rel="icon" href="assets/img/marca/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/marca/apple-touch-icon.png">
+<link rel="manifest" href="assets/img/marca/site.webmanifest">`;
+
+// El logo horizontal del manual (01-Logos-SVG, variante para fondo oscuro:
+// isotipo dorado + nombre en hueso). Es el archivo maestro, en curvas: no se
+// vuelve a escribir «Yachai» con una tipografía. Mínimo 120 px de ancho.
+const LOGO = `<img class="marca__logo" src="assets/img/marca/logo-horizontal.svg" alt="" width="540" height="180">`;
+
+// Imagen para compartir el enlace (1200 × 630, manual de marca). Solo se declara
+// cuando la web tiene dirección pública (SITIO_URL en sitio.js).
+function ogImagen() {
+  if (!S.SITIO_URL) return '<!-- REVISAR: og:image, cuando exista SITIO_URL en contenido/sitio.js -->';
+  return `<meta property="og:image" content="${S.SITIO_URL}/assets/img/marca/compartir.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">`;
+}
 
 function oferta(clase = '') {
   return `<div class="oferta ${clase}">
@@ -236,24 +258,23 @@ function cabecera(seccion, archivo) {
   return `<header class="cabecera">
 <div class="anuncio" aria-hidden="true">
   <div class="anuncio__pista">
-    <span>${esc(S.ASESORIA.regalo)}</span><span>—</span>
-    <span>${esc(S.MARCA.corto)}</span><span>—</span>
-    <span>${esc(S.MARCA.enfasis)}</span><span>—</span>
-    <span>Aprende IA</span><span>—</span>
-    <span>Tu web gratis en ${esc(S.ASESORIA.mes)}</span><span>—</span>
-    <span>Solo ${S.CUPOS} cupos en ${esc(S.ASESORIA.mes)}</span><span>—</span>
-    <span>Cusco · Perú</span><span>—</span>
-    <span>Bots y agentes</span><span>—</span>
-    <span>Bases de clientes</span><span>—</span>
-    <span>Webs propias</span><span>—</span>
-    <span>Software a medida</span><span>—</span>
+    <span>${esc(S.ASESORIA.regalo)}</span><span class="sep" aria-hidden="true"></span>
+    <span>${esc(S.MARCA.corto)}</span><span class="sep" aria-hidden="true"></span>
+    <span>${esc(S.MARCA.enfasis)}</span><span class="sep" aria-hidden="true"></span>
+    <span>Aprende IA</span><span class="sep" aria-hidden="true"></span>
+    <span>Tu web gratis en ${esc(S.ASESORIA.mes)}</span><span class="sep" aria-hidden="true"></span>
+    <span>Solo ${S.CUPOS} cupos en ${esc(S.ASESORIA.mes)}</span><span class="sep" aria-hidden="true"></span>
+    <span>Cusco · Perú</span><span class="sep" aria-hidden="true"></span>
+    <span>Bots y agentes</span><span class="sep" aria-hidden="true"></span>
+    <span>Bases de clientes</span><span class="sep" aria-hidden="true"></span>
+    <span>Webs propias</span><span class="sep" aria-hidden="true"></span>
+    <span>Software a medida</span><span class="sep" aria-hidden="true"></span>
   </div>
 </div>
 
 <nav class="nav" aria-label="Principal">
   <a class="marca" href="index.html" aria-label="Yachai, inicio">
-    ${SIGNO}
-    <span class="marca__texto">Yachai</span>
+    ${LOGO}
   </a>
 
   <ul class="nav__links" id="nav-links" role="list">
@@ -276,22 +297,21 @@ function cabeceraMinima() {
   return `<header class="cabecera">
 <div class="anuncio" aria-hidden="true">
   <div class="anuncio__pista">
-    <span>${esc(S.ASESORIA.regalo)}</span><span>—</span>
-    <span>${esc(S.MARCA.corto)}</span><span>—</span>
-    <span>${esc(S.MARCA.enfasis)}</span><span>—</span>
-    <span>Aprende IA</span><span>—</span>
-    <span>Tu web gratis en ${esc(S.ASESORIA.mes)}</span><span>—</span>
-    <span>${esc(S.ASESORIA.titulo)}</span><span>—</span>
-    <span>Solo ${S.CUPOS} cupos en ${esc(S.ASESORIA.mes)}</span><span>—</span>
-    <span>${esc(S.ASESORIA.despues)}</span><span>—</span>
-    <span>Cusco · Perú</span><span>—</span>
+    <span>${esc(S.ASESORIA.regalo)}</span><span class="sep" aria-hidden="true"></span>
+    <span>${esc(S.MARCA.corto)}</span><span class="sep" aria-hidden="true"></span>
+    <span>${esc(S.MARCA.enfasis)}</span><span class="sep" aria-hidden="true"></span>
+    <span>Aprende IA</span><span class="sep" aria-hidden="true"></span>
+    <span>Tu web gratis en ${esc(S.ASESORIA.mes)}</span><span class="sep" aria-hidden="true"></span>
+    <span>${esc(S.ASESORIA.titulo)}</span><span class="sep" aria-hidden="true"></span>
+    <span>Solo ${S.CUPOS} cupos en ${esc(S.ASESORIA.mes)}</span><span class="sep" aria-hidden="true"></span>
+    <span>${esc(S.ASESORIA.despues)}</span><span class="sep" aria-hidden="true"></span>
+    <span>Cusco · Perú</span><span class="sep" aria-hidden="true"></span>
   </div>
 </div>
 
 <nav class="nav nav--minima" aria-label="Principal">
   <a class="marca" href="index.html" aria-label="Yachai, inicio">
-    ${SIGNO}
-    <span class="marca__texto">Yachai</span>
+    ${LOGO}
   </a>
   <span></span>
   <div class="nav__derecha">
@@ -306,6 +326,7 @@ function pie() {
   return `<footer class="pie" id="pie">
   <div class="pie__grid">
     <div>
+      <img class="pie__logo" src="assets/img/marca/logo-horizontal.svg" alt="YACHAI" width="540" height="180">
       <p class="pie__titulo">Escríbeme</p>
       <ul class="pie__lista" role="list">
         <li class="pie__grande"><a href="https://wa.me/${S.WA_NUMERO}" ${EXTERNO}>${S.WA_VISIBLE}</a></li>
@@ -314,7 +335,7 @@ function pie() {
         <!-- REVISAR: correo propio -->
         <li>[correo@yachai]</li>
       </ul>
-      <p class="parrafo pie__marca"><i>Yachay</i> es <b>conocimiento</b> en quechua. El signo es la <b>chakana</b>, la cruz andina. De Cusco, y se nota.</p>
+      <p class="parrafo pie__marca"><i>Yachay</i> es <b>conocimiento</b> en quechua. El isotipo son tres bloques que encajan en una Y. <b>Inteligencia andina para negocios reales.</b></p>
     </div>
 
     <div>
@@ -345,6 +366,8 @@ ${S.RUBROS.map((r) => `        <li><a href="${r.slug}.html">${esc(r.nombre)}</a>
     </div>
   </div>
 
+  <p class="pie__aviso">Las imágenes y los videos de esta web son ilustrativos, generados con inteligencia artificial: no representan clientes ni resultados reales. Los ejemplos rotulados «Demostración» usan datos ficticios.</p>
+
   <div class="pie__base">
     <span>© <span id="anio">2026</span> Yachai · Cusco, Perú · ${S.RUC ? 'RUC ' + esc(S.RUC) : '<!-- REVISAR: RUC de 11 dígitos -->[RUC por confirmar]'}</span>
     <span>${esc(S.MARCA.que)} · ${esc(S.MARCA.enfasis)}</span>
@@ -352,9 +375,11 @@ ${S.RUBROS.map((r) => `        <li><a href="${r.slug}.html">${esc(r.nombre)}</a>
 </footer>`;
 }
 
-// Yachai, el personaje de la marca (2026-09-23): la chakana en blanco, con
-// cara. Parpadea y saluda (CSS). Va en el botón de contacto y en el globo.
-const YACHAI_SVG = '<svg class="yachai" viewBox="0 0 60 60" aria-hidden="true"><path class="yachai__cuerpo" d="M24 3 H36 V14 H46 V24 H57 V36 H46 V46 H36 V57 H24 V46 H14 V36 H3 V24 H14 V14 H24 Z"/><g class="yachai__ojos"><circle cx="24.5" cy="28" r="2.9"/><circle cx="35.5" cy="28" r="2.9"/></g><path class="yachai__boca" d="M25.5 34.5 Q30 38.2 34.5 34.5"/><circle class="yachai__mejilla" cx="19.5" cy="33" r="2"/><circle class="yachai__mejilla" cx="40.5" cy="33" r="2"/></svg>';
+// Yachai, el puma (manual v1.0; el 2026-09-24 Rodrigo decidió que el puma se llama Yachai): acompaña y explica, en el botón
+// de contacto y en el globo del asistente. Es personaje, nunca logo, y el
+// canal dice que es un asistente automatizado. Recorte de cabeza y hombros
+// del PNG maestro (07-Puma), ilustración generada con IA.
+const PUMA_IMG = '<img class="puma" src="assets/img/marca/puma-avatar.webp" alt="" width="320" height="320" decoding="async">';
 
 // Ícono de WhatsApp para «Directo con Rodrigo»: una burbuja de chat con un
 // teléfono, dibujada acá.
@@ -378,26 +403,26 @@ function accesos(conChat, conRegalo = false) {
 <!-- CONTACTO: un solo botón flotante, como el de WhatsApp. -->
 <div class="contacto">
   <div class="contacto__globo" id="contacto-globo" role="dialog" aria-label="¿Con quién quieres hablar?" hidden>
-    <p class="contacto__cabeza"><span class="contacto__avatar">${YACHAI_SVG}</span><span><b>Yachai</b><small>En línea · te respondemos ahora</small></span></p>
-    <p class="contacto__pregunta">¡Hola! Soy Yachai. ¿Con quién quieres hablar?</p>
+    <p class="contacto__cabeza"><span class="contacto__avatar">${PUMA_IMG}</span><span><b>Yachai</b><small>Asistente automatizado · en línea</small></span></p>
+    <p class="contacto__pregunta">¡Hola! Soy Yachai, el puma de esta web, un asistente automatizado. ¿Con quién quieres hablar?</p>
     <button type="button" class="contacto__opcion" data-abrir-asistente aria-controls="panel-asistente" aria-expanded="false">
-      <span class="contacto__icono contacto__icono--yachai">${YACHAI_SVG}</span>
-      <span><b>Con Yachai, nuestro asistente</b><small>Responde al instante, a cualquier hora</small></span>
+      <span class="contacto__icono contacto__icono--yachai">${PUMA_IMG}</span>
+      <span><b>Con Yachai, nuestro asistente</b><small>Automatizado · responde al instante</small></span>
     </button>
     <a class="contacto__opcion contacto__opcion--wa" href="${S.wa('Hola Rodrigo, vi la web de Yachai y quiero conversar')}" ${EXTERNO}>
       <span class="contacto__icono contacto__icono--wa" aria-hidden="true">${ICONO_CHAT}</span>
-      <span><b>Directo con Rodrigo</b><small>Por WhatsApp · ${S.WA_VISIBLE}</small></span>
+      <span><b>Con una persona: Rodrigo</b><small>Por WhatsApp · ${S.WA_VISIBLE}</small></span>
     </a>
   </div>
   <button type="button" class="contacto__boton" aria-expanded="false" aria-controls="contacto-globo" aria-label="Hablar con Yachai o con Rodrigo">
-    ${YACHAI_SVG}
+    ${PUMA_IMG}
     <span class="contacto__punto" aria-hidden="true"></span>
   </button>
 </div>
 
 <!-- Ventana flotante del asistente. En el inicio, el chat de la sección se
      muda acá al abrirla y vuelve al cerrarla; en las demás páginas vive acá. -->
-<div class="panel-asistente" id="panel-asistente" role="dialog" aria-label="Yachai, el asistente" hidden>
+<div class="panel-asistente" id="panel-asistente" role="dialog" aria-label="Yachai, asistente automatizado" hidden>
   <div class="panel-asistente__barra"><button type="button" class="panel-asistente__cerrar">Cerrar ✕</button></div>
   <div class="panel-asistente__cuerpo">${conChat ? '\n' + CHAT + '\n' : ''}</div>
 </div>`;
@@ -413,7 +438,6 @@ function migas(ruta) {
 // Cabecera de una sección: el número va en orden dentro de cada página.
 function cab(n, titulo, bajada, id) {
   return `<div class="seccion__cabecera revelar">
-    <span class="seccion__num">${String(n).padStart(2, '0')} —</span>
     <div>
       <h2 class="titulo"${id ? ` id="${id}"` : ''}>${titulo}</h2>
       ${bajada ? `<p class="parrafo" style="margin-top:16px">${bajada}</p>` : ''}
@@ -487,6 +511,31 @@ function prepararImagenes() {
   return hechas;
 }
 
+// Familia de 14 iconos del manual (05-Sistema-grafico): 24×24, trazo de 2 px, un
+// solo acento (dorado o azul), versión hueso para fondos oscuros. Van en línea
+// (el SVG completo) para que se vean también abriendo el archivo sin servidor.
+const ICONO_SERVICIO = {
+  'asesoria-en-ia': 'estrategia', 'clases-de-ia': 'aprendizaje', 'seguridad': 'seguridad',
+  'bot-de-whatsapp': 'consultoria', 'web-propia': 'web', 'publicaciones-automaticas': 'marketing',
+  'anuncios-meta-ads': 'crecimiento', 'videos-con-ia': 'ia', 'base-de-clientes': 'personas',
+  'asistentes-automaticos': 'automatizacion', 'transcripcion-de-audios': 'resultados',
+  'bases-de-datos': 'datos', 'aplicaciones-web': 'procesos', 'software-a-medida': 'oportunidades',
+};
+const RUBRO_ICONO = { hotel: 'personas', restaurante: 'procesos', consultorio: 'datos', oficina: 'estrategia', tienda: 'crecimiento' };
+function iconoNombre(nombre, clase = 'icono') {
+  const p = nombre && path.join(RAIZ, 'assets', 'img', 'marca', 'iconos', nombre + '.svg');
+  if (!p || !fs.existsSync(p)) return '';
+  const svg = leer(p)
+    .replace(/<\?xml[^>]*\?>\s*/, '')
+    .replace(/ role="img" aria-labelledby="title"/, ' aria-hidden="true" focusable="false"')
+    .replace(/<title[^>]*>[^<]*<\/title>/, '')
+    .trim();
+  return `<span class="${clase}" aria-hidden="true">${svg}</span>`;
+}
+function icono(slug, clase = 'icono') { return iconoNombre(ICONO_SERVICIO[slug], clase); }
+// Marcador <!--ICONO:nombre--> en bloques escritos a mano: se cambia por el ícono en línea.
+const conIconos = (h) => h.replace(/<!--ICONO:([a-z]+)-->/g, (_, n) => iconoNombre(n));
+
 function tarjetaImg(src) {
   return src
     ? `<span class="tarjeta__img"><img src="${src}" alt="" loading="lazy" decoding="async" width="640" height="400"></span>`
@@ -496,6 +545,7 @@ function tarjetaImg(src) {
 function tarjetaServicio(s, conPrecio = true) {
   return `<li><a class="tarjeta tarjeta--img revelar" href="${s.slug}.html">
       ${tarjetaImg(mini(s.cara) || mini(s.mini) || miniPagina(s.slug) || s.imagen || null)}
+      ${icono(s.slug)}
       <span class="tarjeta__dato">${s.destacado ? 'Gratis en ' + esc(S.ASESORIA.mes) : 'Servicio'}</span>
       <b class="tarjeta__titulo">${esc(s.nombre)}</b>
       <span class="tarjeta__texto">${esc(s.entrega)}</span>
@@ -543,7 +593,7 @@ ${S.CIFRAS.map((c, i) => `    <div class="revelar"${i ? ` data-retraso="${i * 80
    Plantilla de página
    ========================================================================== */
 
-function pagina(o) {
+function paginaBase(o) {
   return `<!doctype html>
 <html lang="es-PE">
 <head>
@@ -552,11 +602,12 @@ function pagina(o) {
 <title>${esc(o.titulo)}</title>
 <meta name="description" content="${esc(o.descripcion)}">
 <meta name="theme-color" content="#000000">
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+${ICONOS_HEAD}
 <meta property="og:type" content="${o.og || 'website'}">
 <meta property="og:title" content="${esc(o.titulo)}">
 <meta property="og:description" content="${esc(o.descripcion)}">
 <meta property="og:locale" content="es_PE">
+${ogImagen()}
 <!-- Generado por herramientas/construir.js: no editar a mano, se sobrescribe. -->
 ${FUENTES}
 <link rel="stylesheet" href="assets/css/style.css?v=${V.css}">
@@ -584,6 +635,8 @@ ${accesos(!o.chatEnPagina)}
 </html>
 `;
 }
+
+const pagina = (o) => conIconos(paginaBase(o));
 
 /* ==========================================================================
    Páginas
@@ -652,7 +705,7 @@ ${s.tipos.map(([t, d]) => `    <li class="revelar"><h3>${esc(t)}</h3><p>${esc(d)
     secciones.push(`<section class="seccion">
   ${cab(++n, 'Cómo funciona')}
   <ol class="pasos pasos--3" role="list">
-${s.pasos.map(([t, d], i) => `    <li class="paso revelar"${i ? ` data-retraso="${i * 80}"` : ''}><span class="paso__num">${String(i + 1).padStart(2, '0')}</span><h3 class="paso__titulo">${esc(t)}</h3><p class="paso__texto">${esc(d)}</p></li>`).join('\n')}
+${s.pasos.map(([t, d], i) => `    <li class="paso revelar"${i ? ` data-retraso="${i * 80}"` : ''}><span class="paso__num">${String(i + 1).padStart(2, '0')}</span>${iconoNombre(['consultoria', 'procesos', 'resultados'][i] || 'procesos')}<h3 class="paso__titulo">${esc(t)}</h3><p class="paso__texto">${esc(d)}</p></li>`).join('\n')}
   </ol>
 </section>`);
   }
@@ -689,6 +742,7 @@ ${rubros.map((r) => `    <li><a class="chip" href="${r.slug}.html">${esc(r.nombr
 
   const cuerpo = `<section class="servicio">
   <div class="servicio__texto">
+    ${icono(s.slug, 'icono servicio__icono')}
     <p class="servicio__dolor">«${esc(s.dolor)}»</p>
     <h1 class="pcabeza__titulo">${esc(s.h1)}</h1>
     <p class="pcabeza__bajada">${esc(s.entrega)}</p>
@@ -786,8 +840,7 @@ ${S.SERVICIOS.filter((s) => s.grupo === g.id).map((s) => '    ' + tarjetaServici
     descripcion: 'Bots de WhatsApp, bases de clientes, asistentes automáticos, webs propias, software a medida y clases de IA. Desde Cusco, con precios claros.',
     origen: 'Servicios',
     migas: [['Servicios']],
-    cuerpo: `<header class="pcabeza">
-  <p class="dato dato--qori">Servicios</p>
+    cuerpo: `<header class="pcabeza pcabeza--nodos">
   <h1 class="pcabeza__titulo">Qué resuelvo</h1>
   <p class="pcabeza__bajada">Cada servicio empieza por un problema que se repite en los negocios de Cusco: todo pasa por una sola persona. Elige el que más se parece al tuyo.</p>
   <div class="acciones">
@@ -811,7 +864,7 @@ function paginaRubro(r) {
   const escena = imagenPagina(r.slug) ? { img: imagenPagina(r.slug) } : (r.escena ? cara(r.escena) : null);
   const cuerpo = `<section class="servicio servicio--rubro">
   <div class="servicio__texto">
-    <p class="dato dato--qori">Soluciones · Cusco</p>
+    ${iconoNombre(RUBRO_ICONO[r.clave], 'icono servicio__icono')}
     <h1 class="pcabeza__titulo">${esc(r.h1)}</h1>
     <p class="pcabeza__bajada">${esc(r.bajada)}</p>
     <div class="acciones">
@@ -884,8 +937,7 @@ function paginaSoluciones() {
     descripcion: 'Automatización e IA para hoteles, restaurantes, consultorios, estudios jurídicos y tiendas de Cusco. Qué automatizar primero en cada negocio.',
     origen: 'Soluciones',
     migas: [['Soluciones']],
-    cuerpo: `<header class="pcabeza">
-  <p class="dato dato--qori">Soluciones</p>
+    cuerpo: `<header class="pcabeza pcabeza--nodos">
   <h1 class="pcabeza__titulo">¿Qué negocio tienes?</h1>
   <p class="pcabeza__bajada">Cada rubro tiene su propio cuello de botella. Elige el tuyo y mira qué automatizaría primero, con ejemplos de un día normal.</p>
 </header>
@@ -893,7 +945,7 @@ function paginaSoluciones() {
 <section class="seccion">
   ${cab(1, 'Por tipo de negocio')}
   <ul class="tarjetas" role="list">
-${S.RUBROS.map((r, i) => `    <li><a class="tarjeta tarjeta--img revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}>${tarjetaImg(miniPagina(r.slug) || mini(r.escena))}<span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.» ${esc(r.dolores[0][1])}</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
+${S.RUBROS.map((r, i) => `    <li><a class="tarjeta tarjeta--img revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}>${tarjetaImg(miniPagina(r.slug) || mini(r.escena))}${iconoNombre(RUBRO_ICONO[r.clave])}<span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.» ${esc(r.dolores[0][1])}</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
   </ul>
 </section>
 
@@ -989,10 +1041,10 @@ ${S.REGALO.map((r, i) => `    <li><div class="tarjeta tarjeta--img revelar"${i ?
 <section class="seccion">
   ${cab(++n, `Qué pasa en los ${a.dias} días`, 'En ningún paso trabajas a ciegas, y al final decides tú.')}
   <ol class="pasos" role="list">
-    <li class="paso revelar"><span class="paso__num">01</span><h3 class="paso__titulo">Conversamos</h3><p class="paso__texto">Me cuentas qué te quita el tiempo: los mensajes, el cuaderno, las tareas que repites.</p></li>
-    <li class="paso revelar" data-retraso="80"><span class="paso__num">02</span><h3 class="paso__titulo">Reviso tu negocio</h3><p class="paso__texto">Cómo atiendes, qué se repite y dónde se pierden clientes. Contigo, presencial o por Meet.</p></li>
-    <li class="paso revelar" data-retraso="160"><span class="paso__num">03</span><h3 class="paso__titulo">Te entrego el plan</h3><p class="paso__texto">Qué automatizar primero, en orden, y cuánto cuesta cada paso. Por escrito.</p></li>
-    <li class="paso revelar" data-retraso="240"><span class="paso__num">04</span><h3 class="paso__titulo">Decides tú</h3><p class="paso__texto">Lo hacemos juntos, lo haces con otra persona o lo dejas para más adelante.</p></li>
+    <li class="paso revelar"><span class="paso__num">01</span><!--ICONO:consultoria--><h3 class="paso__titulo">Conversamos</h3><p class="paso__texto">Me cuentas qué te quita el tiempo: los mensajes, el cuaderno, las tareas que repites.</p></li>
+    <li class="paso revelar" data-retraso="80"><span class="paso__num">02</span><!--ICONO:estrategia--><h3 class="paso__titulo">Reviso tu negocio</h3><p class="paso__texto">Cómo atiendes, qué se repite y dónde se pierden clientes. Contigo, presencial o por Meet.</p></li>
+    <li class="paso revelar" data-retraso="160"><span class="paso__num">03</span><!--ICONO:resultados--><h3 class="paso__titulo">Te entrego el plan</h3><p class="paso__texto">Qué automatizar primero, en orden, y cuánto cuesta cada paso. Por escrito.</p></li>
+    <li class="paso revelar" data-retraso="240"><span class="paso__num">04</span><!--ICONO:personas--><h3 class="paso__titulo">Decides tú</h3><p class="paso__texto">Lo hacemos juntos, lo haces con otra persona o lo dejas para más adelante.</p></li>
   </ol>
 </section>
 
@@ -1102,8 +1154,7 @@ function paginaPrecios() {
     descripcion: `${S.ASESORIA.titulo} todo ${S.ASESORIA.mes}. Bots de WhatsApp desde ${soles(porSlug['bot-de-whatsapp'].precio.desde)}, webs desde ${soles(porSlug['web-propia'].precio.desde)}. Precios de lanzamiento para Cusco.`,
     origen: 'Precios',
     migas: [['Precios']],
-    cuerpo: `<header class="pcabeza">
-  <p class="dato dato--qori">Precios</p>
+    cuerpo: `<header class="pcabeza pcabeza--luz">
   <h1 class="pcabeza__titulo">Precios claros, antes de empezar</h1>
   <p class="pcabeza__bajada">Precios de lanzamiento para Cusco, en soles. Cada negocio es distinto: el presupuesto exacto te lo doy por escrito después de la asesoría, antes de que pagues nada.</p>
 </header>
@@ -1164,8 +1215,7 @@ function paginaCasos() {
     descripcion: 'En qué estamos trabajando: tiendas, estudios jurídicos, negocios de servicios. Con el estado real de cada proyecto.',
     origen: 'Casos',
     migas: [['Casos']],
-    cuerpo: `<header class="pcabeza">
-  <p class="dato dato--qori">Casos</p>
+    cuerpo: `<header class="pcabeza pcabeza--topo">
   <h1 class="pcabeza__titulo">En qué estamos trabajando</h1>
   <p class="pcabeza__bajada">Yachai nació en Cusco y empezó con negocios de aquí. Cada uno con un problema distinto y la misma raíz: todo dependía de una sola persona. Con el estado real de cada uno: lo que funciona, lo que está en marcha y lo que viene.</p>
 </header>
@@ -1223,8 +1273,7 @@ function paginasAprende() {
     descripcion: 'Notas cortas para dueños de negocio: WhatsApp, Google, bots, inteligencia artificial y automatización, explicados sin tecnicismos.',
     origen: 'Aprende',
     migas: [['Aprende']],
-    cuerpo: `<header class="pcabeza">
-  <p class="dato dato--qori">Aprende</p>
+    cuerpo: `<header class="pcabeza pcabeza--luz">
   <h1 class="pcabeza__titulo">Lo que aprendo, explicado para tu negocio</h1>
   <p class="pcabeza__bajada">Notas cortas sobre WhatsApp, Google, bots e inteligencia artificial. Sin tecnicismos, y con lo que conviene hacer.</p>
 </header>
@@ -1289,8 +1338,7 @@ function paginaNosotros() {
     descripcion: 'Rodrigo Vicente Miranda Vargas fundó Yachai en Cusco: tres años automatizando negocios y más de cinco en marketing y CRM.',
     origen: 'Nosotros',
     migas: [['Nosotros']],
-    cuerpo: `<header class="pcabeza">
-  <p class="dato dato--qori">Nosotros</p>
+    cuerpo: `<header class="pcabeza pcabeza--topo">
   <h1 class="pcabeza__titulo">Quién está detrás de Yachai</h1>
   <p class="pcabeza__bajada">Una agencia de inteligencia artificial y marketing nacida en Cusco. Hacemos asesorías en IA, automatización, webs y anuncios. Lo que construye queda a tu nombre, y si algo no lo sabe hacer todavía, te lo dice antes de empezar.</p>
 </header>
@@ -1302,10 +1350,30 @@ ${renumerar(BLOQUE('quien'), 1).replace('<h2 class="titulo">Quién está detrás
   <div class="quien">
     <div class="quien__texto revelar">
       <p class="parrafo"><b><i>Yachay</i> es conocimiento en quechua.</b> El nombre dice de dónde viene la marca sin tener que explicarlo.</p>
-      <p class="parrafo">El signo es la <b>chakana</b>, la cruz andina escalonada: la misma figura que aparece en los muros de Cusco. Un sistema de partes conectadas, que es justamente lo que se construye acá.</p>
+      <p class="parrafo">El isotipo son <b>tres bloques que encajan formando una Y</b>: estructura, conexión y acción. <b>Entender. Conectar. Poner en acción.</b> Es plano, sin brillo ni relieve, y funciona igual en negro, dorado o a una sola tinta.</p>
     </div>
+    <figure class="encaje revelar" data-retraso="60">
+      <svg viewBox="0 0 220 220" role="img" aria-label="Los tres módulos del isotipo encajan formando la Y">
+        <g transform="translate(20 26.693) scale(1.16147)" fill="#F5C518">
+          <polygon class="encaje__bloque encaje__b0" points="74.8897,52.4752 58.8897,61.7128 0.0000,27.7128 0.0000,9.2376 16.0000,0.0000 74.8897,34.0000"/>
+          <polygon class="encaje__bloque encaje__b1" points="80.0859,52.4752 80.0859,34.0000 138.9756,0.0000 154.9756,9.2376 154.9756,27.7128 96.0859,61.7128"/>
+          <polygon class="encaje__bloque encaje__b2" points="77.4878,56.9752 93.4878,66.2128 93.4878,134.2128 77.4878,143.4504 61.4878,134.2128 61.4878,66.2128"/>
+        </g>
+      </svg>
+      <figcaption>Entender. Conectar. Poner en acción.</figcaption>
+    </figure>
     <div class="quien__texto revelar" data-retraso="100">
       <p class="parrafo">Yachai nació para Cusco y va a crecer a otras ciudades, paso a paso. <b>Primero se prueba cada cosa en mis propios sistemas</b>, y recién después se le ofrece a un cliente.</p>
+    </div>
+  </div>
+
+  <div class="puma-bloque revelar">
+    <figure class="puma-bloque__imagen"><img src="assets/img/marca/puma-cuerpo.webp" alt="Yachai, el puma de la marca: pelaje cálido, sudadera negra de cierre dorado y una mano abierta, en gesto de explicar" width="720" height="1080" loading="lazy" decoding="async"></figure>
+    <div class="puma-bloque__texto">
+      <h3 class="titulo">Yachai, nuestro puma</h3>
+      <p class="parrafo">Yachai acompaña la web y responde tus preguntas: explica una idea y te lleva al siguiente paso. Es el personaje de la marca. No es el logo ni firma nada, y es un asistente automatizado, no una persona del equipo.</p>
+      <p class="puma-bloque__voz">«Vamos paso a paso. Cuéntame qué necesitas resolver.»</p>
+      <p class="puma-bloque__nota">Ilustración generada con IA</p>
     </div>
   </div>
 </section>
@@ -1325,8 +1393,7 @@ function paginaContacto() {
     descripcion: `Escríbeme por WhatsApp al ${S.WA_VISIBLE}, agenda una llamada o describe tu web. ${S.ASESORIA.titulo} por lanzamiento.`,
     origen: 'Contacto',
     migas: [['Contacto']],
-    cuerpo: `<header class="pcabeza">
-  <p class="dato dato--qori">Contacto</p>
+    cuerpo: `<header class="pcabeza pcabeza--ia pcabeza--yachai">
   <h1 class="pcabeza__titulo">Hablemos</h1>
   <p class="pcabeza__bajada">Elige lo que te quede más cómodo. Te respondo yo, por WhatsApp.</p>
 </header>
@@ -1366,14 +1433,14 @@ ${destacado(S.ASESORIA.pagina, mini('04'), 'Gratis en ' + esc(S.ASESORIA.mes), '
 <section class="seccion" id="explora" aria-labelledby="explora-titulo">
   ${cab(2, '¿Qué negocio tienes?', 'Elige el tuyo y mira qué automatizaría primero, con ejemplos de un día normal.', 'explora-titulo')}
   <ul class="tarjetas" role="list">
-${S.RUBROS.map((r, i) => `    <li><a class="tarjeta tarjeta--img revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}>${tarjetaImg(miniPagina(r.slug) || mini(r.escena))}<span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
+${S.RUBROS.map((r, i) => `    <li><a class="tarjeta tarjeta--img revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}>${tarjetaImg(miniPagina(r.slug) || mini(r.escena))}${iconoNombre(RUBRO_ICONO[r.clave])}<span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
     <li><a class="tarjeta revelar" href="soluciones.html#otros" data-retraso="160"><span class="tarjeta__dato">Turismo, academias, agencias…</span><b class="tarjeta__titulo">Otro negocio</b><span class="tarjeta__texto">Casi siempre hay algo que se puede automatizar.</span><span class="tarjeta__ir">Ver más →</span></a></li>
   </ul>
 
   <ul class="atajos" role="list">
-    <li><a class="atajo revelar" href="nosotros.html#como"><span class="dato dato--qori">Cómo trabajo</span><b>Primero lo pruebas; después crece.</b><span>Cuatro pasos, y en ninguno trabajas a ciegas →</span></a></li>
-    <li><a class="atajo revelar" data-retraso="80" href="seguridad.html"><span class="dato dato--qori">Seguro por diseño</span><b>Candados en el código.</b><span>Por qué a mis bots no los engaña un cliente tramposo →</span></a></li>
-    <li><a class="atajo revelar" data-retraso="160" href="precios.html"><span class="dato dato--qori">Precios claros</span><b>Desde ${soles(porSlug['bot-de-whatsapp'].precio.desde)}.</b><span>Y la asesoría, gratis por lanzamiento →</span></a></li>
+    <li><a class="atajo revelar" href="nosotros.html#como"><!--ICONO:procesos--><span class="dato dato--qori">Cómo trabajo</span><b>Primero lo pruebas; después crece.</b><span>Cuatro pasos, y en ninguno trabajas a ciegas →</span></a></li>
+    <li><a class="atajo revelar" data-retraso="80" href="seguridad.html"><!--ICONO:seguridad--><span class="dato dato--qori">Seguro por diseño</span><b>Candados en el código.</b><span>Por qué a mis bots no los engaña un cliente tramposo →</span></a></li>
+    <li><a class="atajo revelar" data-retraso="160" href="precios.html"><!--ICONO:resultados--><span class="dato dato--qori">Precios claros</span><b>Desde ${soles(porSlug['bot-de-whatsapp'].precio.desde)}.</b><span>Y la asesoría, gratis por lanzamiento →</span></a></li>
   </ul>
 </section>`;
 }
@@ -1484,6 +1551,7 @@ function construir() {
   paginaLanding();
 
   let inicio = indexHtml;
+  inicio = inyectar(inicio, 'OG', ogImagen());
   inicio = inyectar(inicio, 'CABECERA', cabecera('', 'index.html'));
   inicio = inyectar(inicio, 'BANDA', inicioBanda());
   inicio = inyectar(inicio, 'EXPLORA', inicioExplora());
@@ -1498,6 +1566,7 @@ function construir() {
     .replace(/assets\/js\/menu\.js\?v=[\w]+/, 'assets/js/menu.js?v=' + V.menu)
     .replace(/assets\/js\/movimiento\.js\?v=[\w]+/, 'assets/js/movimiento.js?v=' + V.mov);
 
+  inicio = conIconos(inicio);
   const todo = { ...PAGINAS, 'index.html': inicio };
   const publicos = { ...todo };
   for (const p of ['assets/css/style.css', 'assets/js/main.js', 'assets/js/menu.js', 'assets/js/movimiento.js', 'assets/js/datos.js']) {
