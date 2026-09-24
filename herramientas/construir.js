@@ -1294,7 +1294,7 @@ function fechaLarga(f) {
 
 function tarjetaArticulo(a) {
   const mini = miniPagina(a.pagina.replace(/\.html$/, ''));
-  return `<li><a class="tarjeta revelar" href="${a.pagina}">
+  return `<li><a class="tarjeta${mini ? ' tarjeta--img' : ''} revelar" href="${a.pagina}">
       ${mini ? tarjetaImg(mini) : ''}<span class="tarjeta__dato">${esc(a.categoria || 'Aprende')} · ${esc(fechaLarga(a.fecha))}</span>
       <b class="tarjeta__titulo">${esc(a.titulo)}</b>
       <span class="tarjeta__texto">${esc(a.resumen)}</span>
