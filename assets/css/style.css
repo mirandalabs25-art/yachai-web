@@ -1813,3 +1813,12 @@ a.tarjeta--qori:hover,a.tarjeta--qori:focus-visible{background:var(--hueso);bord
 }
 .puma-bloque__imagen{aspect-ratio:4/5;max-height:none;overflow:hidden;background:#0b0b0b;border:1px solid var(--filete);border-radius:var(--radio-g)}
 .puma-bloque__imagen img{object-fit:cover}
+
+/* CAPA 6 (2026-09-24): Yachai pensando junto a las preguntas frecuentes (solo en pantallas anchas, donde sobra espacio a la derecha). */
+@media (min-width:1280px){
+  .seccion--faq{position:relative}
+  .seccion--faq::after{
+    content:'';position:absolute;right:var(--gutter);bottom:clamp(28px,4vw,56px);width:300px;height:380px;pointer-events:none;
+    background:url(../img/marca/yachai-pensando.webp) right bottom/contain no-repeat;
+  }
+}

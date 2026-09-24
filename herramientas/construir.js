@@ -761,7 +761,7 @@ ${rubros.map((r) => `    <li><a class="chip" href="${r.slug}.html">${esc(r.nombr
   </div>
 </section>`);
   if (s.faq) {
-    secciones.push(`<section class="seccion">
+    secciones.push(`<section class="seccion seccion--faq">
   ${cab(++n, 'Preguntas frecuentes')}
   ${faq(s.faq)}
 </section>`);
@@ -940,7 +940,7 @@ ${casos.map((c) => '    ' + casoTarjeta(c)).join('\n')}
   </div>
 </section>
 ` : ''}
-<section class="seccion">
+<section class="seccion seccion--faq">
   ${cab(++n, 'Preguntas frecuentes')}
   ${faq(r.faq)}
 </section>
