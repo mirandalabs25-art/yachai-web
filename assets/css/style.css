@@ -296,9 +296,9 @@ a{color:inherit;text-decoration:none}
 }
 .hero__titulo{max-width:24ch}
 .hero__titulo em{font-style:normal;color:var(--qori)}
-.hero__titulo span{display:block;overflow:hidden}
+.hero__titulo span{display:block;overflow:hidden;padding-bottom:.18em;margin-bottom:-.18em}   /* el relleno deja lugar a las letras que descienden (g, y, p) */
 .hero__titulo span i{
-  display:block;font-style:normal;transform:translateY(105%);
+  display:block;font-style:normal;transform:translateY(130%);
   animation:sube 1s cubic-bezier(.16,1,.3,1) forwards;
 }
 .hero__titulo span:nth-child(2) i{animation-delay:.09s}
