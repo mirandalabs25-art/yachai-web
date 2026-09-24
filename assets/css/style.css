@@ -1829,8 +1829,13 @@ a.tarjeta--qori:hover,a.tarjeta--qori:focus-visible{background:var(--hueso);bord
   .asistente__fila{grid-template-columns:minmax(220px,340px) minmax(0,600px) minmax(260px,1fr)}
   .asistente__ia{display:grid;gap:10px;align-self:end}
   .asistente__ia img{
-    display:block;width:100%;height:auto;aspect-ratio:4/5;max-height:470px;object-fit:cover;object-position:28% center;
+    display:block;width:100%;height:auto;aspect-ratio:4/5;max-height:470px;object-fit:cover;object-position:center 30%;
     border:1px solid var(--filete);border-radius:var(--radio-g);
   }
   .asistente__ia figcaption{font:500 11px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
 }
+
+/* CAPA 8 (2026-09-24): escenas ilustrativas en los casos, siempre con su rótulo de «no es una captura». */
+.caso__escena{margin:0 0 6px;display:grid;gap:8px}
+.caso__captura--escena{object-position:center 35%}
+.caso__escena figcaption{font:500 11px/1.5 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}

@@ -580,6 +580,12 @@ function estadoHtml([tipo, texto]) {
 // Imagen de un caso: el grafo (svg) se ve entero; una captura de web (jpg),
 // recortada como foto. Las capturas van con el nombre del cliente difuminado.
 function casoImagen(c) {
+  // Escena ilustrativa (hecha con IA): nunca se presenta como captura del trabajo, así que
+  // lleva siempre su rótulo. No usa la clave `imagen`, que alimenta las capturas reales
+  // («Webs que hemos hecho» en la página del regalo).
+  if (c.escena) {
+    return `<figure class="caso__escena"><img class="caso__captura caso__captura--escena" src="${esc(c.escena)}" alt="${esc(c.escena_alt || '')}" loading="lazy" decoding="async" width="1000" height="667"><figcaption>Ilustración con IA · no es una captura del trabajo</figcaption></figure>`;
+  }
   if (!c.imagen) return '';
   const grafo = /\.svg$/.test(c.imagen);
   return `<img class="${grafo ? 'caso__grafo' : 'caso__captura'}" src="${esc(c.imagen)}" alt="${esc(c.imagen_alt || '')}" loading="lazy" width="1000" height="${grafo ? 1000 : 626}">`;
@@ -589,7 +595,7 @@ function casoTarjeta(c) {
   const clase = c.estado === 'vivo' ? ' caso__estado--vivo' : '';
   const marca = (S.ESTADOS[c.estado] || S.ESTADOS.prepara).marca;
   const img = casoImagen(c);
-  const tipo = !c.imagen ? '' : /\.svg$/.test(c.imagen) ? ' trabajo--grafo' : ' trabajo--foto';
+  const tipo = c.escena ? ' trabajo--foto' : !c.imagen ? '' : /\.svg$/.test(c.imagen) ? ' trabajo--grafo' : ' trabajo--foto';
   return `<article class="trabajo${tipo} revelar">
       ${img}
       <span class="caso__estado${clase}">${marca} ${esc(c.etiqueta || '')}</span>
@@ -1468,7 +1474,7 @@ ${destacado(S.ASESORIA.pagina, mini('04'), 'Gratis en ' + esc(S.ASESORIA.mes), '
   ${cab(2, '¿Qué negocio tienes?', 'Elige el tuyo y mira qué automatizaría primero, con ejemplos de un día normal.', 'explora-titulo')}
   <ul class="tarjetas" role="list">
 ${S.RUBROS.map((r, i) => `    <li><a class="tarjeta tarjeta--img revelar" href="${r.slug}.html"${i % 3 ? ` data-retraso="${(i % 3) * 80}"` : ''}>${tarjetaImg(miniPagina(r.slug) || mini(r.escena))}${iconoNombre(RUBRO_ICONO[r.clave])}<span class="tarjeta__dato">${esc(r.menu)}</span><b class="tarjeta__titulo">${esc(r.nombre)}</b><span class="tarjeta__texto">«${esc(r.dolores[0][0])}.»</span><span class="tarjeta__ir">Ver soluciones →</span></a></li>`).join('\n')}
-    <li><a class="tarjeta revelar" href="soluciones.html#otros" data-retraso="160"><span class="tarjeta__dato">Turismo, academias, agencias…</span><b class="tarjeta__titulo">Otro negocio</b><span class="tarjeta__texto">Casi siempre hay algo que se puede automatizar.</span><span class="tarjeta__ir">Ver más →</span></a></li>
+    <li><a class="tarjeta${miniPagina('para-otro-negocio') ? ' tarjeta--img' : ''} revelar" href="soluciones.html#otros" data-retraso="160">${miniPagina('para-otro-negocio') ? tarjetaImg(miniPagina('para-otro-negocio')) : ''}<span class="tarjeta__dato">Turismo, academias, agencias…</span><b class="tarjeta__titulo">Otro negocio</b><span class="tarjeta__texto">Casi siempre hay algo que se puede automatizar.</span><span class="tarjeta__ir">Ver más →</span></a></li>
   </ul>
 
   <ul class="atajos" role="list">
