@@ -1,6 +1,6 @@
 /* Generado por herramientas/construir.js desde contenido/sitio.js: no editar a mano. */
 window.YACHAI_DATOS = {
- "whatsapp": "51969322677",
+ "whatsapp": "51955772244",
  "cupos": 10,
  "marca": {
   "que": "Agencia de inteligencia artificial y marketing",

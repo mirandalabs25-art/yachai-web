@@ -27,8 +27,8 @@ const MARCA = {
 const SITIO_URL = null;
 
 // REVISAR: cambiar al número nuevo de Yachai cuando exista el chip.
-const WA_NUMERO = '51969322677';
-const WA_VISIBLE = '+51 969 322 677';
+const WA_NUMERO = '51955772244';
+const WA_VISIBLE = '+51 955 772 244';
 const wa = (texto) => `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(texto)}`;
 
 // RUC de persona natural, confirmado por el usuario el 2026-09-23 (el dígito

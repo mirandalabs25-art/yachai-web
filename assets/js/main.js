@@ -702,7 +702,7 @@
   // En la página de aterrizaje del QR (data-chat="asesoria") el asistente
   // arranca con el gancho de la asesoría gratis, no con el menú general.
   var MODO = document.body.getAttribute('data-chat') || '';
-  var WHATSAPP = 'https://wa.me/' + (DATOS.whatsapp || '51969322677') + '?text=';
+  var WHATSAPP = 'https://wa.me/' + (DATOS.whatsapp || '51955772244') + '?text=';
   function soles(n) { return 'S/' + Number(n).toLocaleString('en-US'); }
 
   // Qué problemas de la sección "Qué resuelvo" van primero en cada rubro.
